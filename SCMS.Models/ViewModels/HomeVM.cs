@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SCMS.Models.ViewModels
 {
-    public class CategoryPickerVM
+    public class HomeVM
     {
         public List<CategoryVM> CategoryCheckboxes { get; set; }
-
+        public List<IntimacyVM> IntimacyCheckboxes { get; set; }
+        public List<UserVM> SearchUsers { get; set; }
     }
 }
