@@ -1,0 +1,20 @@
+﻿@model SCMS.Models.ViewModels.CategoryPickerVM
+
+@{
+    ViewBag.Title = "CategoryList";
+}
+
+<h2>CategoryList</h2>
+
+@using (Html.BeginForm("CategoryList", "Homepage", FormMethod.Post))
+{
+		for (int i = 0; i < Model.CategoryCheckboxes.Count; i++)
+		{
+			<p>
+				@Html.CheckBoxFor(m => m.CategoryCheckboxes[i].isSelected)
+				<span>@Model.CategoryCheckboxes[i].Description</span>
+				@Html.HiddenFor(m => m.CategoryCheckboxes[i].CategoryId)
+			</p>
+		}
+			<input type="submit" value="Submit Form"/>
+}

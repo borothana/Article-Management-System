@@ -1,0 +1,34 @@
+﻿@model List<SCMS.Models.Category>
+
+@{
+    ViewBag.Title = "Category";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Category</h2>
+        @Html.ActionLink("Add Category", "Add", "Category", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-striped" style="width: auto;">
+            <thead>
+                <tr>
+                    <th>Categories</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in Model)
+                {
+                    <tr>
+                        <td>@cat.Description</td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Category", new { id = cat.CategoryId }, null)</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Category", new { id = cat.CategoryId }, null)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

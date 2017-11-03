@@ -1,0 +1,27 @@
+﻿@model SCMS.Models.ViewModels.LoginVM
+
+@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Test Login Cookie</title>
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        <label>User Name</label>
+        @Html.TextBoxFor(m=>m.UserName)
+        <label>Password</label>
+        @Html.TextBoxFor(m => m.Password)
+        
+        <input type="submit" value="Login" />
+    }
+
+</body>
+</html>

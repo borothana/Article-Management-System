@@ -1,0 +1,35 @@
+﻿@model List<SCMS.Models.Intimacy>
+
+@{
+    ViewBag.Title = "Intimacy";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Intimacy</h2>
+        @Html.ActionLink("Add Intimacy Level", "Add", "Intimacy", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-striped" style="width: auto;">
+            <thead>
+                <tr>
+                    <th>Intimacy</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var intent in Model)
+                {
+                    <tr>
+                        <td>@intent.Description</td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Intimacy", new { id = intent.IntimacyId }, null)</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Intimacy", new { id = intent.IntimacyId }, null)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

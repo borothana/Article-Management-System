@@ -1,0 +1,34 @@
+﻿@model SCMS.Models.ViewModels.StoryVM
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Add Story</h3>
+        @Html.ActionLink("Return to home page", "Home", "Home")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Add", "Story", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.HiddenFor(m => m.UserId)
+                <label>Category</label>
+                @Html.DropDownListFor(m => m.CategoryId, Model.CategoryItems, "-Choose One-", new { @class = "form-control", placeholder = "Title" })
+                <label>Intimacy Level</label>
+                @Html.DropDownListFor(m => m.IntimacyId, Model.IntimacyItems, "-Choose One-", new { @class = "form-control", placeholder = "Title" })
+                <label>Title</label>
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+                <label>Tag</label>
+                @Html.TextBoxFor(m => m.HashtagWord, new { @class = "form-control", placeholder = "Hashtag" })
+                <label>Story</label>
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control", placeholder = "Write your story here!" })
+            </div>
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>                
+        }
+    </div>
+</div>
+

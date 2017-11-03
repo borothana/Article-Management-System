@@ -1,0 +1,24 @@
+﻿@model SCMS.Models.Category
+
+@{
+    ViewBag.Title = "AddCategory";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Add Category</h3>
+        @Html.ActionLink("Return to List", "List", "Category")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Add", "Category", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label>Description</label>
+                @Html.TextBoxFor(s => s.Description, new { @class = "form-control", placeholder = "Description" })
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+        }
+    </div>
+</div>      
