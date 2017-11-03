@@ -128,6 +128,18 @@ namespace SCMS.Datas
 
             _ctx.Stories.Add(story);
             _ctx.SaveChanges();
+
+            //Working with Hashtag
+            List<Story> tmpStory = new List<Story> { story };
+            string[] tmpHashtag = storyVM.HashtagWord.Split();
+            for (int i = 0; i < tmpHashtag.Length; i++)
+            {
+                if(!GetHashtagList().Any(h=>h.Description == tmpHashtag[i]))
+                {
+                    AddHastag(new Hashtag { Description = tmpHashtag[i], Stories = tmpStory });
+                }
+            }
+            
             return _ctx.Stories.Max(s => s.StroyId);
         }
 
