@@ -35,7 +35,7 @@ namespace SCMS.Datas
         static List<Intimacy> _intimacies = new List<Intimacy>
         {
             new Intimacy{ IntimacyId = 1, Description = "Low"},
-            new Intimacy{ IntimacyId = 2, Description = "Miduim"},
+            new Intimacy{ IntimacyId = 2, Description = "Meduim"},
             new Intimacy{ IntimacyId = 3, Description = "High"}
         };
 

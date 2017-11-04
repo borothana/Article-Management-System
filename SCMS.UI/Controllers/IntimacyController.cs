@@ -14,7 +14,7 @@ namespace SCMS.UI.Controllers
         ISCMS _repo = SCMSFactory.Create();
 
         [HttpGet]
-        public ActionResult Intimacy()
+        public ActionResult List()
         {
             var model = _repo.GetIntimacyList();
             return View(model);

@@ -37,11 +37,11 @@ namespace SCMS.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult CategoryList(CategoryPickerVM model)
+        public ActionResult CategoryList(HomeVM model)
         {
-            CategoryPickerVM categoryVM = new CategoryPickerVM();
+            HomeVM homeVM = new HomeVM();
             var selected = model.CategoryCheckboxes.Where(c => c.isSelected).Select(c => c.CategoryId);
-            return View("CategoryList", categoryVM);
+            return View("CategoryList", homeVM);
 
             //var filtered = model.isSelectedWhere(c => c.IsSelected).ToList();
             //return RedirectToAction("Category");
