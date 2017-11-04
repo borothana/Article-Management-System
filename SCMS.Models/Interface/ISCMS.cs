@@ -26,10 +26,12 @@ namespace SCMS.Models.Interface
         #endregion
         
         #region "Hashtag"
-        Hashtag GetHashtagById(int hastagId);
-        List<Hashtag> GetHashtagByStory(int storyId);
         List<Hashtag> GetHashtagList();
-        int AddHastag(Hashtag hashtag);
+        Hashtag GetHashtagById(int hastagId);
+        Hashtag GetHashtagByDesc(string description);
+        List<Hashtag> GetHashtagByStory(int storyId);
+        int AddHashtag(Hashtag hashtag);
+        bool AddHashtagByStory(Story story);
         bool UpdateHashtag(Hashtag hashtag);
         bool DeleteHashtagById(int hashtagId);
         bool DeleteHashtagByStory(int storyId);
@@ -46,8 +48,10 @@ namespace SCMS.Models.Interface
         #endregion
 
         #region "Story"
-        Story GetStoryById(int StoryId);
         List<Story> GetStoryList();
+        List<Story> GetStoryByUser(string userId);
+        Story GetStoryById(int storyId);
+        StoryVM GetStoryVMById(int storyId);
         int AddStory(StoryVM storyVM);
         bool UpdateStory(StoryVM storyVM);
         bool DeleteStory(int StoryId);

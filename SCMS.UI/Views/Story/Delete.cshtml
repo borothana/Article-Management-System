@@ -1,0 +1,26 @@
+﻿@model SCMS.Models.ViewModels.StoryVM
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Delete Story</h3>
+        @Html.ActionLink("Return to Home", "Home", "Home")
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("Delete", "Story", FormMethod.Post))
+            {
+                @Html.HiddenFor(m => m.StroyId)        
+                <p>Are you sure that you wish to delete story @Html.DisplayFor(m=>m.Title)?</p>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                @Html.ActionLink("Cancel", "List", "Story", new { @class = "btn btn-sm btn-info" })
+            }
+        </div>
+    </div>
+</div>

@@ -64,7 +64,7 @@ namespace SCMS.Datas
                 new Hashtag{ HashtagId = 4, Description = "Mars", Stories = _stories},
                 new Hashtag{ HashtagId = 5, Description = "fly", Stories = _stories}
         };
-
+        
         static List<Comment> _comments = new List<Comment> {
                 new Comment{ CommentId =1, Descriptiopn = "Such a great story", StoryId = 1, Story = _stories[1]},
                 new Comment{ CommentId =2, Descriptiopn = "Yeah, that's so romantic", StoryId = 1, Story = _stories[1]},
@@ -157,9 +157,39 @@ namespace SCMS.Datas
             return _stories;
         }
 
+        public List<Story> GetStoryByUser(string userId)
+        {
+            return GetStoryList().Where(s => s.UserId == userId).ToList();
+        }
+
         public Story GetStoryById(int storyId)
         {
             return _stories.FirstOrDefault(s => s.StroyId == storyId);
+        }
+
+        public StoryVM GetStoryVMById(int storyId)
+        {
+            Story story = GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            StoryVM storyVM = new StoryVM
+            {
+
+                StroyId = story.StroyId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
         }
 
         public int AddStory(StoryVM storyVM)
@@ -290,12 +320,17 @@ namespace SCMS.Datas
             return _hashtags.FirstOrDefault(h => h.HashtagId == hastagId);
         }
 
+        public Hashtag GetHashtagByDesc(string description)
+        {
+            return GetHashtagList().FirstOrDefault(h => h.Description == description);
+        }
+
         public List<Hashtag> GetHashtagByStory(int storyId)
         {
             return _hashtags.Where(h => h.Stories.Any(s => s.StroyId == storyId)).ToList();
         }
 
-        public int AddHastag(Hashtag hashtag)
+        public int AddHashtag(Hashtag hashtag)
         {
             if (_hashtags.Count <= 0)
             {
@@ -307,6 +342,31 @@ namespace SCMS.Datas
             }
             _hashtags.Add(hashtag);
             return hashtag.HashtagId;
+        }
+
+
+        public bool AddHashtagByStory(Story story)
+        {
+            string[] tmpHashtag = story.HashtagWord.Split();
+            for (int i = 0; i < tmpHashtag.Length; i++)
+            {
+                if (tmpHashtag[i].Trim() == "") continue;
+
+                Hashtag hashtag;
+                if (!GetHashtagList().Any(h => h.Description == tmpHashtag[i]))
+                {
+                    hashtag = new Hashtag { Description = tmpHashtag[i] };
+                    hashtag.Stories.Add(story);
+                    _hashtags.Add(hashtag);
+                }
+                else
+                {
+                    hashtag = GetHashtagList().FirstOrDefault(h => h.Description == tmpHashtag[i]);
+                    hashtag.Stories.Add(story);                    
+                }
+            }
+
+            return true;
         }
 
         public bool UpdateHashtag(Hashtag hashtag)
