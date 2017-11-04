@@ -165,6 +165,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomepageController.cs" />
+    <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IntimacyController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
     <Compile Include="Controllers\SignUpController.cs" />
@@ -206,13 +207,17 @@
     <Content Include="Views\Intimacy\Add.cshtml" />
     <Content Include="Views\Intimacy\Delete.cshtml" />
     <Content Include="Views\Intimacy\Edit.cshtml" />
-    <Content Include="Views\Intimacy\Intimacy.cshtml" />
+    <Content Include="Views\Intimacy\List.cshtml" />
     <Content Include="Views\Story\Add.cshtml" />
     <Content Include="Views\Homepage\Index.cshtml" />
     <Content Include="Views\Homepage\CategoryList.cshtml" />
     <Content Include="Views\Story\Edit.cshtml" />
     <Content Include="Views\Story\Delete.cshtml" />
     <Content Include="Views\Story\List.cshtml" />
+    <Content Include="Views\Info\List.cshtml" />
+    <Content Include="Views\Info\Add.cshtml" />
+    <Content Include="Views\Info\Delete.cshtml" />
+    <Content Include="Views\Info\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

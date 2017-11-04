@@ -86,6 +86,7 @@
     <Compile Include="ViewModels\CategoryVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\IntimacyVM.cs" />
+    <Compile Include="Info.cs" />
     <Compile Include="ViewModels\ResetPasswordVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="ViewModels\StoryVM.cs" />

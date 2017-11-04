@@ -23,6 +23,16 @@ namespace SCMS.Datas
             new User { Id = "Javier", UserName = "Javier", Nickname = "Javier", Email = "javier@gmail.com", PasswordHash = "123456" , IsActive = true}
         };
 
+        static List<Info> _infos = new List<Info>
+        {
+            new Info{ InfoId = 1, Title = "11111", FDate = DateTime.Parse("11/01/2017"), TDate = DateTime.Parse("11/10/2017"), Description = "Description for 11111" },
+            new Info{ InfoId = 2, Title = "22222", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("12/11/2017"), Description = "Description for 22222" },
+            new Info{ InfoId = 3, Title = "11111", FDate = DateTime.Parse("10/01/2017"), TDate = DateTime.Parse("12/01/2017"), Description = "Description for 33333" },
+            new Info{ InfoId = 4, Title = "11111", FDate = DateTime.Parse("12/25/2017"), TDate = DateTime.Parse("01/31/2018"), Description = "Description for 44444" },
+            new Info{ InfoId = 5, Title = "11111", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("11/30/2018"), Description = "Description for 55555" }
+        };
+
+
         static List<Category> _categories = new List<Category>
         {
             new Category{ CategoryId = 1, Description = "Food" },
@@ -74,6 +84,50 @@ namespace SCMS.Datas
         };
 
 
+        #region "Infos"
+        public List<Info> GetInfoList()
+        {
+            return _infos;
+        }
+
+        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
+        {
+            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
+        }
+
+        public Info GetInfoById(int InfoId)
+        {
+            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
+        }
+
+        public int AddInfo(Info news)
+        {
+            if (_infos.Count <= 0)
+            {
+                news.InfoId = 1;
+            }
+            else
+            {
+                news.InfoId = _infos.Max(n => n.InfoId) + 1;
+            }
+            _infos.Add(news);
+            return news.InfoId;
+        }
+
+        public bool UpdateInfo(Info news)
+        {
+            _infos.RemoveAll(n => n.InfoId == news.InfoId);
+            _infos.Add(news);
+            return true;
+        }
+
+        public bool DeleteInfo(int InfoId)
+        {
+            _infos.RemoveAll(n => n.InfoId == InfoId);
+            return true;
+        }
+        #endregion
+
         #region "Category"
         public List<Category> GetCategoryList()
         {
@@ -82,7 +136,7 @@ namespace SCMS.Datas
 
         public Category GetCategoryById(int categoryId)
         {
-            return _categories.FirstOrDefault(c => c.CategoryId == categoryId);
+            return GetCategoryList().FirstOrDefault(c => c.CategoryId == categoryId);
         }
 
         public int AddCategory(Category category)

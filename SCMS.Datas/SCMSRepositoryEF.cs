@@ -20,6 +20,50 @@ namespace SCMS.Datas
     {
         SCMSDBContext _ctx = new SCMSDBContext();
 
+
+        #region "News"
+        public List<Info> GetInfoList()
+        {
+            return _ctx.Infos.ToList();
+        }
+
+        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
+        {
+            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
+        }
+
+        public Info GetInfoById(int InfoId)
+        {
+            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
+        }
+
+        public int AddInfo(Info info)
+        {
+            _ctx.Infos.Add(info);  
+            _ctx.SaveChanges(); 
+            return _ctx.Infos.Max(i => i.InfoId);
+         }
+
+        public bool UpdateInfo(Info info)
+        {
+            _ctx.Entry(info).State = System.Data.Entity.EntityState.Modified;
+            _ctx.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteInfo(int InfoId)
+        {
+            Info info = GetInfoById(InfoId);
+            if(info != null)
+            {
+                _ctx.Entry(info).State = System.Data.Entity.EntityState.Deleted;
+                _ctx.SaveChanges();
+            }
+            return true;
+        }
+        #endregion
+
+
         #region "Category"
         public List<Category> GetCategoryList()
         {
@@ -146,8 +190,8 @@ namespace SCMS.Datas
                 Content = storyVM.Content,
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
-                NoView = storyVM.NoView,
-                ApproveStatue = storyVM.ApproveStatue,
+                NoView = 0,
+                ApproveStatue = 'N',
                 UserId = storyVM.UserId,
 
                 Category = storyVM.Category,

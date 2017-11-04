@@ -9,6 +9,15 @@ namespace SCMS.Models.Interface
 {
     public interface ISCMS
     {
+        #region "Info"
+        Info GetInfoById(int infoId);
+        List<Info> GetInfoList();
+        List<Info> GetInfoByDate(DateTime FD, DateTime TD);
+        int AddInfo(Info info);
+        bool UpdateInfo(Info info);
+        bool DeleteInfo(int infoId);
+        #endregion
+
         #region "Category"
         Category GetCategoryById(int categoryId);
         List<Category> GetCategoryList();
