@@ -15,7 +15,10 @@ namespace SCMS.UI.Controllers
         // GET: Homepage
         public ActionResult Index()
         {
-            return View();
+            var viewModel = new HomeVM();
+            viewModel.Category = _repo.GetCategoryList();
+            viewModel.Intimacy = (_repo.GetIntimacyList());
+            return View(viewModel);
         }
         [HttpGet]
         public ActionResult StoryPage()
@@ -27,24 +30,27 @@ namespace SCMS.UI.Controllers
         {
             return View();
         }
-
-
-        [HttpGet]
-        public ActionResult CategoryList()
-        {
-
-            return View(_repo.GetCategoryList());
-        }
-
-        [HttpPost]
-        public ActionResult CategoryList(CategoryPickerVM model)
-        {
-            CategoryPickerVM categoryVM = new CategoryPickerVM();
-            var selected = model.CategoryCheckboxes.Where(c => c.isSelected).Select(c => c.CategoryId);
-            return View("CategoryList", categoryVM);
-
-            //var filtered = model.isSelectedWhere(c => c.IsSelected).ToList();
-            //return RedirectToAction("Category");
-        }
     }
 }
+
+
+
+    //    [HttpGet]
+    //    public ActionResult CategoryList()
+    //    {
+
+    //        var model = new HomeVM();
+    //        model.CategoryCheckboxes = (from category in _repo.GetCategoryList()
+    //                                    select new CategoryVM { Category = category, isSelected = false }).ToList();
+
+    //        return View(model);
+    //    }
+
+    //    [HttpPost]
+    //    public ActionResult CategoryList(HomeVM model)
+    //    {
+
+    //        var selected = model.CategoryCheckboxes.Where(c => c.isSelected).Select(c => c.Category.CategoryId);
+    //        return View("CategoryList", selected);
+    //    }
+    //}
