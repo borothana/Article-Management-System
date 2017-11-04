@@ -1,10 +1,10 @@
-﻿@model SCMS.Models.ViewModels.CategoryPickerVM
+﻿@*@model SCMS.Models.ViewModels.HomeVM
 
 @{
     ViewBag.Title = "CategoryList";
 }
 
-<h2>CategoryList</h2>
+<h2>Category List</h2>
 
 @using (Html.BeginForm("CategoryList", "Homepage", FormMethod.Post))
 {
@@ -12,9 +12,9 @@
 		{
 			<p>
 				@Html.CheckBoxFor(m => m.CategoryCheckboxes[i].isSelected)
-				<span>@Model.CategoryCheckboxes[i].Description</span>
-				@Html.HiddenFor(m => m.CategoryCheckboxes[i].CategoryId)
+				<span>@Model.CategoryCheckboxes[i].Category.Description</span>
+				@Html.HiddenFor(m => m.CategoryCheckboxes[i].Category.CategoryId)
 			</p>
 		}
-			<input type="submit" value="Submit Form"/>
+			<input type="submit" value="Submit Form"/>*@
 }

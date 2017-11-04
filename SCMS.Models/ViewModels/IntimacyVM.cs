@@ -2,7 +2,8 @@
 {
     public class IntimacyVM
     {
-        public int IntimacyId { get; set; }
-        public string Description { get; set; }
+        public Intimacy Intimacy { get; set; }
+        public bool IsSelected { get; set; }
+
     }
 }
