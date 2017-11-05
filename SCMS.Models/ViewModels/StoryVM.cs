@@ -37,24 +37,24 @@ namespace SCMS.Models.ViewModels
 
         public void SetCategoryItems(IEnumerable<Category> categories)
         {
-            foreach (var category in categories)
+            foreach (var c in categories)
             {
                 CategoryItems.Add(new SelectListItem()
                 {
-                    Value = Category.CategoryId.ToString(),
-                    Text = category.Description
+                    Value = c.CategoryId.ToString(),
+                    Text = c.Description
                 });
             }
         }
 
         public void SetIntimacyItems(IEnumerable<Intimacy> intimacies)
         {
-            foreach (var intimacy in intimacies)
+            foreach (var i in intimacies)
             {
                 IntimacyItems.Add(new SelectListItem()
                 {
-                    Value = Intimacy.IntimacyId.ToString(),
-                    Text = Intimacy.Description
+                    Value = i.IntimacyId.ToString(),
+                    Text = i.Description
                 });
             }
         }

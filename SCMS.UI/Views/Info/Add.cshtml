@@ -1,0 +1,33 @@
+﻿@model SCMS.Models.Info
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Add Information</h3>
+        @Html.ActionLink("Return to home page", "Home", "Home")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Add", "Info", FormMethod.Post))
+        {
+            @Html.ValidationSummary()
+            <div class="form-group">
+                <label>Title</label>
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+                <label>Display Start Date</label>
+                @Html.EditorFor(m => m.FDate, new { @class = "form-control", placeholder = "Display Start Date" })
+                <label>Display End Date</label>
+                @Html.EditorFor(m => m.TDate, new { @class = "form-control", placeholder = "Display End Date" })
+                <label>Story</label>
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description!" })
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
+            </div>
+        }
+    </div>
+</div>
+

@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-xs-12">
         <h3>Delete Category</h3>
-        @Html.ActionLink("Return to List", "Intimacy", "Intimacy")
+        @Html.ActionLink("Return to List", "List", "Intimacy")
     </div>
 </div>
 <div class="row">
@@ -15,9 +15,9 @@
         @using (Html.BeginForm())
         {
             @Html.HiddenFor(c => c.IntimacyId)
-            <p>Are you sure that you wish to delete the intimacy level set for: @Html.DisplayFor(d => d.Description)?</p>
+            <p>Are you sure that you wish to delete intimacy @Html.DisplayFor(d => d.Description)?</p>
             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-            @Html.ActionLink("Cancel", "Intimacy", "Intimacy", null, new { @class = "btn btn-sm btn-info" })
+            @Html.ActionLink("Cancel", "List", "Intimacy", null, new { @class = "btn btn-sm btn-info" })
         }
     </div>
 </div>     

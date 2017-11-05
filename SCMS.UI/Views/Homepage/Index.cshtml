@@ -1,4 +1,4 @@
-﻿
+﻿@model SCMS.Models.ViewModels.HomeVM
 @{
 	ViewBag.Title = "Index";
 }
@@ -19,137 +19,121 @@
 </head>
 
 <body>
-		@using (Html.BeginForm())
+@using (Html.BeginForm())
+{
+	<div class="col-sm-3">
+		<br />
+		<h5>Category</h5>
+		@foreach (var category in Model.Category)
 		{
-			@Html.AntiForgeryToken()
-
-			<div class="col-sm-3">
-				<br />
-				<h5>Category</h5>
-				<p>
-					<label>
-						<input type="checkbox" name="category" value="Love" />
-						<span>Love</span>
-					</label>
-				</p>
-				<p>
-					<label>
-						<input type="checkbox" name="category" value="Food" />
-						<span>Food</span>
-					</label>
-				</p>
-				<p>
-					<label>
-						<input type="checkbox" name="category" value="Travel" />
-						<span>Travel</span>
-					</label>
-				</p>
-				<hr />
-
-				<h5>Intimacy Level</h5>
-				<p>
-					<label>
-						<input type="checkbox" name="Intimacy" value="Love" />
-						<span>Low</span>
-					</label>
-				</p>
-				<p>
-					<label>
-						<input type="checkbox" name="Intimacy" value="Food" />
-						<span>Medium</span>
-					</label>
-				</p>
-				<p>
-					<label>
-						<input type="checkbox" name="Intimacy" value="Travel" />
-						<span>High</span>
-					</label>
-				</p>
-				<hr />
-				<h5>Search User</h5>
-				<p>
-					<div class="row">
-						<label>
-							<input type="text" name="User" />
-						</label>
-					</div>
-				</p>
-				<h5>Search Title</h5>
-				<p>
-					<div class="row">
-						<label>
-							<input type="text" name="Title" />
-						</label>
-					</div>
-				</p>
-				<h5>Search Hash Tags</h5>
-				<p>
-					<div class="row">
-						<label>
-							<input type="text" name="Title" />
-						</label>
-					</div>
-					<button type="submit" id="submit button" class="btn btn-primary">Search</button>
-				</p>
+			<p>
+				<input type="checkbox" name="category" />
+				<span>@category.Description</span>
+			</p>
+		}
 
 
+
+		<h5>Intimacy Level</h5>
+		@foreach (var intimacy in Model.Intimacy)
+		{
+			<p>
+				<input type="checkbox" name="category" />
+				<span>@intimacy.Description</span>
+			</p>
+		}
+		<hr />
+		<h5>Search User</h5>
+		<p>
+			<div class="row">
+				<label>
+					<input type="text" name="User" />
+				</label>
 			</div>
-			<div class="col-sm-9">
-				<center>
-					<h4>
-						<small>FEATURED STORY</small>
-					</h4>
-				</center>
-				<hr>
-				<h2><a href="#">I Love Food</a></h2>
-				<h5>
-					<span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.
-				</h5>
-				<h5>
-					<span class="label label-danger">Food</span>
-					<span class="label label-primary">Ipsum</span>
-				</h5>
-				<br>
-				<p>
-					Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-					ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<br>
-				<br>
-
-				<h4>
-					<small>RECENT POSTS</small>
-				</h4>
-				<hr>
-				<a href="#"><h2>Officially Blogging</h2></a>
-				<h5>
-					<span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.
-				</h5>
-				<h5>
-					<span class="label label-success">Lorem</span>
-				</h5>
-				<br>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-					dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-					ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-					deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<hr>
+		</p>
+		<h5>Search Title</h5>
+		<p>
+			<div class="row">
+				<label>
+					<input type="text" name="Title" />
+				</label>
 			</div>
+		</p>
+		<h5>Search Hash Tags</h5>
+		<p>
+			<div class="row">
+				<label>
+					<input type="text" name="Title" />
+				</label>
+			</div>
+			<button type="submit" id="submit button" class="btn btn-primary">Search</button>
+		</p>
 
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-					crossorigin="anonymous"></script>
 
+<<<<<<< HEAD
 				<script src="https://unpkg.com/vue@2.3.4"></script>
 		}
+=======
+	</div>
+	<div class="col-sm-9">
+		<center>
+			<h4>
+				<small>FEATURED STORY</small>
+			</h4>
+		</center>
+		<hr>
+		<h2><a href="#">I Love Food</a></h2>
+		<h5>
+			<span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.
+		</h5>
+		<h5>
+			<span class="label label-danger">Food</span>
+			<span class="label label-primary">Ipsum</span>
+		</h5>
+		<br>
+		<p>
+			Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+			ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+			nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in
+			culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+			ullamco laboris nisi ut aliquip ex ea commodo consequat.
+		</p>
+		<br>
+		<br>
+
+		<h4>
+			<small>RECENT POSTS</small>
+		</h4>
+		<hr>
+		<a href="#"><h2>Officially Blogging</h2></a>
+		<h5>
+			<span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.
+		</h5>
+		<h5>
+			<span class="label label-success">Lorem</span>
+		</h5>
+		<br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+			dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+			ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+			deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
+			ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+			nisi ut aliquip ex ea commodo consequat.
+		</p>
+		<hr>
+
+	</div>
+
+}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+			crossorigin="anonymous"></script>
+
+	<script src="https://unpkg.com/vue@2.3.4"></script>
+
+>>>>>>> origin
 
 </body>
 

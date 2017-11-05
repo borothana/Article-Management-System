@@ -20,6 +20,50 @@ namespace SCMS.Datas
     {
         SCMSDBContext _ctx = new SCMSDBContext();
 
+
+        #region "News"
+        public List<Info> GetInfoList()
+        {
+            return _ctx.Infos.ToList();
+        }
+
+        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
+        {
+            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
+        }
+
+        public Info GetInfoById(int InfoId)
+        {
+            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
+        }
+
+        public int AddInfo(Info info)
+        {
+            _ctx.Infos.Add(info);  
+            _ctx.SaveChanges(); 
+            return _ctx.Infos.Max(i => i.InfoId);
+         }
+
+        public bool UpdateInfo(Info info)
+        {
+            _ctx.Entry(info).State = System.Data.Entity.EntityState.Modified;
+            _ctx.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteInfo(int InfoId)
+        {
+            Info info = GetInfoById(InfoId);
+            if(info != null)
+            {
+                _ctx.Entry(info).State = System.Data.Entity.EntityState.Deleted;
+                _ctx.SaveChanges();
+            }
+            return true;
+        }
+        #endregion
+
+
         #region "Category"
         public List<Category> GetCategoryList()
         {
@@ -99,9 +143,39 @@ namespace SCMS.Datas
             return _ctx.Stories.ToList();
         }
 
+        public List<Story> GetStoryByUser(string userId)
+        {
+            return GetStoryList().Where(s => s.UserId == userId).ToList();
+        }
+
         public Story GetStoryById(int storyId)
         {
             return GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+        }
+
+        public StoryVM GetStoryVMById(int storyId)
+        {
+            Story story = GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            StoryVM storyVM = new StoryVM
+            {
+
+                StroyId = story.StroyId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
         }
 
         public int AddStory(StoryVM storyVM)
@@ -116,8 +190,8 @@ namespace SCMS.Datas
                 Content = storyVM.Content,
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
-                NoView = storyVM.NoView,
-                ApproveStatue = storyVM.ApproveStatue,
+                NoView = 0,
+                ApproveStatue = 'N',
                 UserId = storyVM.UserId,
 
                 Category = storyVM.Category,
@@ -129,43 +203,31 @@ namespace SCMS.Datas
             _ctx.Stories.Add(story);
             _ctx.SaveChanges();
 
-            //Working with Hashtag
-            List<Story> tmpStory = new List<Story> { story };
-            string[] tmpHashtag = storyVM.HashtagWord.Split();
-            for (int i = 0; i < tmpHashtag.Length; i++)
-            {
-                if(!GetHashtagList().Any(h=>h.Description == tmpHashtag[i]))
-                {
-                    AddHastag(new Hashtag { Description = tmpHashtag[i], Stories = tmpStory });
-                }
-            }
-            
+            AddHashtagByStory(story);
             return _ctx.Stories.Max(s => s.StroyId);
         }
 
         public bool UpdateStory(StoryVM storyVM)
         {
-            Story story = new Story
-            {
-                StroyId = storyVM.StroyId,
-                CategoryId = storyVM.CategoryId,
-                IntimacyId = storyVM.IntimacyId,
-                Title = storyVM.Title,
-                Content = storyVM.Content,
-                HashtagWord = storyVM.HashtagWord,
-                Picture = storyVM.Picture,
-                NoView = storyVM.NoView,
-                ApproveStatue = storyVM.ApproveStatue,
-                UserId = storyVM.UserId,
+            Story story = GetStoryById(storyVM.StroyId);
+            story.StroyId = storyVM.StroyId;
+            story.CategoryId = storyVM.CategoryId;
+            story.IntimacyId = storyVM.IntimacyId;
+            story.Title = storyVM.Title;
+            story.Content = storyVM.Content;
+            story.HashtagWord = storyVM.HashtagWord;
+            story.Picture = storyVM.Picture;
+            story.ApproveStatue = 'N';
+            story.UserId = storyVM.UserId;
 
-                Category = storyVM.Category,
-                Intimacy = storyVM.Intimacy,
+            story.Category = storyVM.Category;
+            story.Intimacy = storyVM.Intimacy;
 
-                Hashtags = storyVM.Hashtags
-            };
             _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;
+            story.Hashtags.Clear() ;
             _ctx.SaveChanges();
-            return true;
+
+            return AddHashtagByStory(story);            
         }
         public bool DeleteStory(int storyId)
         {
@@ -244,16 +306,45 @@ namespace SCMS.Datas
             return GetHashtagList().FirstOrDefault(h => h.HashtagId == hastagId);
         }
 
+        public Hashtag GetHashtagByDesc(string description)
+        {
+            return GetHashtagList().FirstOrDefault(h => h.Description == description);
+        }
+
         public List<Hashtag> GetHashtagByStory(int storyId)
         {
             return GetHashtagList().Where(h => h.Stories.Any(s => s.StroyId == storyId)).ToList();
         }
 
-        public int AddHastag(Hashtag hashtag)
+        public int AddHashtag(Hashtag hashtag)
         {
             _ctx.Hashtags.Add(hashtag);
             _ctx.SaveChanges();
             return _ctx.Hashtags.Max(h => h.HashtagId);
+        }
+
+        public bool AddHashtagByStory(Story story)
+        {
+            string[] tmpHashtag = story.HashtagWord.Split();
+            for (int i = 0; i < tmpHashtag.Length; i++)
+            {
+                if (tmpHashtag[i].Trim() == "") continue;
+
+                Hashtag hashtag;
+                if (!GetHashtagList().Any(h => h.Description == tmpHashtag[i]))
+                {
+                    hashtag = new Hashtag { Description = tmpHashtag[i] };
+                    hashtag.Stories.Add(story);
+                    _ctx.Hashtags.Add(hashtag);
+                }
+                else
+                {
+                    hashtag = GetHashtagList().FirstOrDefault(h => h.Description == tmpHashtag[i]);
+                    hashtag.Stories.Add(story);
+                    _ctx.Entry(hashtag).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
+            return _ctx.SaveChanges() > 0;
         }
 
         public bool UpdateHashtag(Hashtag hashtag)

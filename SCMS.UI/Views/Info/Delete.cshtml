@@ -1,0 +1,26 @@
+﻿@model SCMS.Models.Info
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Delete Information</h3>
+        @Html.ActionLink("Return to Home", "Home", "Home")
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("Delete", "Info", FormMethod.Post))
+            {
+                @Html.HiddenFor(m=>m.InfoId)        
+                <p>Are you sure that you wish to delete information @Html.DisplayFor(m=>m.Title)?</p>
+                <button type="submit" class="btn btn-danger">Delete</button>
+                @Html.ActionLink("Cancel", "List", "Info", new { @class = "btn btn-sm btn-info" })
+            }
+        </div>
+    </div>
+</div>
