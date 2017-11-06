@@ -1,4 +1,4 @@
-﻿@*@model SCMS.Models.ViewModels.HomeVM
+﻿@*@model SCMS.Models.ViewModels.StoryVM
 
 @{
     ViewBag.Title = "CategoryList";
@@ -6,15 +6,19 @@
 
 <h2>Category List</h2>
 
-@using (Html.BeginForm("CategoryList", "Homepage", FormMethod.Post))
-{
-		for (int i = 0; i < Model.CategoryCheckboxes.Count; i++)
-		{
-			<p>
-				@Html.CheckBoxFor(m => m.CategoryCheckboxes[i].isSelected)
-				<span>@Model.CategoryCheckboxes[i].Category.Description</span>
-				@Html.HiddenFor(m => m.CategoryCheckboxes[i].Category.CategoryId)
-			</p>
-		}
-			<input type="submit" value="Submit Form"/>*@
-}
+	<div class="row">
+		<div class="col-md-12">
+			@foreach (var story in Model.)
+			{
+				<div class="row">
+					<p>
+						@category.
+					</p>
+				</div>
+			}
+			<input type="submit" value="Submit Form" />
+		</div>
+
+	</div>
+
+}*@

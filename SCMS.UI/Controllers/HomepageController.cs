@@ -17,7 +17,14 @@ namespace SCMS.UI.Controllers
         {
             var viewModel = new HomeVM();
             viewModel.Category = _repo.GetCategoryList();
-            viewModel.Intimacy = (_repo.GetIntimacyList());
+            viewModel.Intimacy = _repo.GetIntimacyList();
+            return View(viewModel);
+        }
+        public ActionResult CategoryList(int id)
+        {
+            var viewModel = new HomeVM();
+            viewModel.Category = _repo.GetCategoryList().Where(c => c.CategoryId == id);
+            viewModel.Intimacy = _repo.GetIntimacyList().Where(i => i.IntimacyId == id);
             return View(viewModel);
         }
         [HttpGet]

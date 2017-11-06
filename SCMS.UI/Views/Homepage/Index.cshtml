@@ -19,8 +19,7 @@
 </head>
 
 <body>
-@using (Html.BeginForm())
-{
+
 	<div class="col-sm-3">
 		<br />
 		<h5>Category</h5>
@@ -31,7 +30,8 @@
 				<span>@category.Description</span>
 			</p>
 		}
-
+			<button type="submit" id="search button" class="btn btn-primary">Search</button>
+		<hr />
 
 
 		<h5>Intimacy Level</h5>
@@ -42,7 +42,9 @@
 				<span>@intimacy.Description</span>
 			</p>
 		}
-		<hr />
+		<button onclick="location.href="@Url.Action("CategoryList", "Homepage");return false;>Search</button>
+
+     <hr />
 		<h5>Search User</h5>
 		<p>
 			<div class="row">
@@ -68,8 +70,7 @@
 			</div>
 			<button type="submit" id="submit button" class="btn btn-primary">Search</button>
 		</p>
-
-
+}
 	</div>
 	<div class="col-sm-9">
 		<center>
