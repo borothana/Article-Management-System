@@ -39,25 +39,3 @@ namespace SCMS.UI.Controllers
         }
     }
 }
-
-
-
-    //    [HttpGet]
-    //    public ActionResult CategoryList()
-    //    {
-
-    //        var model = new HomeVM();
-    //        model.CategoryCheckboxes = (from category in _repo.GetCategoryList()
-    //                                    select new CategoryVM { Category = category, isSelected = false }).ToList();
-
-    //        return View(model);
-    //    }
-
-    //    [HttpPost]
-    //    public ActionResult CategoryList(HomeVM model)
-    //    {
-
-    //        var selected = model.CategoryCheckboxes.Where(c => c.isSelected).Select(c => c.Category.CategoryId);
-    //        return View("CategoryList", selected);
-    //    }
-    //}

@@ -20,6 +20,7 @@ namespace SCMS.Datas.DBContext
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Hashtag> Hashtags { get; set; }
         public DbSet<Intimacy> Intimacies { get; set; }
-        public DbSet<Story> Stories { get; set; }        
+        public DbSet<Story> Stories { get; set; }      
+        public DbSet<Info> Infos { get; set; }
     }
 }

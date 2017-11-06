@@ -23,6 +23,16 @@ namespace SCMS.Datas
             new User { Id = "Javier", UserName = "Javier", Nickname = "Javier", Email = "javier@gmail.com", PasswordHash = "123456" , IsActive = true}
         };
 
+        static List<Info> _infos = new List<Info>
+        {
+            new Info{ InfoId = 1, Title = "11111", FDate = DateTime.Parse("11/01/2017"), TDate = DateTime.Parse("11/10/2017"), Description = "Description for 11111" },
+            new Info{ InfoId = 2, Title = "22222", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("12/11/2017"), Description = "Description for 22222" },
+            new Info{ InfoId = 3, Title = "11111", FDate = DateTime.Parse("10/01/2017"), TDate = DateTime.Parse("12/01/2017"), Description = "Description for 33333" },
+            new Info{ InfoId = 4, Title = "11111", FDate = DateTime.Parse("12/25/2017"), TDate = DateTime.Parse("01/31/2018"), Description = "Description for 44444" },
+            new Info{ InfoId = 5, Title = "11111", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("11/30/2018"), Description = "Description for 55555" }
+        };
+
+
         static List<Category> _categories = new List<Category>
         {
             new Category{ CategoryId = 1, Description = "Food" },
@@ -35,7 +45,7 @@ namespace SCMS.Datas
         static List<Intimacy> _intimacies = new List<Intimacy>
         {
             new Intimacy{ IntimacyId = 1, Description = "Low"},
-            new Intimacy{ IntimacyId = 2, Description = "Miduim"},
+            new Intimacy{ IntimacyId = 2, Description = "Meduim"},
             new Intimacy{ IntimacyId = 3, Description = "High"}
         };
 
@@ -64,7 +74,7 @@ namespace SCMS.Datas
                 new Hashtag{ HashtagId = 4, Description = "Mars", Stories = _stories},
                 new Hashtag{ HashtagId = 5, Description = "fly", Stories = _stories}
         };
-
+        
         static List<Comment> _comments = new List<Comment> {
                 new Comment{ CommentId =1, Descriptiopn = "Such a great story", StoryId = 1, Story = _stories[1]},
                 new Comment{ CommentId =2, Descriptiopn = "Yeah, that's so romantic", StoryId = 1, Story = _stories[1]},
@@ -74,6 +84,50 @@ namespace SCMS.Datas
         };
 
 
+        #region "Infos"
+        public List<Info> GetInfoList()
+        {
+            return _infos;
+        }
+
+        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
+        {
+            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
+        }
+
+        public Info GetInfoById(int InfoId)
+        {
+            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
+        }
+
+        public int AddInfo(Info news)
+        {
+            if (_infos.Count <= 0)
+            {
+                news.InfoId = 1;
+            }
+            else
+            {
+                news.InfoId = _infos.Max(n => n.InfoId) + 1;
+            }
+            _infos.Add(news);
+            return news.InfoId;
+        }
+
+        public bool UpdateInfo(Info news)
+        {
+            _infos.RemoveAll(n => n.InfoId == news.InfoId);
+            _infos.Add(news);
+            return true;
+        }
+
+        public bool DeleteInfo(int InfoId)
+        {
+            _infos.RemoveAll(n => n.InfoId == InfoId);
+            return true;
+        }
+        #endregion
+
         #region "Category"
         public List<Category> GetCategoryList()
         {
@@ -82,7 +136,7 @@ namespace SCMS.Datas
 
         public Category GetCategoryById(int categoryId)
         {
-            return _categories.FirstOrDefault(c => c.CategoryId == categoryId);
+            return GetCategoryList().FirstOrDefault(c => c.CategoryId == categoryId);
         }
 
         public int AddCategory(Category category)
@@ -157,9 +211,39 @@ namespace SCMS.Datas
             return _stories;
         }
 
+        public List<Story> GetStoryByUser(string userId)
+        {
+            return GetStoryList().Where(s => s.UserId == userId).ToList();
+        }
+
         public Story GetStoryById(int storyId)
         {
             return _stories.FirstOrDefault(s => s.StroyId == storyId);
+        }
+
+        public StoryVM GetStoryVMById(int storyId)
+        {
+            Story story = GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            StoryVM storyVM = new StoryVM
+            {
+
+                StroyId = story.StroyId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
         }
 
         public int AddStory(StoryVM storyVM)
@@ -290,12 +374,17 @@ namespace SCMS.Datas
             return _hashtags.FirstOrDefault(h => h.HashtagId == hastagId);
         }
 
+        public Hashtag GetHashtagByDesc(string description)
+        {
+            return GetHashtagList().FirstOrDefault(h => h.Description == description);
+        }
+
         public List<Hashtag> GetHashtagByStory(int storyId)
         {
             return _hashtags.Where(h => h.Stories.Any(s => s.StroyId == storyId)).ToList();
         }
 
-        public int AddHastag(Hashtag hashtag)
+        public int AddHashtag(Hashtag hashtag)
         {
             if (_hashtags.Count <= 0)
             {
@@ -307,6 +396,31 @@ namespace SCMS.Datas
             }
             _hashtags.Add(hashtag);
             return hashtag.HashtagId;
+        }
+
+
+        public bool AddHashtagByStory(Story story)
+        {
+            string[] tmpHashtag = story.HashtagWord.Split();
+            for (int i = 0; i < tmpHashtag.Length; i++)
+            {
+                if (tmpHashtag[i].Trim() == "") continue;
+
+                Hashtag hashtag;
+                if (!GetHashtagList().Any(h => h.Description == tmpHashtag[i]))
+                {
+                    hashtag = new Hashtag { Description = tmpHashtag[i] };
+                    hashtag.Stories.Add(story);
+                    _hashtags.Add(hashtag);
+                }
+                else
+                {
+                    hashtag = GetHashtagList().FirstOrDefault(h => h.Description == tmpHashtag[i]);
+                    hashtag.Stories.Add(story);                    
+                }
+            }
+
+            return true;
         }
 
         public bool UpdateHashtag(Hashtag hashtag)

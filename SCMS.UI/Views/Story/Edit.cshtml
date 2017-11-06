@@ -1,20 +1,21 @@
 ﻿@model SCMS.Models.ViewModels.StoryVM
 
 @{
-    ViewBag.Title = "Add";
+    ViewBag.Title = "Edit";
 }
 
 <div class="row">
     <div class="col-xs-12">
-        <h3>Add Story</h3>
+        <h3>Edit Story</h3>
         @Html.ActionLink("Return to home page", "Home", "Home")
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        @using (Html.BeginForm("Add", "Story", FormMethod.Post))
+        @using (Html.BeginForm("Edit", "Story", FormMethod.Post))
         {
             <div class="form-group">
+                @Html.HiddenFor(m => m.StroyId)
                 @Html.HiddenFor(m => m.UserId)
                 <label>Category</label>
                 @Html.DropDownListFor(m => m.CategoryId, Model.CategoryItems, "-Choose One-", new { @class = "form-control", placeholder = "Title" })

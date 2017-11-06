@@ -9,6 +9,15 @@ namespace SCMS.Models.Interface
 {
     public interface ISCMS
     {
+        #region "Info"
+        Info GetInfoById(int infoId);
+        List<Info> GetInfoList();
+        List<Info> GetInfoByDate(DateTime FD, DateTime TD);
+        int AddInfo(Info info);
+        bool UpdateInfo(Info info);
+        bool DeleteInfo(int infoId);
+        #endregion
+
         #region "Category"
         Category GetCategoryById(int categoryId);
         List<Category> GetCategoryList();
@@ -26,10 +35,12 @@ namespace SCMS.Models.Interface
         #endregion
         
         #region "Hashtag"
-        Hashtag GetHashtagById(int hastagId);
-        List<Hashtag> GetHashtagByStory(int storyId);
         List<Hashtag> GetHashtagList();
-        int AddHastag(Hashtag hashtag);
+        Hashtag GetHashtagById(int hastagId);
+        Hashtag GetHashtagByDesc(string description);
+        List<Hashtag> GetHashtagByStory(int storyId);
+        int AddHashtag(Hashtag hashtag);
+        bool AddHashtagByStory(Story story);
         bool UpdateHashtag(Hashtag hashtag);
         bool DeleteHashtagById(int hashtagId);
         bool DeleteHashtagByStory(int storyId);
@@ -46,8 +57,10 @@ namespace SCMS.Models.Interface
         #endregion
 
         #region "Story"
-        Story GetStoryById(int StoryId);
         List<Story> GetStoryList();
+        List<Story> GetStoryByUser(string userId);
+        Story GetStoryById(int storyId);
+        StoryVM GetStoryVMById(int storyId);
         int AddStory(StoryVM storyVM);
         bool UpdateStory(StoryVM storyVM);
         bool DeleteStory(int StoryId);

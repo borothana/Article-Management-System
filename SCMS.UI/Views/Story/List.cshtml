@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SCMS.Models.Story>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Story</h2>
+        @Html.ActionLink("Add story", "Add", "Story", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-striped" style="width: auto;">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Intimacy</th>
+                    <th>Hashtag</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Title </td>
+                        <td>@s.Category.Description </td>
+                        <td>@s.Intimacy.Description </td>
+                        <td>@s.HashtagWord </td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Story", new { storyId = s.StroyId }, null)</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Story", new { storyId = s.StroyId }, null)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -15,6 +15,13 @@ namespace SCMS.UI.Controllers
         ISCMS _repo = SCMSFactory.Create();
 
         [HttpGet]
+        public ActionResult List()
+        {
+            List<Story> model = _repo.GetStoryByUser(CurrentUser.User.Id);
+            return View(model);
+        }
+
+        [HttpGet]
         public ActionResult Add()
         {
             StoryVM model = new StoryVM();
@@ -39,6 +46,56 @@ namespace SCMS.UI.Controllers
                 }
             }
             return View(model);
+        }
+
+
+        [HttpGet]
+        public ActionResult Edit(int storyId)
+        {
+            StoryVM model = _repo.GetStoryVMById(storyId);
+            model.SetCategoryItems(_repo.GetCategoryList());
+            model.SetIntimacyItems(_repo.GetIntimacyList());
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(StoryVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_repo.UpdateStory(model))
+                {
+                    return RedirectToAction("Home", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("Story", "Cannot edit story");
+                }
+            }
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public ActionResult Delete(int storyId)
+        {
+            StoryVM model = _repo.GetStoryVMById(storyId);
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public ActionResult Delete(StoryVM model)
+        {
+            if (_repo.DeleteStory(model.StroyId))
+            {
+                return RedirectToAction("Home", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("Story", "Cannot delete story");
+                return View(model);
+            }
         }
     }
 }
