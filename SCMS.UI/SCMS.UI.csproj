@@ -162,9 +162,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StartUp.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Controllers\HomepageController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\IntimacyController.cs" />
     <Compile Include="Controllers\ResetPasswordController.cs" />
@@ -191,12 +190,11 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
     <Content Include="Views\ResetPassword\ResetPassword.cshtml" />
-    <Content Include="Views\Homepage\SignUp.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\User\List.cshtml" />
     <Content Include="Views\User\Add.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
@@ -210,8 +208,8 @@
     <Content Include="Views\Intimacy\Edit.cshtml" />
     <Content Include="Views\Intimacy\List.cshtml" />
     <Content Include="Views\Story\Add.cshtml" />
-    <Content Include="Views\Homepage\Index.cshtml" />
-    <Content Include="Views\Homepage\CategoryList.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\CategoryList.cshtml" />
     <Content Include="Views\StoryApproval\Index.cshtml" />
     <Content Include="Views\StoryApproval\ViewStory.cshtml" />
     <Content Include="Views\Story\Edit.cshtml" />
@@ -221,7 +219,7 @@
     <Content Include="Views\Info\Add.cshtml" />
     <Content Include="Views\Info\Delete.cshtml" />
     <Content Include="Views\Info\Edit.cshtml" />
-    <Content Include="Views\Homepage\StoryPage.cshtml" />
+    <Content Include="Views\Home\StoryPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
