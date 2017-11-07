@@ -221,6 +221,7 @@
     <Content Include="Views\Info\Add.cshtml" />
     <Content Include="Views\Info\Delete.cshtml" />
     <Content Include="Views\Info\Edit.cshtml" />
+    <Content Include="Views\Homepage\StoryPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

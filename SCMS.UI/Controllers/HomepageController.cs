@@ -15,9 +15,12 @@ namespace SCMS.UI.Controllers
         // GET: Homepage
         public ActionResult Index()
         {
-            var viewModel = new HomeVM();
+            HomeVM viewModel = new HomeVM();
             viewModel.Category = _repo.GetCategoryList();
             viewModel.Intimacy = _repo.GetIntimacyList();
+            viewModel.Story = _repo.GetStoryList();
+            viewModel.User = _repo.GetUserList();
+
             return View(viewModel);
         }
         public ActionResult CategoryList(int id)
@@ -37,5 +40,9 @@ namespace SCMS.UI.Controllers
         {
             return View();
         }
+        //public ActionResult Profile()
+        //{
+
+        //}
     }
 }

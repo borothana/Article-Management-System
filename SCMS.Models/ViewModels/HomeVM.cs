@@ -11,14 +11,27 @@ namespace SCMS.Models.ViewModels
     {
         public IEnumerable<Category> Category { get; set; }
         public IEnumerable<Intimacy> Intimacy { get; set; }
+        public IEnumerable<Story> Story { get; set; }
+        public IEnumerable<User> User { get; set; }
+
+
+        public StoryVM StoryVM { get; set; }
+        public UserVM UserVM { get; set; }
+        public CategoryVM CategoryVM {get;set;}
+        public IntimacyVM IntimacyVM { get; set; }
+        
 
         public List<SelectListItem> CategoryItems { get; set; }
         public List<SelectListItem> IntimacyItems { get; set; }
+        public List<SelectListItem> StoryItems { get; set; }
+        public List<SelectListItem> UserItems { get; set; }
 
         public HomeVM()
         {
             CategoryItems = new List<SelectListItem>();
             IntimacyItems = new List<SelectListItem>();
+            StoryItems = new List<SelectListItem>();
+            UserItems = new List<SelectListItem>();
         }
 
         public void SetCategoryItems(IEnumerable<Category> categories)
@@ -43,5 +56,27 @@ namespace SCMS.Models.ViewModels
                 });
             }
         }
+        public void SetStoryItems(IEnumerable<Story> stories)
+        {
+            foreach (var story in stories)
+            {
+                StoryItems.Add(new SelectListItem()
+                {
+                    Value = story.StroyId.ToString(),
+                    Text = story.Content
+                });
+            }
+        }
+        public void SetUserItems(IEnumerable<User> users)
+            {
+                foreach(var user in users)
+                {
+                UserItems.Add(new SelectListItem()
+                {
+                    Value = user.Id,
+                    Text = user.Nickname
+                });
+                }
+            }
     }
 }

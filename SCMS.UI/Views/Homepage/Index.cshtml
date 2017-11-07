@@ -23,27 +23,26 @@
 	<div class="col-sm-3">
 		<br />
 		<h5>Category</h5>
-		@foreach (var category in Model.Category)
+		@foreach (var c in Model.Category)
 		{
 			<p>
 				<input type="checkbox" name="category" />
-				<span>@category.Description</span>
+				<span>@c.Description</span>
 			</p>
 		}
-			<button type="submit" id="search button" class="btn btn-primary">Search</button>
 		<hr />
 
 
 		<h5>Intimacy Level</h5>
-		@foreach (var intimacy in Model.Intimacy)
+		@foreach (var i in Model.Intimacy)
 		{
 			<p>
 				<input type="checkbox" name="category" />
-				<span>@intimacy.Description</span>
+				<span>@i.Description</span>
 			</p>
 		}
-		
-     <hr />
+
+		<hr />
 		<h5>Search User</h5>
 		<p>
 			<div class="row">
@@ -76,58 +75,72 @@
 				<small>FEATURED STORY</small>
 			</h4>
 		</center>
-		<hr>
-		<h2><a href="#">I Love Food</a></h2>
-		<h5>
-			<span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.
-		</h5>
-		<h5>
-			<span class="label label-danger">Food</span>
-			<span class="label label-primary">Ipsum</span>
-		</h5>
-		<br>
-		<p>
-			Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-			ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-			nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in
-			culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
-			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-			ullamco laboris nisi ut aliquip ex ea commodo consequat.
-		</p>
-		<br>
-		<br>
+		@foreach (var s in Model.Story)
+		{
+			<div class="row">
+				<h2>@s.Title</h2>
+				<hr />
+				<span class="label label-danger">@s.Category</span>
+				<span class="label label-primary">@s.Hashtags</span>
+				<br />
+				<span class="glyphicon glyphicon-time">Post by @s. </span>
+				<p>
+					@s.Content
+				</p>
+				<br />
+			</div>
 
-		<h4>
-			<small>RECENT POSTS</small>
-		</h4>
-		<hr>
-		<a href="#"><h2>Officially Blogging</h2></a>
-		<h5>
-			<span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.
-		</h5>
-		<h5>
-			<span class="label label-success">Lorem</span>
-		</h5>
-		<br>
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-			dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-			ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-			deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
-			ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-			nisi ut aliquip ex ea commodo consequat.
-		</p>
-		<hr>
+			@*}
+				<hr>
+				<h2><li>@ </li>I Love Food</a></h2>
+				<h5>
+					<span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.
+				</h5>
+				<h5>
 
+				</h5>
+				<br>
+				<p>
+					Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+					nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in
+					culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+					ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				</p>
+				<br>
+				<br>*@
+		}
+			@*<h4>
+				<small>RECENT POSTS</small>
+			</h4>
+			<hr>
+			<a href="#"><h2>Officially Blogging</h2></a>
+			<h5>
+				<span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.
+			</h5>
+			<h5>
+				<span class="label label-success">Lorem</span>
+			</h5>
+			<br>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+				dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+				ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+				deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
+				ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat.
+			</p>
+			<hr>
+		</div>*@
 	</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+				crossorigin="anonymous"></script>
+			<script src="https://unpkg.com/vue@2.3.4"></script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-			crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/vue@2.3.4"></script>
+		</body>
 
-</body>
-
-</html>
+	</html>
 
 

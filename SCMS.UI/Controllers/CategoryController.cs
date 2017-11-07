@@ -27,14 +27,14 @@ namespace SCMS.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(Category category)
+        public ActionResult Add(Category model)
         {
-            if (string.IsNullOrEmpty(category.Description))
+            if (string.IsNullOrEmpty(model.Description))
             {
                 ModelState.AddModelError("Category", "Description is required");
             }
 
-            if(_repo.AddCategory(category) > 0)
+            if(_repo.AddCategory(model) > 0)
             {
                 return RedirectToAction("List");
             }
@@ -42,7 +42,7 @@ namespace SCMS.UI.Controllers
             {
                 ModelState.AddModelError("Category", "Cannot add category");
             }
-            return View(category);
+            return View(model);
         }
 
         [HttpGet]

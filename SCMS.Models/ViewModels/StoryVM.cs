@@ -26,6 +26,7 @@ namespace SCMS.Models.ViewModels
         public int NoView { get; set; }
         public char ApproveStatue { get; set; }
         public string UserId { get; set; }
+        public User User { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual Intimacy Intimacy { get; set; }

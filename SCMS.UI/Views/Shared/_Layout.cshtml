@@ -17,10 +17,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Story Content Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-				@Html.ActionLink("Log In", "Login", "Auth", null, new { @class = "navbar-right" })
-				@Html.ActionLink("Sign Up", "SignUp", "HomePage", null, new { @class = "navbar-right" })
-
+                @Html.ActionLink("Story Content Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) 
+				@Html.ActionLink("Log In | ", "Login", "Auth", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Sign Up | ", "SignUp", "SignUp", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Profile | ", "Profile", "Profile", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Category | ", "List", "Category", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Intimacy | ", "List", "Intimacy", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Blog | ", "Blog", "Blog", null, new { @class = "navbar-right" })
+				@Html.ActionLink("Info | ", "List", "Info", null, new { @class = "navbar-right" }) 
+				@Html.ActionLink("User | ", "List", "User", null, new { @class = "navbar-right" }) 
+				@Html.ActionLink("Reset Password | ", "ResetPassword", "ResetPassword", null, new { @class = "navbar-right" }) 
+				@Html.ActionLink("Approval Page | ", "List", "StpryApproval", null, new { @class = "navbar-right" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
