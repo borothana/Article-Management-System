@@ -28,9 +28,26 @@ namespace SCMS.UI.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult ViewStory (Story story)
+        [HttpGet]
+        public ActionResult Approve()
         {
+            return View(new Story());
+        }
+
+        [HttpPost]
+        public ActionResult Approve(StoryVM story)
+        {
+            //need to create property for aproval in repo 
+            //story need to be approve and remove from pending list
+            throw new Exception();
+        }
+
+        [HttpGet]
+        public ActionResult Denied()
+        {
+            //need to create property for denial in repo
+            //story will be denied and message will need to be included
+            //story removed from pending list
             throw new Exception();
         }
     }

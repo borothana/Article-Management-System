@@ -13,16 +13,19 @@
 
 <div class="row">
     <div class="col-lg-12">
-        @using (Html.BeginForm("ViewStory", "Index", FormMethod.Post))
+        @using (Html.BeginForm("Approve", "StoryApproval", FormMethod.Post))
         {
             @Html.HiddenFor(c => c.CategoryId)
             <br />
             <label>Story To Approve/Deny</label>
             <br />
             @Html.TextAreaFor(s => s.Content, 10, 40, htmlAttributes: new { style = "width: 80%; max-width: 80%" })
-            <br/>
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-            @Html.ActionLink("Cancel", "Index", "StoryApproval", null, new { @class = "btn btn-sm btn-info" })
+            <br />
+            @Html.TextAreaFor(s => s.Feedback, 5, 20, htmlAttributes: new { style = "width: 25%; max-width: 25%" })
+            <br />
+
+            <button type="submit" class="btn btn-sm btn-primary">Approve</button>
+            <button type="submit" class="btn btn-sm btn-primary">Deny</button>
         }
     </div>
 </div>
