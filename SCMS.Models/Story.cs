@@ -23,6 +23,7 @@ namespace SCMS.Models
         public byte[] Picture { get; set; }
         public int NoView { get; set; }
         public char ApproveStatue { get; set; }
+        public string Feedback { get; set; }
         public string UserId { get; set; }
 
         public virtual Category Category { get; set; }
