@@ -83,7 +83,8 @@
 				<span class="label label-danger">@s.Category.Description</span>
 				<span class="label label-primary">@s.HashtagWord</span>
 				<br />
-				<span class="glyphicon glyphicon-time">Post by @s. </span>
+                
+				<span class="glyphicon glyphicon-time">Post by @Model.User.FirstOrDefault(u=>u.Id == s.UserId).Nickname </span>
 				<p>
 					@s.Content
 				</p>

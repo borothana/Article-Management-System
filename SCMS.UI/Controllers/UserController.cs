@@ -17,25 +17,25 @@ namespace SCMS.UI.Controllers
 
         public ActionResult List()
         {
-            List<User> model = _repo.GetUserListByRole("admin");
+            List<User> model = _repo.GetUserListByRole(Role.admin.ToString());
             return View(model);
         }
 
         public ActionResult Add()
         {
-            User model = new User();
+            UserVM model = new UserVM();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Add(User model)
+        public ActionResult Add(UserVM model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             model.IsActive = true;
-            if( _repo.AddUser(model, "admin") != "")
+            if( _repo.AddUser(model, Role.member.ToString()) != "")
             {
                 return RedirectToAction("List");
             }

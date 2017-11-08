@@ -79,7 +79,6 @@
     <Compile Include="Hashtag.cs" />
     <Compile Include="Interface\ISCMS.cs" />
     <Compile Include="Intimacy.cs" />
-    <Compile Include="NewUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Story.cs" />
     <Compile Include="User.cs" />
@@ -90,6 +89,7 @@
     <Compile Include="ViewModels\ResetPasswordVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="ViewModels\StoryVM.cs" />
+    <Compile Include="ViewModels\UserVMEdit.cs" />
     <Compile Include="ViewModels\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>

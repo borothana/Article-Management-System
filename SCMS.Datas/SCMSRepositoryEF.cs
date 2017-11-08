@@ -396,21 +396,75 @@ namespace SCMS.Datas
             return GetUserList().FirstOrDefault(u => u.Id == userId);
         }
 
+        public UserVM GetUserVMById(string id)
+        {
+            UserVM result = new UserVM();
+            User tmp = GetUserById(id);
+            if(tmp != null)
+            {
+                result.Id = tmp.Id;
+                result.IsActive = tmp.IsActive;
+                result.Email = tmp.Email;
+                result.EmailConfirmed = tmp.EmailConfirmed;
+                result.Password = tmp.PasswordHash;
+                result.Phone = tmp.Phone;
+                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
+                result.UserName = tmp.UserName;
+                result.Nickname = tmp.Nickname;
+                result.ProfilePic = tmp.ProfilePic;
+                result.Quote = tmp.Quote;
+
+                return result;
+            }
+            return null;
+        }
+
+        public UserVMEdit GetUserVMEditById(string id)
+        {
+            UserVMEdit result = new UserVMEdit();
+            User tmp = GetUserById(id);
+            if (tmp != null)
+            {
+                result.Id = tmp.Id;
+                result.Email = tmp.Email;
+                result.EmailConfirmed = tmp.EmailConfirmed;
+                result.Phone = tmp.Phone;
+                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
+                result.UserName = tmp.UserName;
+                result.Nickname = tmp.Nickname;
+                result.ProfilePic = tmp.ProfilePic;
+                result.Quote = tmp.Quote;
+
+                return result;
+            }
+            return null;
+        }
+
         public User GetUserByUserName(string userName)
         {
             return GetUserList().FirstOrDefault(u => u.UserName == userName);
         }
 
-        public string AddUser(User user, string role)
+        public string AddUser(UserVM user, string role)
         {
             var userMgr = new UserManager<SCMS.Models.User>(new UserStore<SCMS.Models.User>(_ctx));
 
             //if user name or email not existed
             if (!userMgr.Users.Any(u => u.UserName == user.UserName))
             {
-                user.IsActive = true;
-                userMgr.Create(user);
+                User userTmp = new User();
+                userTmp.UserName = user.UserName;
+                userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+                userTmp.Email = user.Email;
+                userTmp.Phone = user.Phone;
+                userTmp.Quote = user.Quote;
+                userTmp.PasswordHash = userMgr.PasswordHasher.HashPassword(user.Password);
+                userTmp.ProfilePic = user.ProfilePic;
 
+                userTmp.IsActive = true;
+                userMgr.Create(userTmp);
+
+                //We need to get the ID of the user after user is created
                 var tmpuser = userMgr.Users.Single(u => u.UserName == user.UserName);
                 if (!tmpuser.Roles.Any(r => r.RoleId == role))
                 {
@@ -422,7 +476,7 @@ namespace SCMS.Datas
             return "";
         }
 
-        public async Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUser(UserVM user, string role)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
             User userTmp = await userMgr.FindByIdAsync(user.Id);
@@ -431,6 +485,7 @@ namespace SCMS.Datas
                 return false;
             }
             userTmp.UserName = user.UserName;
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
             userTmp.Email = user.Email;
             userTmp.Phone = user.Phone;
             userTmp.Quote = user.Quote;
@@ -440,6 +495,25 @@ namespace SCMS.Datas
             {
                 return false;
             }
+            return true;
+        }
+
+
+        public bool UpdateUser(UserVMEdit user, string role)
+        {
+            var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
+            User userTmp = userMgr.FindById(user.Id);
+            if (userTmp == null)
+            {
+                return false;
+            }
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            userTmp.Email = user.Email;
+            userTmp.Phone = user.Phone;
+            userTmp.Quote = user.Quote;
+            userTmp.ProfilePic = user.ProfilePic;
+            var result = userMgr.Update(userTmp);
+            
             return true;
         }
 

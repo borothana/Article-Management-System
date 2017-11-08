@@ -29,7 +29,7 @@ namespace SCMS.UI.Controllers
                 return View(model);
             }
             _repo.ChangePassword(model.UserName, model.Password, model.NewPassword);
-            return RedirectToAction("Home","Home");
+            return RedirectToAction("Index","Home");
         }
     }
 }
