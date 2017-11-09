@@ -143,6 +143,11 @@ namespace SCMS.Datas
             return _ctx.Stories.ToList();
         }
 
+        public List<Story> GetStoryByStatus(char status)
+        {
+            return GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+        }
+
         public List<Story> GetStoryByUser(string userId)
         {
             return GetStoryList().Where(s => s.UserId == userId).ToList();
@@ -230,10 +235,11 @@ namespace SCMS.Datas
             return AddHashtagByStory(story);            
         }
 
-        public bool ApproveStory(int storyId)
+        public bool ApproveStory(int storyId, string feedback)
         {
             Story story = GetStoryById(storyId);
             story.ApproveStatue = 'Y';
+            story.Feedback = feedback;
             _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;            
             _ctx.SaveChanges();
             return true;
