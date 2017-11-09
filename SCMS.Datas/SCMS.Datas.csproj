@@ -103,13 +103,9 @@
   <ItemGroup>
     <Compile Include="CurrentUser.cs" />
     <Compile Include="DBContext\SCMSDBContext.cs" />
-    <Compile Include="Migrations\201711021751072_Init.cs" />
-    <Compile Include="Migrations\201711021751072_Init.Designer.cs">
-      <DependentUpon>201711021751072_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711042324109_Init1.cs" />
-    <Compile Include="Migrations\201711042324109_Init1.Designer.cs">
-      <DependentUpon>201711042324109_Init1.cs</DependentUpon>
+    <Compile Include="Migrations\201711091644132_Init.cs" />
+    <Compile Include="Migrations\201711091644132_Init.Designer.cs">
+      <DependentUpon>201711091644132_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,11 +126,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711021751072_Init.resx">
-      <DependentUpon>201711021751072_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711042324109_Init1.resx">
-      <DependentUpon>201711042324109_Init1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711091644132_Init.resx">
+      <DependentUpon>201711091644132_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -87,7 +87,7 @@ namespace SCMS.UI.Controllers
         [HttpPost]
         public ActionResult Delete(StoryVM model)
         {
-            if (_repo.DeleteStory(model.StroyId))
+            if (_repo.DeleteStory(model.StoryId))
             {
                 return RedirectToAction("Index", "Home");
             }

@@ -16,7 +16,7 @@ namespace SCMS.Models.ViewModels
             IntimacyItems = new List<SelectListItem>();
         }
 
-        public int StroyId { get; set; }
+        public int StoryId { get; set; }
         public int CategoryId { get; set; }
         public int IntimacyId { get; set; }
         public string Title { get; set; }

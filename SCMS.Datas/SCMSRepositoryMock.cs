@@ -45,24 +45,24 @@ namespace SCMS.Datas
         static List<Intimacy> _intimacies = new List<Intimacy>
         {
             new Intimacy{ IntimacyId = 1, Description = "Low"},
-            new Intimacy{ IntimacyId = 2, Description = "Meduim"},
+            new Intimacy{ IntimacyId = 2, Description = "Medium"},
             new Intimacy{ IntimacyId = 3, Description = "High"}
         };
 
         static List<Story> _stories = new List<Story> {
-            new Story{StroyId = 1, CategoryId = _categories[0].CategoryId, Category = _categories[0],  Title = "How to make a creemy cubcake",
+            new Story{StoryId = 1, CategoryId = _categories[0].CategoryId, Category = _categories[0],  Title = "How to make a creemy cubcake",
                         Content = "Creemy cubcake blah blah blah....", IntimacyId = _intimacies[0].IntimacyId, Intimacy = _intimacies[0], Picture = null,
                         ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
-            new Story{StroyId = 2, CategoryId = _categories[1].CategoryId, Category = _categories[1],  Title = "My love story",
+            new Story{StoryId = 2, CategoryId = _categories[1].CategoryId, Category = _categories[1],  Title = "My love story",
                         Content = "When I first meet her....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
                         ApproveStatue = 'Y', NoView = 5000, Hashtags = _hashtags, UserId = _users[0].Id},
-            new Story{StroyId = 3, CategoryId = _categories[2].CategoryId, Category = _categories[2],  Title = "Angkor Wat",
+            new Story{StoryId = 3, CategoryId = _categories[2].CategoryId, Category = _categories[2],  Title = "Angkor Wat",
                         Content = "In 11th century....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
                         ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
-            new Story{StroyId = 4, CategoryId = _categories[3].CategoryId, Category = _categories[3],  Title = "Discover Mars",
+            new Story{StoryId = 4, CategoryId = _categories[3].CategoryId, Category = _categories[3],  Title = "Discover Mars",
                         Content = "A group of scientist from USA, Russia and China....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
                         ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
-            new Story{StroyId = 5, CategoryId = _categories[4].CategoryId, Category = _categories[4],  Title = "Mr and Mrs Poor",
+            new Story{StoryId = 5, CategoryId = _categories[4].CategoryId, Category = _categories[4],  Title = "Mr and Mrs Poor",
                         Content = "Once upon time....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
                         ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
 
@@ -218,16 +218,16 @@ namespace SCMS.Datas
 
         public Story GetStoryById(int storyId)
         {
-            return _stories.FirstOrDefault(s => s.StroyId == storyId);
+            return _stories.FirstOrDefault(s => s.StoryId == storyId);
         }
 
         public StoryVM GetStoryVMById(int storyId)
         {
-            Story story = GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            Story story = GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
             StoryVM storyVM = new StoryVM
             {
 
-                StroyId = story.StroyId,
+                StoryId = story.StoryId,
                 CategoryId = story.CategoryId,
                 IntimacyId = story.IntimacyId,
                 Title = story.Title,
@@ -250,16 +250,16 @@ namespace SCMS.Datas
         {
             if (_stories.Count <= 0)
             {
-                storyVM.StroyId = 1;
+                storyVM.StoryId = 1;
             }
             else
             {
-                storyVM.StroyId = _stories.Max(c => c.StroyId) + 1;
+                storyVM.StoryId = _stories.Max(c => c.StoryId) + 1;
             }
             Story story = new Story
             {
 
-                StroyId = storyVM.StroyId,
+                StoryId = storyVM.StoryId,
                 CategoryId = storyVM.CategoryId,
                 IntimacyId = storyVM.IntimacyId,
                 Title = storyVM.Title,
@@ -277,7 +277,7 @@ namespace SCMS.Datas
             };
 
             _stories.Add(story);
-            return story.StroyId;
+            return story.StoryId;
         }
 
         public bool UpdateStory(StoryVM storyVM)
@@ -285,7 +285,7 @@ namespace SCMS.Datas
             Story story = new Story
             {
 
-                StroyId = storyVM.StroyId,
+                StoryId = storyVM.StoryId,
                 CategoryId = storyVM.CategoryId,
                 IntimacyId = storyVM.IntimacyId,
                 Title = storyVM.Title,
@@ -301,7 +301,7 @@ namespace SCMS.Datas
 
                 Hashtags = storyVM.Hashtags
             };
-            _stories.RemoveAll(s => s.StroyId == story.StroyId);
+            _stories.RemoveAll(s => s.StoryId == story.StoryId);
             _stories.Add(story);
             return true;
         }
@@ -310,7 +310,7 @@ namespace SCMS.Datas
         {
             Story story = GetStoryById(storyId);
             story.ApproveStatue = 'Y';
-            _stories.RemoveAll(s => s.StroyId == story.StroyId);
+            _stories.RemoveAll(s => s.StoryId == story.StoryId);
             _stories.Add(story);
             return true;
         }
@@ -320,14 +320,14 @@ namespace SCMS.Datas
             Story story = GetStoryById(storyid);
             story.Feedback = feedback;
             story.ApproveStatue = 'N';
-            _stories.RemoveAll(s => s.StroyId == story.StroyId);
+            _stories.RemoveAll(s => s.StoryId == story.StoryId);
             _stories.Add(story);
             return true;
         }
 
         public bool DeleteStory(int storyId)
         {
-            _stories.RemoveAll(s => s.StroyId == storyId);
+            _stories.RemoveAll(s => s.StoryId == storyId);
             return true;
         }
 
@@ -401,7 +401,7 @@ namespace SCMS.Datas
 
         public List<Hashtag> GetHashtagByStory(int storyId)
         {
-            return _hashtags.Where(h => h.Stories.Any(s => s.StroyId == storyId)).ToList();
+            return _hashtags.Where(h => h.Stories.Any(s => s.StoryId == storyId)).ToList();
         }
 
         public int AddHashtag(Hashtag hashtag)
@@ -458,7 +458,7 @@ namespace SCMS.Datas
 
         public bool DeleteHashtagByStory(int storyId)
         {
-            _hashtags.RemoveAll(h => h.Stories.Any(s => s.StroyId == storyId));
+            _hashtags.RemoveAll(h => h.Stories.Any(s => s.StoryId == storyId));
             return true;
         }
 

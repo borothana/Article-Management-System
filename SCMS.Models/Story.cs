@@ -14,7 +14,7 @@ namespace SCMS.Models
             this.Hashtags = new HashSet<Hashtag>();
         }
         [Key]
-        public int StroyId { get; set; }
+        public int StoryId { get; set; }
         public int CategoryId { get; set; }
         public int IntimacyId { get; set; }
         public string Title { get; set; }

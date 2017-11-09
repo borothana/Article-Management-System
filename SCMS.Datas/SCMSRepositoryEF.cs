@@ -150,16 +150,16 @@ namespace SCMS.Datas
 
         public Story GetStoryById(int storyId)
         {
-            return GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            return GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
         }
 
         public StoryVM GetStoryVMById(int storyId)
         {
-            Story story = GetStoryList().FirstOrDefault(s => s.StroyId == storyId);
+            Story story = GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
             StoryVM storyVM = new StoryVM
             {
 
-                StroyId = story.StroyId,
+                StoryId = story.StoryId,
                 CategoryId = story.CategoryId,
                 IntimacyId = story.IntimacyId,
                 Title = story.Title,
@@ -183,7 +183,7 @@ namespace SCMS.Datas
             Story story = new Story
             {
 
-                StroyId = storyVM.StroyId,
+                StoryId = storyVM.StoryId,
                 CategoryId = storyVM.CategoryId,
                 IntimacyId = storyVM.IntimacyId,
                 Title = storyVM.Title,
@@ -204,13 +204,13 @@ namespace SCMS.Datas
             _ctx.SaveChanges();
 
             AddHashtagByStory(story);
-            return _ctx.Stories.Max(s => s.StroyId);
+            return _ctx.Stories.Max(s => s.StoryId);
         }
 
         public bool UpdateStory(StoryVM storyVM)
         {
-            Story story = GetStoryById(storyVM.StroyId);
-            story.StroyId = storyVM.StroyId;
+            Story story = GetStoryById(storyVM.StoryId);
+            story.StoryId = storyVM.StoryId;
             story.CategoryId = storyVM.CategoryId;
             story.IntimacyId = storyVM.IntimacyId;
             story.Title = storyVM.Title;
@@ -333,7 +333,7 @@ namespace SCMS.Datas
 
         public List<Hashtag> GetHashtagByStory(int storyId)
         {
-            return GetHashtagList().Where(h => h.Stories.Any(s => s.StroyId == storyId)).ToList();
+            return GetHashtagList().Where(h => h.Stories.Any(s => s.StoryId == storyId)).ToList();
         }
 
         public int AddHashtag(Hashtag hashtag)

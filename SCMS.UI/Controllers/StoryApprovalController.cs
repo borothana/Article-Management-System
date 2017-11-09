@@ -29,30 +29,30 @@ namespace SCMS.UI.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ActionResult Approve()
-        {
-            return View(new Story());
-        }
+        //[HttpGet]
+        //public ActionResult Approve()
+        //{
+        //    return View(new Story());
+        //}
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Approve(StoryVM model)
         {
             //need to create property for aproval in repo 
             //story need to be approve and remove from pending list
-            _repo.ApproveStory(model.StroyId);
+            _repo.ApproveStory(model.StoryId);
 
             return RedirectToAction("ViewStory");
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Denied(StoryVM model)
         {
             //need to create property for denial in repo
             //story will be denied and message will need to be included
             //story removed from pending list
             //model.Feedback = feedback;
-            _repo.DenyStory(model.StroyId,model.Feedback);
+            _repo.DenyStory(model.StoryId,model.Feedback);
 
             return RedirectToAction("ViewStory");
         }

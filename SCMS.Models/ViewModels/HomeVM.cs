@@ -62,7 +62,7 @@ namespace SCMS.Models.ViewModels
             {
                 StoryItems.Add(new SelectListItem()
                 {
-                    Value = story.StroyId.ToString(),
+                    Value = story.StoryId.ToString(),
                     Text = story.Content
                 });
             }
