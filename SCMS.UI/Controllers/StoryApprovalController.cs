@@ -1,6 +1,7 @@
 ﻿using SCMS.Datas;
 using SCMS.Models;
 using SCMS.Models.Interface;
+using SCMS.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,20 +36,25 @@ namespace SCMS.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Approve(StoryVM story)
+        public ActionResult Approve(StoryVM model)
         {
             //need to create property for aproval in repo 
             //story need to be approve and remove from pending list
-            throw new Exception();
+            _repo.ApproveStory(model.StroyId);
+
+            return RedirectToAction("ViewStory");
         }
 
-        [HttpGet]
-        public ActionResult Denied()
+        [HttpPost]
+        public ActionResult Denied(StoryVM model)
         {
             //need to create property for denial in repo
             //story will be denied and message will need to be included
             //story removed from pending list
-            throw new Exception();
+            //model.Feedback = feedback;
+            _repo.DenyStory(model.StroyId,model.Feedback);
+
+            return RedirectToAction("ViewStory");
         }
     }
 }

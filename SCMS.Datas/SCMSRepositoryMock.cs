@@ -305,6 +305,26 @@ namespace SCMS.Datas
             _stories.Add(story);
             return true;
         }
+
+        public bool ApproveStory(int storyId)
+        {
+            Story story = GetStoryById(storyId);
+            story.ApproveStatue = 'Y';
+            _stories.RemoveAll(s => s.StroyId == story.StroyId);
+            _stories.Add(story);
+            return true;
+        }
+
+        public bool DenyStory (int storyid, string feedback)
+        {
+            Story story = GetStoryById(storyid);
+            story.Feedback = feedback;
+            story.ApproveStatue = 'N';
+            _stories.RemoveAll(s => s.StroyId == story.StroyId);
+            _stories.Add(story);
+            return true;
+        }
+
         public bool DeleteStory(int storyId)
         {
             _stories.RemoveAll(s => s.StroyId == storyId);

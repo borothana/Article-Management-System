@@ -17,15 +17,15 @@
         {
             @Html.HiddenFor(c => c.CategoryId)
             <br />
-            <label>Story To Approve/Deny</label>
+            <label>Story To Approve/Deny: @Html.DisplayNameFor(n=>n.Title)</label>
             <br />
             @Html.TextAreaFor(s => s.Content, 10, 40, htmlAttributes: new { style = "width: 80%; max-width: 80%" })
             <br />
             @Html.TextAreaFor(s => s.Feedback, 5, 20, htmlAttributes: new { style = "width: 25%; max-width: 25%" })
             <br />
 
-            <button type="submit" class="btn btn-sm btn-primary">Approve</button>
-            <button type="submit" class="btn btn-sm btn-primary">Deny</button>
+            @Html.ActionLink("Approve ", "Approve", "StoryApproval",  new { model=Model }, new { @class = "btn btn-sm btn-info" })
+            @Html.ActionLink("Deny", "Denied", "StoryApproval",  new { model = Model }, new { @class = "btn btn-sm btn-info" })
         }
     </div>
 </div>

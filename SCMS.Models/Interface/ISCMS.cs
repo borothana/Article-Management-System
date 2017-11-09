@@ -60,6 +60,8 @@ namespace SCMS.Models.Interface
         List<Story> GetStoryList();
         List<Story> GetStoryByUser(string userId);
         Story GetStoryById(int storyId);
+        bool ApproveStory(int storyId);
+        bool DenyStory(int storyId, string feedback);
         StoryVM GetStoryVMById(int storyId);
         int AddStory(StoryVM storyVM);
         bool UpdateStory(StoryVM storyVM);

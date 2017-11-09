@@ -229,6 +229,26 @@ namespace SCMS.Datas
 
             return AddHashtagByStory(story);            
         }
+
+        public bool ApproveStory(int storyId)
+        {
+            Story story = GetStoryById(storyId);
+            story.ApproveStatue = 'Y';
+            _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;            
+            _ctx.SaveChanges();
+            return true;
+        }
+
+        public bool DenyStory(int storyId, string feedback)
+        {
+            Story story = GetStoryById(storyId);
+            story.Feedback = feedback;
+            story.ApproveStatue = 'N';
+            _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;
+            _ctx.SaveChanges();
+            return true;
+        }
+
         public bool DeleteStory(int storyId)
         {
             Story story = GetStoryById(storyId);

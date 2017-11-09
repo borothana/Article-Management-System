@@ -220,6 +220,8 @@
     <Content Include="Views\Info\Delete.cshtml" />
     <Content Include="Views\Info\Edit.cshtml" />
     <Content Include="Views\Home\StoryPage.cshtml" />
+    <Content Include="Views\StoryApproval\Approve.cshtml" />
+    <Content Include="Views\StoryApproval\Denied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
