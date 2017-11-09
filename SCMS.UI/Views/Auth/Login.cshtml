@@ -9,7 +9,7 @@
 @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
 {
     <br />
-    <div class="col-xs-12 col-sm-7">
+    <div class="col-sm-12 col-sm-offset-3 col-sm-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">Login</h4>
@@ -19,6 +19,7 @@
                     @Html.ValidationSummary(true)
                     <label>User Name</label>
                     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name" })
+                    <br />
                     <label>Password</label>
                     @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
                     <br />
