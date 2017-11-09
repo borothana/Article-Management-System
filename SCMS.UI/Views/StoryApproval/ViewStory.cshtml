@@ -15,7 +15,7 @@
     <div class="col-lg-12">
         @using (Html.BeginForm("Approve", "StoryApproval", FormMethod.Post))
         {
-            @Html.HiddenFor(c => c.CategoryId)
+            @Html.HiddenFor(c => c.StoryId)
             <br />
             <label>Story To Approve/Deny: @Html.DisplayNameFor(n=>n.Title)</label>
             <br />
@@ -23,10 +23,8 @@
             <br />
             @Html.TextAreaFor(s => s.Feedback, 5, 20, htmlAttributes: new { style = "width: 25%; max-width: 25%" })
             <br />
-
-            @Html.ActionLink("Approve ", "Approve", "StoryApproval",  new { model=Model }, new { @class = "btn btn-sm btn-info" })
-            @Html.ActionLink("Deny", "Denied", "StoryApproval",  new { model = Model }, new { @class = "btn btn-sm btn-info" })
+            <button type="submit" class="btn btn-primary" name="Save" value="Approve">Approve</button>
+            <button type="submit" class="btn btn-primary" name="Denied" value="Denied" >Denied</button>
         }
     </div>
 </div>
-
