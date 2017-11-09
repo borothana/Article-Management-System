@@ -178,7 +178,7 @@ namespace SCMS.Datas
         {
             return _intimacies;
         }
-
+        
         public Intimacy GetIntimacyById(int itimacyId)
         {
             return _intimacies.FirstOrDefault(i => i.IntimacyId == itimacyId);
@@ -215,6 +215,11 @@ namespace SCMS.Datas
         public List<Story> GetStoryList()
         {
             return _stories;
+        }
+
+        public List<Story> GetStoryByStatus(char status)
+        {
+            return GetStoryList().Where(s => s.ApproveStatue == status).ToList();
         }
 
         public List<Story> GetStoryByUser(string userId)
@@ -312,18 +317,19 @@ namespace SCMS.Datas
             return true;
         }
 
-        public bool ApproveStory(int storyId)
+        public bool ApproveStory(int storyId, string feedback)
         {
             Story story = GetStoryById(storyId);
             story.ApproveStatue = 'Y';
+            story.Feedback = feedback;
             _stories.RemoveAll(s => s.StoryId == story.StoryId);
             _stories.Add(story);
             return true;
         }
 
-        public bool DenyStory (int storyid, string feedback)
+        public bool DenyStory (int storyId, string feedback)
         {
-            Story story = GetStoryById(storyid);
+            Story story = GetStoryById(storyId);
             story.Feedback = feedback;
             story.ApproveStatue = 'N';
             _stories.RemoveAll(s => s.StoryId == story.StoryId);

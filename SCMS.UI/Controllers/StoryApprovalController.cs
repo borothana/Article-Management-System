@@ -3,10 +3,12 @@ using SCMS.Models;
 using SCMS.Models.Interface;
 using SCMS.Models.ViewModels;
 using System;
+using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace SCMS.UI.Controllers
 {
@@ -17,7 +19,7 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var model = _repo.GetStoryList();
+            var model = _repo.GetStoryByStatus('P');
             return View(model);
         }
 
@@ -28,33 +30,19 @@ namespace SCMS.UI.Controllers
 
             return View(model);
         }
-
-        //[HttpGet]
-        //public ActionResult Approve()
-        //{
-        //    return View(new Story());
-        //}
-
-        //[HttpPost]
-        public ActionResult Approve(StoryVM model)
+        
+        public ActionResult Approve(StoryVM story, string Save, string Denied)
         {
-            //need to create property for aproval in repo 
-            //story need to be approve and remove from pending list
-            _repo.ApproveStory(model.StoryId);
-
-            return RedirectToAction("ViewStory");
-        }
-
-        //[HttpPost]
-        public ActionResult Denied(StoryVM model)
-        {
-            //need to create property for denial in repo
-            //story will be denied and message will need to be included
-            //story removed from pending list
-            //model.Feedback = feedback;
-            _repo.DenyStory(model.StoryId,model.Feedback);
-
-            return RedirectToAction("ViewStory");
+            if(!string.IsNullOrEmpty(Save))
+            {
+                _repo.ApproveStory(story.StoryId, story.Feedback);
+            }
+            else
+            {
+                _repo.DenyStory(story.StoryId, story.Feedback);
+            }
+            
+            return RedirectToAction("Index");
         }
     }
 }
