@@ -16,7 +16,7 @@
         <div class="col-xs-12">
             @using (Html.BeginForm("Delete", "Story", FormMethod.Post))
             {
-                @Html.HiddenFor(m => m.StroyId)        
+                @Html.HiddenFor(m => m.StoryId)        
                 <p>Are you sure that you wish to delete story @Html.DisplayFor(m=>m.Title)?</p>
                 <button type="submit" class="btn btn-danger">Delete</button>
                 @Html.ActionLink("Cancel", "List", "Story", new { @class = "btn btn-sm btn-info" })

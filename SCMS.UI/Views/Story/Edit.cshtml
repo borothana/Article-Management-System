@@ -15,7 +15,7 @@
         @using (Html.BeginForm("Edit", "Story", FormMethod.Post))
         {
             <div class="form-group">
-                @Html.HiddenFor(m => m.StroyId)
+                @Html.HiddenFor(m => m.StoryId)
                 @Html.HiddenFor(m => m.UserId)
                 <label>Category</label>
                 @Html.DropDownListFor(m => m.CategoryId, Model.CategoryItems, "-Choose One-", new { @class = "form-control", placeholder = "Title" })
