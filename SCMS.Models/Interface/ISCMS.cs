@@ -70,14 +70,17 @@ namespace SCMS.Models.Interface
 
         #region "User"
         List<User> GetUserList();
+        UserVM GetUserVMById(string userId);
+        UserVMEdit GetUserVMEditById(string userId);
         User GetUserById(string userId);
         User GetUserByUserName(string userName);
         List<User> GetUserListByRole(string role);
-        string AddUser(User user, string role);
+        string AddUser(UserVM user, string role);
         Task<bool> DeactivateUser(string userId);
         Task<bool> ReactivateUser(string userId);
         bool ChangePassword(string userId, string currentPassword, string newPassword);
-        Task<bool> UpdateUser(User user);
+        Task<bool> UpdateUser(UserVM user, string role);
+        bool UpdateUser(UserVMEdit user, string role);
         Task<bool> DeleteUser(string userId);
         Task<bool> Login(string userId, string password);
         #endregion

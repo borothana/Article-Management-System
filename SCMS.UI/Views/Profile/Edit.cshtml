@@ -1,0 +1,42 @@
+﻿@model SCMS.Models.ViewModels.UserVMEdit
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Add Story</h3>
+        @Html.ActionLink("Return to home page", "Home", "Home")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Edit", "Profile", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(m=>m.Id)
+                
+                <label>Display Name</label>
+                @Html.ValidationMessageFor(m => m.Phone)
+                @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", placeholder = "Display Name" })
+
+                <label>Email</label>
+                @Html.ValidationMessageFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+
+                <label>Phone</label>
+                @Html.ValidationMessageFor(m => m.Phone)
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })
+
+                <label>Quote</label>
+                @Html.TextAreaFor(m => m.Quote, new { @class = "form-control", placeholder = "Quote" })
+
+
+                <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-sm btn-info" })
+            </div>
+        }
+    </div>
+</div>

@@ -38,7 +38,7 @@ namespace SCMS.UI.Controllers
             {
                 if (_repo.AddStory(model) > 0)
                 {
-                    return RedirectToAction("Home", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace SCMS.UI.Controllers
             {
                 if (_repo.UpdateStory(model))
                 {
-                    return RedirectToAction("Home", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -89,7 +89,7 @@ namespace SCMS.UI.Controllers
         {
             if (_repo.DeleteStory(model.StroyId))
             {
-                return RedirectToAction("Home", "Home");
+                return RedirectToAction("Index", "Home");
             }
             else
             {

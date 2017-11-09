@@ -481,14 +481,68 @@ namespace SCMS.Datas
             return _users.FirstOrDefault(u => u.Id == userId);
         }
 
+        public UserVMEdit GetUserVMEditById(string id)
+        {
+            UserVMEdit result = new UserVMEdit();
+            User tmp = GetUserById(id);
+            if (tmp != null)
+            {
+                result.Id = tmp.Id;
+                result.Email = tmp.Email;
+                result.EmailConfirmed = tmp.EmailConfirmed;
+                result.Phone = tmp.Phone;
+                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
+                result.UserName = tmp.UserName;
+                result.Nickname = tmp.Nickname;
+                result.ProfilePic = tmp.ProfilePic;
+                result.Quote = tmp.Quote;
+
+                return result;
+            }
+            return null;
+        }
+
+        public UserVM GetUserVMById(string id)
+        {
+            UserVM result = new UserVM();
+            User tmp = GetUserById(id);
+            if (tmp != null)
+            {
+                result.Id = tmp.Id;
+                result.IsActive = tmp.IsActive;
+                result.Email = tmp.Email;
+                result.EmailConfirmed = tmp.EmailConfirmed;
+                result.Password = tmp.PasswordHash;
+                result.Phone = tmp.Phone;
+                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
+                result.UserName = tmp.UserName;
+                result.Nickname = tmp.Nickname;
+                result.ProfilePic = tmp.ProfilePic;
+                result.Quote = tmp.Quote;
+
+                return result;
+            }
+            return null;
+        }
+
         public User GetUserByUserName(string userName)
         {
             return _users.FirstOrDefault(u => u.UserName == userName);
         }
 
-        public string AddUser(User user, string role)
+        public string AddUser(UserVM user, string role)
         {
-            _users.Add(user);
+            User userTmp = new User();
+            userTmp.UserName = user.UserName;
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            userTmp.Email = user.Email;
+            userTmp.Phone = user.Phone;
+            userTmp.Quote = user.Quote;
+            userTmp.ProfilePic = user.ProfilePic;
+            userTmp.PasswordHash = user.Password;
+            userTmp.IsActive = true;
+
+            _users.Add(userTmp);
             return user.Id;
         }
 
@@ -529,11 +583,37 @@ namespace SCMS.Datas
             return false;
         }
 
-        public async Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUser(UserVM user, string role)
         {
             _users.RemoveAll(u => u.Id == user.Id);
-            _users.Add(user);
+
+            User userTmp = new User();
+            userTmp.UserName = user.UserName;
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            userTmp.Email = user.Email;
+            userTmp.Phone = user.Phone;
+            userTmp.Quote = user.Quote;
+            userTmp.ProfilePic = user.ProfilePic;
+
+            _users.Add(userTmp);
+
             return await Task.FromResult(true);
+        }
+        
+        public bool UpdateUser(UserVMEdit user, string role)
+        {
+            _users.RemoveAll(u => u.Id == user.Id);
+
+            User userTmp = new User();
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            userTmp.Email = user.Email;
+            userTmp.Phone = user.Phone;
+            userTmp.Quote = user.Quote;
+            userTmp.ProfilePic = user.ProfilePic;
+
+            _users.Add(userTmp);
+
+            return true;
         }
 
         public async Task<bool> DeleteUser(string userId)

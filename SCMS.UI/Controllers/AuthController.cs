@@ -34,7 +34,7 @@ namespace SCMS.UI.Controllers
                 {
                     if (String.IsNullOrEmpty(model.ReturnUrl) || !Url.IsLocalUrl(model.ReturnUrl))
                     {
-                        return Redirect(Url.Action("Home", "Home"));
+                        return Redirect(Url.Action("Index", "Home"));
                     }
                 }
                 else
