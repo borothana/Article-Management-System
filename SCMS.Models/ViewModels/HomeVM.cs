@@ -13,13 +13,9 @@ namespace SCMS.Models.ViewModels
         public IEnumerable<Intimacy> Intimacy { get; set; }
         public IEnumerable<Story> Story { get; set; }
         public IEnumerable<User> User { get; set; }
-
-
-        public StoryVM StoryVM { get; set; }
-        public UserVM UserVM { get; set; }
-        public CategoryVM CategoryVM {get;set;}
-        public IntimacyVM IntimacyVM { get; set; }
-        
+        public bool isSelected { get; set; }
+        public Hashtag Hashtag { get; set; }
+        public List<int> SelecetedIds { get; set; }
 
         public List<SelectListItem> CategoryItems { get; set; }
         public List<SelectListItem> IntimacyItems { get; set; }
@@ -36,6 +32,7 @@ namespace SCMS.Models.ViewModels
 
         public void SetCategoryItems(IEnumerable<Category> categories)
         {
+            CategoryItems = new List<SelectListItem>();
             foreach(var category in categories)
             {
                 CategoryItems.Add(new SelectListItem()
@@ -47,6 +44,7 @@ namespace SCMS.Models.ViewModels
         }
         public void SetIntimacyItems(IEnumerable<Intimacy> intimacies)
         {
+            IntimacyItems = new List<SelectListItem>();
             foreach(var intimacy in intimacies)
             {
                 IntimacyItems.Add(new SelectListItem()
@@ -58,6 +56,7 @@ namespace SCMS.Models.ViewModels
         }
         public void SetStoryItems(IEnumerable<Story> stories)
         {
+            StoryItems = new List<SelectListItem>();
             foreach (var story in stories)
             {
                 StoryItems.Add(new SelectListItem()
@@ -68,15 +67,16 @@ namespace SCMS.Models.ViewModels
             }
         }
         public void SetUserItems(IEnumerable<User> users)
+        {
+            UserItems = new List<SelectListItem>();
+            foreach(var user in users)
             {
-                foreach(var user in users)
-                {
                 UserItems.Add(new SelectListItem()
                 {
                     Value = user.Id,
                     Text = user.Nickname
                 });
-                }
             }
+        }
     }
 }
