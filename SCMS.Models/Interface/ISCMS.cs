@@ -33,7 +33,7 @@ namespace SCMS.Models.Interface
         bool UpdateIntimacy(Intimacy intimacy);
         bool DeleteIntimacy(int intimacyId);
         #endregion
-        
+
         #region "Hashtag"
         List<Hashtag> GetHashtagList();
         Hashtag GetHashtagById(int hastagId);
@@ -86,5 +86,12 @@ namespace SCMS.Models.Interface
         Task<bool> Login(string userId, string password);
         #endregion
 
+        #region "Blog"
+        List<Blog> GetBlogList();
+        Blog GetBlogById(int id);
+        int AddBlog(Blog blog);
+        bool UpdateBlog(Blog blog);
+        bool DeleteBlog(int id);
+        #endregion
     }
 }

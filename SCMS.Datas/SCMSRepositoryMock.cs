@@ -82,6 +82,12 @@ namespace SCMS.Datas
                 new Comment{ CommentId =4, Descriptiopn = "I've been there one time, it's amazing", StoryId = 3, Story = _stories[3]},
                 new Comment{ CommentId =5, Descriptiopn = "I will visit there one time", StoryId = 3, Story = _stories[3]},
         };
+        static List<Blog> _blogs = new List<Blog>
+        {
+            new Blog{ BlogId = 1, Title= "First Blog", Content= "This is the first blog", User = _users[0], UserId = _users[0].Id},
+            new Blog{ BlogId = 2, Title= "Second Blog", Content= "This is the second blog", User = _users[0], UserId = _users[0].Id},
+            new Blog{ BlogId = 3, Title= "Third Blog", Content= "This is the third blog", User = _users[0], UserId = _users[0].Id}
+        };
 
 
         #region "Infos"
@@ -637,6 +643,50 @@ namespace SCMS.Datas
                 return await Task.FromResult(true);
             }
             return await Task.FromResult(false);
+        }
+        #endregion
+        #region Blog
+
+        public List<Blog> GetBlogList()
+        {
+            return _blogs;
+        }
+
+        public Blog GetBlogById(int id)
+        {
+            return _blogs.FirstOrDefault(b => b.BlogId == id);
+        }
+
+        public int AddBlog(Blog blog)
+        {
+            if (_blogs.Count <= 0)
+            {
+                blog.BlogId = 1;
+            }
+            else
+            {
+                blog.BlogId = _blogs.Max(b => b.BlogId) + 1;
+            }
+            Blog newBlog = new Blog
+            {
+
+                Title = blog.Title,
+                Content = blog.Content,
+                User = blog.User,
+                UserId = blog.UserId
+            };
+            _blogs.Add(newBlog);
+            return newBlog.BlogId;
+        }
+
+        public bool UpdateBlog(Blog blog)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteBlog(int id)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

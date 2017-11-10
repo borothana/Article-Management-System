@@ -19,129 +19,98 @@
 </head>
 
 <body>
-
-	<div class="col-sm-3">
-		<br />
-		<h5>Category</h5>
-		@foreach (var c in Model.Category)
-		{
-			<p>
-				<input type="checkbox" name="category" />
-				<span>@c.Description</span>
-			</p>
-		}
-		<hr />
-
-
-		<h5>Intimacy Level</h5>
-		@foreach (var i in Model.Intimacy)
-		{
-			<p>
-				<input type="checkbox" name="category" />
-				<span>@i.Description</span>
-			</p>
-		}
-
-		<hr />
-		<h5>Search User</h5>
-		<p>
-			<div class="row">
-				<label>
-					<input type="text" name="User" />
-				</label>
-			</div>
-		</p>
-		<h5>Search Title</h5>
-		<p>
-			<div class="row">
-				<label>
-					<input type="text" name="Title" />
-				</label>
-			</div>
-		</p>
-		<h5>Search Hash Tags</h5>
-		<p>
-			<div class="row">
-				<label>
-					<input type="text" name="Title" />
-				</label>
-			</div>
-			<button type="submit" id="submit button" class="btn btn-primary">Search</button>
-		</p>
-	</div>
-	<div class="col-sm-9">
-		<center>
-			<h4>
-				<small>FEATURED STORY</small>
-			</h4>
-		</center>
-		@foreach (var s in Model.Story)
-		{
-			<div class="row">
-				<h2>@s.Title</h2>
+	<div class="container-fluid">
+		@*@using (Html.BeginForm())
+		{*@
+			<div class="col-sm-3" id="searchField">
+				<br />
+				<h5>Category</h5>
+				@*@for (int i = 0; i < Model.CategoryItems.Count; i++)*@
+				@foreach(var c in Model.Category)
+				{
+					<p>
+						@*@Html.CheckBoxFor(c => c.CategoryItems[i].Selected)
+						<span>@Model.CategoryItems[i].Text</span>
+						@Html.HiddenFor(c => c.CategoryItems[i].Value)*@
+						<input type="checkbox" name="category" id="category" />
+						<span>@c.Description</span>
+					</p>
+				}
 				<hr />
-				<span class="label label-danger">@s.Category.Description</span>
-				<span class="label label-primary">@s.HashtagWord</span>
-				<br />
-                
-				<span class="glyphicon glyphicon-time">Post by @Model.User.FirstOrDefault(u=>u.Id == s.UserId).Nickname </span>
+
+
+				<h5>Intimacy Level</h5>
+				
+				@*@for (int i = 0; i < Model.IntimacyItems.Count; i++)*@
+				@foreach (var i in Model.Intimacy)	
+				{
+					<p>
+						@*@Html.CheckBoxFor(z => z.IntimacyItems[i].Selected)
+						<span>@Model.IntimacyItems[i].Text</span>
+						@Html.HiddenFor(z => z.IntimacyItems[i].Value)*@
+						<input type="checkbox" name="intimacy" id="intimacy" />
+						<span>@i.Description</span>
+					</p>
+				}
+
+				<hr />
+				<h5>Search User</h5>
 				<p>
-					@s.Content
+					<div class="row">
+						<label>
+							<input type="text" name="User" />
+						</label>
+					</div>
 				</p>
-				<br />
+				<h5>Search Title</h5>
+				<p>
+					<div class="row">
+						<label>
+							<input type="text" name="Title" />
+						</label>
+					</div>
+				</p>
+				<h5>Search Hash Tags</h5>
+				<p>
+					<div class="row">
+						<label>
+							<input type="text" name="Title" />
+						</label>
+					</div>
+					<button type="submit" id="submit button" class="btn btn-primary" onclick="searchClick">Search</button>
+				</p>
 			</div>
+			<div class="col-sm-9">
+				<center>
+					<h4>
+						<small>FEATURED STORY</small>
+					</h4>
+				</center>
 
-			@*}
-				<hr>
-				<h2><li>@ </li>I Love Food</a></h2>
-				<h5>
-					<span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.
-				</h5>
-				<h5>
+				@foreach (var s in Model.Story)
+				{
+					<div class="row" style="background-color:transparent;">
+						<a href="@Url.Action("StoryView", "StoryView")" id="title">@s.Title</a><br />
+						<span class="label label-danger">@s.Category.Description</span>
+						<span class="label label-primary">@s.HashtagWord</span><br />
+						<span>Post by: @Model.User.FirstOrDefault(u => u.Id == s.UserId).Nickname </span>
+						<br />
+						@s.Content
+						<br />
+						<hr />
+					</div>
+					<p></p>
+				}
+				<hr />
+				</div>
+		@*}*@
+			</div>
+		
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+			crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/vue@2.3.4"></script>
 
-				</h5>
-				<br>
-				<p>
-					Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-					ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-					nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in
-					culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-					ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<br>
-				<br>*@
-		}
-			@*<h4>
-				<small>RECENT POSTS</small>
-			</h4>
-			<hr>
-			<a href="#"><h2>Officially Blogging</h2></a>
-			<h5>
-				<span class="glyphicon glyphicon-time"></span> Post by John Doe, Sep 24, 2015.
-			</h5>
-			<h5>
-				<span class="label label-success">Lorem</span>
-			</h5>
-			<br>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-				dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-				ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-				deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt
-				ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat.
-			</p>
-			<hr>
-		</div>*@
-	</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-				crossorigin="anonymous"></script>
-			<script src="https://unpkg.com/vue@2.3.4"></script>
+</body>
 
-		</body>
-
-	</html>
-
-
+</html>

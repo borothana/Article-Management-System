@@ -130,6 +130,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Img\background.jpg" />
+    <Content Include="Content\Img\hawaiian sunset.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SCMS.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -162,6 +164,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\StartUp.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -224,6 +227,7 @@
     <Content Include="Views\StoryApproval\Denied.cshtml" />
     <Content Include="Views\Home\Story.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Blog\Blog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

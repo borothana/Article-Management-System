@@ -22,5 +22,6 @@ namespace SCMS.Datas.DBContext
         public DbSet<Intimacy> Intimacies { get; set; }
         public DbSet<Story> Stories { get; set; }      
         public DbSet<Info> Infos { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
     }
 }

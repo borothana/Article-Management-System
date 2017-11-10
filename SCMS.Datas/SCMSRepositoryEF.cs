@@ -20,7 +20,6 @@ namespace SCMS.Datas
     {
         SCMSDBContext _ctx = new SCMSDBContext();
 
-
         #region "News"
         public List<Info> GetInfoList()
         {
@@ -642,7 +641,55 @@ namespace SCMS.Datas
             }
             return await Task.FromResult(false);
         }
+        #endregion
+        #region Blog
+        public List<Blog> GetBlogList()
+        {
+            return _ctx.Blogs.ToList();
+        }
 
+        public Blog GetBlogById(int id)
+        {
+            return _ctx.Blogs.FirstOrDefault(b => b.BlogId == id);
+        }
+
+        public int AddBlog(Blog blog)
+        {
+            Blog newBlog = new Blog
+            {
+                BlogId = blog.BlogId,
+                Title = blog.Title,
+                Content = blog.Content,
+                UserId = blog.UserId,
+                User = blog.User
+            };
+            _ctx.Blogs.Add(blog);
+            _ctx.SaveChanges();
+            return _ctx.Blogs.Max(b => b.BlogId);
+        }
+
+        public bool UpdateBlog(Blog blog)
+        {
+            Blog updateBlog = GetBlogById(blog.BlogId);
+            updateBlog.Title = blog.Title;
+            updateBlog.Content = blog.Content;
+            updateBlog.UserId = blog.UserId;
+            updateBlog.User = blog.User;
+
+            return true;
+        }
+
+        public bool DeleteBlog(int id)
+        {
+            Blog blog = GetBlogById(id);
+            if(blog != null)
+            {
+                _ctx.Entry(blog).State = System.Data.Entity.EntityState.Deleted;
+                _ctx.SaveChanges();
+                
+            }
+            return true;
+        }
 
         #endregion
     }
