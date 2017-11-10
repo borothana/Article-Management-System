@@ -16,3 +16,17 @@ textarea {
     max-width: 280px;
 }
 
+.navbar-brand {
+    /*This section will only change the blog title BG only*/
+    /*background-color: cornsilk;*/
+    color: magenta;
+}
+
+.navbar-right {
+    /*This section will only change the page links/navigation (log in, profile, etc...)*/
+    color: purple;
+}
+
+.body{
+    background-color: red;
+}
