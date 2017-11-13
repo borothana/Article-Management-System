@@ -15,17 +15,17 @@
         <table class="table table-striped" style="width: auto;">
             <thead>
                 <tr>
-                    <th>Intimacy</th>
+                    <th>Description</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var intent in Model)
+                @foreach (var i in Model)
                 {
                     <tr>
-                        <td>@intent.Description</td>
-                        <td>@Html.ActionLink("Edit", "Edit", "Intimacy", new { id = intent.IntimacyId }, null)</td>
-                        <td>@Html.ActionLink("Delete", "Delete", "Intimacy", new { id = intent.IntimacyId }, null)</td>
+                        <td>@i.Description</td>
+                        <td>@Html.ActionLink("Edit", "Edit", "Intimacy", new { id = i.IntimacyId }, null)</td>
+                        <td>@Html.ActionLink("Delete", "Delete", "Intimacy", new { id = i.IntimacyId }, null)</td>
                     </tr>
                 }
             </tbody>

@@ -9,6 +9,7 @@ namespace SCMS.Models.Interface
 {
     public interface ISCMS
     {
+        Response ReturnSuccess();
         #region "Info"
         Info GetInfoById(int infoId);
         List<Info> GetInfoList();
@@ -71,19 +72,20 @@ namespace SCMS.Models.Interface
 
         #region "User"
         List<User> GetUserList();
-        UserVM GetUserVMById(string userId);
-        UserVMEdit GetUserVMEditById(string userId);
         User GetUserById(string userId);
+        UserVM GetUserVMEditById(string userId);
         User GetUserByUserName(string userName);
         List<User> GetUserListByRole(string role);
-        string AddUser(UserVM user, string role);
-        Task<bool> DeactivateUser(string userId);
-        Task<bool> ReactivateUser(string userId);
+        UserVM AddUser(UserVM user, string role);
+        bool DeactivateUser(string userId);
+        bool ReactivateUser(string userId);
         bool ChangePassword(string userId, string currentPassword, string newPassword);
-        Task<bool> UpdateUser(UserVM user, string role);
-        bool UpdateUser(UserVMEdit user, string role);
-        Task<bool> DeleteUser(string userId);
-        Task<bool> Login(string userId, string password);
+        UserVM UpdateUser(UserVM user, string role);
+        bool DeleteUser(string userId);
+        bool Login(string userId, string password);
+        bool Logout();
+        User ConvertVMToUser(UserVM input);
+        UserVM ConvertUserToVM(User input);
         #endregion
 
         #region "Blog"

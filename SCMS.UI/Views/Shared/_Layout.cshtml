@@ -9,40 +9,70 @@
 	<link href="~/Content/SCMS.css" rel="stylesheet" type="text/css" />
 	<script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
-<body style="position: relative !important;">
-	<div class="navbar-collapse collapse navbar-inverse">
-		<div class="container-fluid'">
-			<ul class="nav navbar-nav">
-				@Html.ActionLink("Story Content Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li>@Html.ActionLink("Log In", "Login", "Auth", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Log Out", "Logout", "Home", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Sign Up", "SignUp", "Profile", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Profile", "Profile", "Profile", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Category", "List", "Category", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Intimacy", "List", "Intimacy", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Blog", "Blog", "Blog", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Info", "List", "Info", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("User", "List", "User", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Reset Password", "ResetPassword", "ResetPassword", null, new { @class = "navbar-left" })</li>
-						<li>@Html.ActionLink("Approval Page", "Index", "StoryApproval", null, new { @class = "navbar-left" })</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		@*<footer>
-			<p>&copy; @DateTime.Now.Year - SCMS</p>
-		</footer>*@
-	</div>
-	<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-	<script src="~/Scripts/bootstrap.min.js"></script>
-	<script src="~/Scripts/scms.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-</body>
+
+    <body style="position: relative !important;">
+        <div id="nav" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li><a href=""><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li>@Html.ActionLink("My Article", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Blog", "Blog", "Blog")</li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                @User.Identity.Name
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Add new article", "Add", "Story")</li>
+                                <li>@Html.ActionLink("My article list", "List", "Story")</li>
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Profile", "Profile", "Profile")</li>
+                                <li>@Html.ActionLink("Change Password", "ResetPassword", "ResetPassword")</li>
+                            </ul>
+                        </li>
+
+                        if (User.IsInRole("admin"))
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Admin
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Approval Page", "Index", "StoryApproval")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("Blog", "List", "Info")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("Category", "List", "Category")</li>
+                                    <li>@Html.ActionLink("Intimacy", "List", "Intimacy")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("User", "List", "User")</li>
+                                </ul>
+                            </li>
+                        }
+                        <li>@Html.ActionLink("Log Out", "LogOut", "Auth")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Sign Up", "SignUp", "Profile")</li>
+                        <li>@Html.ActionLink("Log In", "LogIn", "Auth")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="container body-content" style="margin-top:50px">
+            @RenderBody()
+            @*<footer>
+                    <p>&copy; @DateTime.Now.Year - SCMS</p>
+                </footer>*@
+        </div>
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/scms.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    </body>
 </html>

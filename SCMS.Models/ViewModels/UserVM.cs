@@ -17,8 +17,8 @@ namespace SCMS.Models.ViewModels
         [Required(ErrorMessage = "Password is required", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
         [StringLength(50, MinimumLength = 8, ErrorMessage = "Passwords must be 8 characters lenght")]
-        public string Password { get; set; }
-        [Compare("Password", ErrorMessage = "Confirm password doesn't match")]
+        public override string PasswordHash { get; set; }
+        [Compare("PasswordHash", ErrorMessage = "Confirm password doesn't match")]
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "Nick name is required", AllowEmptyStrings = false)]
         public string Nickname { get; set; }
@@ -26,6 +26,8 @@ namespace SCMS.Models.ViewModels
         public byte[] ProfilePic { get; set; }
         public string Quote { get; set; }
         public bool IsActive { get; set; }
+
+        public Response Result { get; set; }
 
     }
 }

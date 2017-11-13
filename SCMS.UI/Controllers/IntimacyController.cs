@@ -30,7 +30,7 @@ namespace SCMS.UI.Controllers
         public ActionResult Add(Intimacy model)
         {
             _repo.AddIntimacy(model);
-            return RedirectToAction("Intimacy");
+            return RedirectToAction("List");
         }
 
         [HttpGet]
@@ -46,7 +46,7 @@ namespace SCMS.UI.Controllers
             //validate that list stays in the same place
             //id#1 when edit gets moved to the bottom of list
             var confirmEdit = _repo.UpdateIntimacy(model);
-            return RedirectToAction("Intimacy");
+            return RedirectToAction("List");
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace SCMS.UI.Controllers
         public ActionResult Delete(Intimacy model)
         {
             var confirmDelete = _repo.DeleteIntimacy(model.IntimacyId);
-            return RedirectToAction("Intimacy");
+            return RedirectToAction("List");
         }
     }
 }

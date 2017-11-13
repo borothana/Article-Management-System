@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Runtime.Remoting.Contexts;
 using SCMS.Models.ViewModels;
+using System.Web;
+using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.Owin;
+using System.IO;
 
 namespace SCMS.Datas
 {
@@ -88,6 +92,21 @@ namespace SCMS.Datas
             new Blog{ BlogId = 2, Title= "Second Blog", Content= "This is the second blog", User = _users[0], UserId = _users[0].Id},
             new Blog{ BlogId = 3, Title= "Third Blog", Content= "This is the third blog", User = _users[0], UserId = _users[0].Id}
         };
+
+        #region "Other"
+        public Response ReturnSuccess()
+        {
+            return new Response() { Success = true, ErrorMessage = "" };
+        }
+
+        public byte[] ConvertImgToByte(HttpPostedFileBase file)
+        {
+            byte[] imageByte = null;
+            BinaryReader rdr = new BinaryReader(file.InputStream);
+            imageByte = rdr.ReadBytes((int)file.ContentLength);
+            return imageByte;
+        }
+        #endregion
 
 
         #region "Infos"
@@ -477,6 +496,37 @@ namespace SCMS.Datas
         #endregion
 
         #region "User"
+        public User ConvertVMToUser(UserVM input)
+        {
+            User result = new User()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote
+             };
+            return result;
+        }
+
+        public UserVM ConvertUserToVM(User input)
+        {
+            UserVM result = new UserVM()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote,
+                Result = ReturnSuccess()
+            };
+            return result;
+        }
+
         public List<User> GetUserList()
         {
             return _users;
@@ -484,8 +534,8 @@ namespace SCMS.Datas
 
         public List<User> GetUserListByRole(string role)
         {
-            //Need Modify to get by role
-            return GetUserList();
+            //return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == role)).ToList();
+            return GetUserList().ToList();
         }
 
         public User GetUserById(string userId)
@@ -493,48 +543,9 @@ namespace SCMS.Datas
             return _users.FirstOrDefault(u => u.Id == userId);
         }
 
-        public UserVMEdit GetUserVMEditById(string id)
+        public UserVM GetUserVMEditById(string userId)
         {
-            UserVMEdit result = new UserVMEdit();
-            User tmp = GetUserById(id);
-            if (tmp != null)
-            {
-                result.Id = tmp.Id;
-                result.Email = tmp.Email;
-                result.EmailConfirmed = tmp.EmailConfirmed;
-                result.Phone = tmp.Phone;
-                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
-                result.UserName = tmp.UserName;
-                result.Nickname = tmp.Nickname;
-                result.ProfilePic = tmp.ProfilePic;
-                result.Quote = tmp.Quote;
-
-                return result;
-            }
-            return null;
-        }
-
-        public UserVM GetUserVMById(string id)
-        {
-            UserVM result = new UserVM();
-            User tmp = GetUserById(id);
-            if (tmp != null)
-            {
-                result.Id = tmp.Id;
-                result.IsActive = tmp.IsActive;
-                result.Email = tmp.Email;
-                result.EmailConfirmed = tmp.EmailConfirmed;
-                result.Password = tmp.PasswordHash;
-                result.Phone = tmp.Phone;
-                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
-                result.UserName = tmp.UserName;
-                result.Nickname = tmp.Nickname;
-                result.ProfilePic = tmp.ProfilePic;
-                result.Quote = tmp.Quote;
-
-                return result;
-            }
-            return null;
+            return ConvertUserToVM(GetUserById(userId));
         }
 
         public User GetUserByUserName(string userName)
@@ -542,7 +553,15 @@ namespace SCMS.Datas
             return _users.FirstOrDefault(u => u.UserName == userName);
         }
 
-        public string AddUser(UserVM user, string role)
+        //public UserVM AddUser(UserVM user, string role)
+        //{
+        //    user.Id = _users.Max(c => c.Id) + 1;
+        //    _users.Add(ConvertVMToUser(user));
+        //    user.Result = ReturnSuccess();
+        //    return user;
+        //}
+
+        public UserVM AddUser(UserVM user, string role)
         {
             User userTmp = new User();
             userTmp.UserName = user.UserName;
@@ -551,40 +570,42 @@ namespace SCMS.Datas
             userTmp.Phone = user.Phone;
             userTmp.Quote = user.Quote;
             userTmp.ProfilePic = user.ProfilePic;
-            userTmp.PasswordHash = user.Password;
+            userTmp.PasswordHash = user.PasswordHash;
             userTmp.IsActive = true;
+            userTmp.Id = _users.Max(c => c.Id) + 1;
 
             _users.Add(userTmp);
-            return user.Id;
+            user.Result = ReturnSuccess();
+            return user;
         }
 
-        public async Task<bool> DeactivateUser(string userId)
+        public bool DeactivateUser(string userName)
         {
-            User user = GetUserById(userId);
+            User user = GetUserByUserName(userName);
             if (user != null)
             {
                 user.IsActive = false;
                 _users.RemoveAll(u => u.Id == user.Id);
                 _users.Add(user);
             }
-            return await Task.FromResult(true);
+            return true;
         }
 
-        public async Task<bool> ReactivateUser(string userId)
+        public bool ReactivateUser(string userName)
         {
-            User user = GetUserById(userId);
+            User user = GetUserByUserName(userName);
             if (user != null)
             {
                 user.IsActive = true;
                 _users.RemoveAll(u => u.Id == user.Id);
                 _users.Add(user);
             }
-            return await Task.FromResult(true);
+            return true;
         }
 
-        public bool ChangePassword(string userId, string currentPassword, string newPassword)
+        public bool ChangePassword(string userName, string currentPassword, string newPassword)
         {
-            User user = GetUserById(userId);
+            User user = GetUserByUserName(userName);
             if (user != null && user.PasswordHash == currentPassword)
             {
                 user.PasswordHash = newPassword;
@@ -595,7 +616,14 @@ namespace SCMS.Datas
             return false;
         }
 
-        public async Task<bool> UpdateUser(UserVM user, string role)
+        public bool UpdateUser(User user)
+        {
+            _users.RemoveAll(u => u.Id == user.Id);
+            _users.Add(user);
+            return true;
+        }
+
+        public UserVM UpdateUser(UserVM user, string role)
         {
             _users.RemoveAll(u => u.Id == user.Id);
 
@@ -608,43 +636,43 @@ namespace SCMS.Datas
             userTmp.ProfilePic = user.ProfilePic;
 
             _users.Add(userTmp);
-
-            return await Task.FromResult(true);
+            user.Result = ReturnSuccess();
+            return user;
         }
-        
-        public bool UpdateUser(UserVMEdit user, string role)
+
+        public bool DeleteUser(string userId)
         {
-            _users.RemoveAll(u => u.Id == user.Id);
-
-            User userTmp = new User();
-            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-            userTmp.Email = user.Email;
-            userTmp.Phone = user.Phone;
-            userTmp.Quote = user.Quote;
-            userTmp.ProfilePic = user.ProfilePic;
-
-            _users.Add(userTmp);
-
+            _users.RemoveAll(u => u.Id == userId);
             return true;
         }
 
-        public async Task<bool> DeleteUser(string userId)
+        public bool Login(string userName, string password)
         {
-            _users.RemoveAll(u => u.Id == userId);
-            return await Task.FromResult(true);
+            if (_users.Any(u => u.UserName == userName && u.PasswordHash == password))
+            {
+                var userMgr = HttpContext.Current.GetOwinContext().GetUserManager<UserManager<User>>();
+                //User user = _users.FirstOrDefault(u => u.UserName == userName);
+                User user = userMgr.Find(userName, password);
+                var identity = userMgr.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                var authManager = HttpContext.Current.GetOwinContext().Authentication;
+                authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
+                CurrentUser.User = user;
+                return true;
+            }
+            return false;
         }
 
-        public async Task<bool> Login(string userId, string password)
+
+        public bool Logout()
         {
-            if (_users.Any(u => u.Id == userId && u.PasswordHash == password))
-            {
-                User user = _users.FirstOrDefault(u => u.Id == userId);
-                CurrentUser.User = user;
-                return await Task.FromResult(true);
-            }
-            return await Task.FromResult(false);
+            var ctx = HttpContext.Current.GetOwinContext();
+            var authMgr = ctx.Authentication;
+            authMgr.SignOut("ApplicationCookie");
+
+            return true;
         }
         #endregion
+
         #region Blog
 
         public List<Blog> GetBlogList()
