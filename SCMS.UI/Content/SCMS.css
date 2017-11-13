@@ -24,3 +24,6 @@ body {
 a {
 	color: black;
 }
+#nav li:hover > ul {
+	display: block;
+}
