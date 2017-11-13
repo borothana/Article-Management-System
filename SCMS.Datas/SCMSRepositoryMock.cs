@@ -52,19 +52,19 @@ namespace SCMS.Datas
         static List<Story> _stories = new List<Story> {
             new Story{StoryId = 1, CategoryId = _categories[0].CategoryId, Category = _categories[0],  Title = "How to make a creemy cubcake",
                         Content = "Creemy cubcake blah blah blah....", IntimacyId = _intimacies[0].IntimacyId, Intimacy = _intimacies[0], Picture = null,
-                        ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
             new Story{StoryId = 2, CategoryId = _categories[1].CategoryId, Category = _categories[1],  Title = "My love story",
                         Content = "When I first meet her....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
-                        ApproveStatue = 'Y', NoView = 5000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'P', NoView = 5000, Hashtags = _hashtags, UserId = _users[0].Id},
             new Story{StoryId = 3, CategoryId = _categories[2].CategoryId, Category = _categories[2],  Title = "Angkor Wat",
                         Content = "In 11th century....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
-                        ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
             new Story{StoryId = 4, CategoryId = _categories[3].CategoryId, Category = _categories[3],  Title = "Discover Mars",
                         Content = "A group of scientist from USA, Russia and China....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
-                        ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
             new Story{StoryId = 5, CategoryId = _categories[4].CategoryId, Category = _categories[4],  Title = "Mr and Mrs Poor",
                         Content = "Once upon time....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
-                        ApproveStatue = 'Y', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
 
         };
         static List<Hashtag> _hashtags = new List<Hashtag> {
