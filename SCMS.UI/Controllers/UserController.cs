@@ -14,10 +14,9 @@ namespace SCMS.UI.Controllers
     {
         ISCMS _repo = SCMSFactory.Create();
 
-
         public ActionResult List()
         {
-            List<User> model = _repo.GetUserListByRole(Role.admin.ToString());
+            List<User> model = _repo.GetUserListByRole("admin");
             return View(model);
         }
 
@@ -30,16 +29,17 @@ namespace SCMS.UI.Controllers
         [HttpPost]
         public ActionResult Add(UserVM model)
         {
+            ModelState.Remove("Nickname");
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            model.IsActive = true;
-            if( _repo.AddUser(model, Role.member.ToString()) != "")
+
+            if (_repo.AddUser(model, "admin").Result.Success)
             {
                 return RedirectToAction("List");
             }
-            return View(model);            
+            return View(model);
         }
 
         [HttpGet]
@@ -56,24 +56,25 @@ namespace SCMS.UI.Controllers
             {
                 _repo.DeactivateUser(model.UserName);
             }
-            else{
+            else
+            {
                 _repo.ReactivateUser(model.UserName);
             }
             return RedirectToAction("List");
         }
 
-        [HttpGet]
-        public ActionResult Delete(string userName)
-        {
-            User user = _repo.GetUserByUserName(userName);
-            return View(user);
-        }
+        //[HttpGet]
+        //public ActionResult Delete(string userName)
+        //{
+        //    User user = _repo.GetUserByUserName(userName);
+        //    return View(user);
+        //}
 
-        [HttpPost]
-        public ActionResult Delete(User model)
-        {
-            _repo.DeleteUser(model.Id);
-            return RedirectToAction("List"); 
-        }
+        //[HttpPost]
+        //public ActionResult Delete(User model)
+        //{
+        //    _repo.DeleteUser(model.Id);
+        //    return RedirectToAction("List"); 
+        //}
     }
 }

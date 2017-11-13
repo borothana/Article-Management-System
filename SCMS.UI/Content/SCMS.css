@@ -1,29 +1,51 @@
 #featureStory{
     width: 95%;
     margin-left: 25px;
-
-
 }
+
 #featureButton{
-    padding-left: 30px;
-    
+    padding-left: 30px;    
 }
+
 #title {
 	font-size:x-large;
-	color: black;
 }
+
 body {
 	background-image:url('Img/background.jpg');
 	background-repeat: no-repeat;
 	background-position:center;
 	background-size:auto;
 }
+
 #searchField {
 	float:left;
 }
-a {
-	color: black;
-}
+
 #nav li:hover > ul {
 	display: block;
+}
+
+button {
+    width: 70px;
+}
+
+.divSave {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.divError {
+    margin-top: 10px;
+    color: red
+}
+
+.divShow {
+    border: solid;
+    margin-top: 10px
+}
+
+.divImgSmall {
+    width: 100px;
+    height: 100px
 }

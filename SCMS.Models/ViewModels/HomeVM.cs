@@ -22,6 +22,13 @@ namespace SCMS.Models.ViewModels
         public List<SelectListItem> StoryItems { get; set; }
         public List<SelectListItem> UserItems { get; set; }
 
+
+        public List<int> CategoryIdSearch { get; set; }
+        public List<int> IntimacyIdSearch { get; set; }
+        public string UserNameSearch { get; set; }
+        public string HashtagSearch { get; set; }
+        public string TitleSearch { get; set; }
+
         public HomeVM()
         {
             CategoryItems = new List<SelectListItem>();

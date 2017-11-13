@@ -6,18 +6,19 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h3>Delete Category</h3>
-        @Html.ActionLink("Return to List", "List", "Intimacy")
+        <h3>Delete Category</h3>        
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
-        @using (Html.BeginForm())
+    <div class="col-xs-4">
+        @using (Html.BeginForm("Delete", "Intimacy", FormMethod.Post))
         {
             @Html.HiddenFor(c => c.IntimacyId)
             <p>Are you sure that you wish to delete intimacy @Html.DisplayFor(d => d.Description)?</p>
-            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-            @Html.ActionLink("Cancel", "List", "Intimacy", null, new { @class = "btn btn-sm btn-info" })
+            <div class="divSave">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                @Html.ActionLink("Cancel", "List", "Intimacy", null, new { @class = "btn btn-info" })
+            </div>
         }
     </div>
 </div>     

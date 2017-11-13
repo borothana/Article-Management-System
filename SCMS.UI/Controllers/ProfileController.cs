@@ -20,16 +20,14 @@ namespace SCMS.UI.Controllers
             return View(new UserVM());
         }
 
-
         [HttpPost]
         public ActionResult SignUp(UserVM model)
         {
             if (ModelState.IsValid)
-            {
-                string id = _repo.AddUser(model, Role.member.ToString());
-                if (!string.IsNullOrEmpty(id))
+            {               
+                if (_repo.AddUser(model, Role.member.ToString()).Result.Success)
                 {
-                    _repo.Login(model.UserName, model.Password);
+                    _repo.Login(model.UserName, model.PasswordHash);
                     return RedirectToAction("Index", "Home");
                 }                
             }
@@ -39,16 +37,16 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            UserVMEdit model = _repo.GetUserVMEditById(CurrentUser.User.Id);
+            UserVM model = _repo.GetUserVMEditById(CurrentUser.User.Id);
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(UserVMEdit model)
+        public ActionResult Edit(UserVM model)
         {
             if (ModelState.IsValid)
             {                
-                if (_repo.UpdateUser(model, Role.member.ToString()))
+                if (_repo.UpdateUser(model, Role.member.ToString()).Result.Success)
                 {
                     return RedirectToAction("Index", "Home");
                 }
