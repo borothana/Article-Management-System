@@ -1,4 +1,4 @@
-﻿@model SCMS.Models.ViewModels.HomeVM
+﻿@model SCMS.Models.ViewModels.BlogVM
 @{
 	ViewBag.Title = "Index";
 }
@@ -87,15 +87,13 @@
 				</h4>
 			</center>
 
-			@foreach (var s in Model.Story)
+			@foreach(var b in Model.Blog)
 			{
 				<div class="row" style="background-color:transparent;">
-					<a href="@Url.Action("StoryView", "StoryView")" id="title">@s.Title</a><br />
-					<span class="label label-danger">@s.Category.Description</span>
-					<span class="label label-primary">@s.HashtagWord</span><br />
-					<span>Post by: @Model.User.FirstOrDefault(u => u.Id == s.UserId).Nickname </span>
+					<a href="@Url.Action("Blog", "Blog")" id="title">@b.Title</a><br />
+					<span>Post by: @Model.User.FirstOrDefault(u => u.Id == b.UserId).Nickname </span>
 					<br />
-					@s.Content
+					@b.Content
 					<br />
 					<hr />
 				</div>
@@ -103,7 +101,6 @@
 			}
 			<hr />
 		</div>
-		@*}*@
 	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

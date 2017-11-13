@@ -681,12 +681,25 @@ namespace SCMS.Datas
 
         public bool UpdateBlog(Blog blog)
         {
-            throw new NotImplementedException();
+            Blog update = new Blog()
+            {
+                BlogId = blog.BlogId,
+                Title = blog.Title,
+                Content = blog.Content,
+                UserId = blog.UserId,
+                User = blog.User
+
+            };
+
+            _blogs.RemoveAll(b => b.BlogId == update.BlogId);
+            _blogs.Add(update);
+            return true;
         }
 
         public bool DeleteBlog(int id)
         {
-            throw new NotImplementedException();
+            _blogs.RemoveAll(b => b.BlogId == id);
+            return true;
         }
 
         #endregion
