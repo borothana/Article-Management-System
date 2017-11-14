@@ -21,7 +21,7 @@ namespace SCMS.Datas
 
         static List<User> _users = new List<User>
         {
-            new User { Id = "f9095c91-400e-4519-b844-7217afed26b9", UserName = "scms", Nickname = "scms", Email = "scms@gmail.com", PasswordHash = "123456", IsActive = true },
+            new User { Id = "dee799ce-926f-4204-bcae-964219474ad2", UserName = "scms", Nickname = "scms", Email = "scms@gmail.com", PasswordHash = "123456", IsActive = true },
             new User { Id = "Na", UserName = "Na", Nickname = "Na", Email = "na@gmail.com", PasswordHash = "123456", IsActive = true },
             new User { Id = "Nik", UserName = "Nik", Nickname = "Nik", Email = "nik@gmail.com", PasswordHash = "123456", IsActive = false },
             new User { Id = "Javier", UserName = "Javier", Nickname = "Javier", Email = "javier@gmail.com", PasswordHash = "123456" , IsActive = true}
