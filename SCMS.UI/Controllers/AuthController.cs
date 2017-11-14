@@ -22,28 +22,35 @@ namespace SCMS.UI.Controllers
         public ActionResult Login()
         {
             var model = new LoginVM();
+            model.Result = _repo.ReturnSuccess();
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Login(LoginVM model)
         {
+            model.Result = _repo.ReturnSuccess();
             if (ModelState.IsValid)
             {
-                if (_repo.Login(model.UserName, model.Password).Result)
+                if (_repo.Login(model.UserName, model.PasswordHash))
                 {
-                    if (String.IsNullOrEmpty(model.ReturnUrl) || !Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(Url.Action("Index", "Home"));
-                    }
+                    return Redirect(Url.Action("Index", "Home"));
+
                 }
                 else
                 {
-                    ModelState.AddModelError("Auth", "Incorrect email or password, please try again.");
+                    ModelState.AddModelError("Auth", "Incorrect username or password!");
+                    model.Result.ErrorMessage = "Incorrect username or password!";
                 }
             }
-            return View(model);
 
+            return View(model);
+        }
+
+        public ActionResult LogOut()
+        {
+            _repo.Logout();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

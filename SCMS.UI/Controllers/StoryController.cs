@@ -17,7 +17,7 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<Story> model = _repo.GetStoryByUser(CurrentUser.User.Id);
+            List<Story> model = _repo.GetStoryList();
             return View(model);
         }
 

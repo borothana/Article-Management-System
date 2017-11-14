@@ -6,19 +6,21 @@
 <div class="row">
     <div class="col-xs-12">
         <h3>Edit Category</h3>
-        @Html.ActionLink("Return to List", "List", "Category")
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-3">
         @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
         {
             @Html.HiddenFor(c => c.CategoryId)
             <label>Description</label>
             @Html.TextBoxFor(d => d.Description, new { @class = "form-control" })
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-            @Html.ActionLink("Cancel", "List", "Category", null, new { @class = "btn btn-sm btn-info" })
+            <hr />
+            <div class="divSave">
+                <button type="submit" class="btn btn-primary">Save</button>
+                @Html.ActionLink("Cancel", "List", "Category", null, new { @class = "btn btn-info" })
+            </div>
         }
     </div>
 </div>

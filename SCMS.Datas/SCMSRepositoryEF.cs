@@ -13,12 +13,29 @@ using Microsoft.Owin.Security;
 using System.Web;
 using System.Web.Mvc;
 using SCMS.Models.ViewModels;
+using System.IO;
 
 namespace SCMS.Datas
 {
     public class SCMSRepositoryEF : ISCMS
     {
         SCMSDBContext _ctx = new SCMSDBContext();
+
+        #region "Other"
+        public Response ReturnSuccess()
+        {
+            return new Response() { Success = true, ErrorMessage = "" };
+        }
+
+        public byte[] ConvertImgToByte(HttpPostedFileBase file)
+        {
+            byte[] imageByte = null;
+            BinaryReader rdr = new BinaryReader(file.InputStream);
+            imageByte = rdr.ReadBytes((int)file.ContentLength);
+            return imageByte;
+        }
+        #endregion
+
 
         #region "News"
         public List<Info> GetInfoList()
@@ -61,8 +78,7 @@ namespace SCMS.Datas
             return true;
         }
         #endregion
-
-
+        
         #region "Category"
         public List<Category> GetCategoryList()
         {
@@ -409,11 +425,9 @@ namespace SCMS.Datas
             return _ctx.Users.ToList();
         }
 
-
         public List<User> GetUserListByRole(string role)
         {
-            //Need Modify to get by role
-            return GetUserList();
+            return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == role)).ToList();
         }
 
         public User GetUserById(string userId)
@@ -421,48 +435,9 @@ namespace SCMS.Datas
             return GetUserList().FirstOrDefault(u => u.Id == userId);
         }
 
-        public UserVM GetUserVMById(string id)
+        public UserVM GetUserVMEditById(string userId)
         {
-            UserVM result = new UserVM();
-            User tmp = GetUserById(id);
-            if(tmp != null)
-            {
-                result.Id = tmp.Id;
-                result.IsActive = tmp.IsActive;
-                result.Email = tmp.Email;
-                result.EmailConfirmed = tmp.EmailConfirmed;
-                result.Password = tmp.PasswordHash;
-                result.Phone = tmp.Phone;
-                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
-                result.UserName = tmp.UserName;
-                result.Nickname = tmp.Nickname;
-                result.ProfilePic = tmp.ProfilePic;
-                result.Quote = tmp.Quote;
-
-                return result;
-            }
-            return null;
-        }
-
-        public UserVMEdit GetUserVMEditById(string id)
-        {
-            UserVMEdit result = new UserVMEdit();
-            User tmp = GetUserById(id);
-            if (tmp != null)
-            {
-                result.Id = tmp.Id;
-                result.Email = tmp.Email;
-                result.EmailConfirmed = tmp.EmailConfirmed;
-                result.Phone = tmp.Phone;
-                result.PhoneNumberConfirmed = tmp.PhoneNumberConfirmed;
-                result.UserName = tmp.UserName;
-                result.Nickname = tmp.Nickname;
-                result.ProfilePic = tmp.ProfilePic;
-                result.Quote = tmp.Quote;
-
-                return result;
-            }
-            return null;
+            return ConvertUserToVM(GetUserById(userId));
         }
 
         public User GetUserByUserName(string userName)
@@ -470,82 +445,145 @@ namespace SCMS.Datas
             return GetUserList().FirstOrDefault(u => u.UserName == userName);
         }
 
-        public string AddUser(UserVM user, string role)
+        public User ConvertVMToUser(UserVM input)
+        {
+            User result = new User()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote
+            };
+            return result;
+        }
+
+        public UserVM ConvertUserToVM(User input)
+        {
+            UserVM result = new UserVM()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote,
+                Result = ReturnSuccess()
+            };
+            return result;
+        }
+
+        public UserVM AddUser(UserVM user, string role)
         {
             var userMgr = new UserManager<SCMS.Models.User>(new UserStore<SCMS.Models.User>(_ctx));
 
             //if user name or email not existed
             if (!userMgr.Users.Any(u => u.UserName == user.UserName))
             {
-                User userTmp = new User();
-                userTmp.UserName = user.UserName;
-                userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-                userTmp.Email = user.Email;
-                userTmp.Phone = user.Phone;
-                userTmp.Quote = user.Quote;
-                userTmp.PasswordHash = userMgr.PasswordHasher.HashPassword(user.Password);
-                userTmp.ProfilePic = user.ProfilePic;
+                user.IsActive = true;
+                user.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+                user.PasswordHash = userMgr.PasswordHasher.HashPassword(user.PasswordHash);
+                userMgr.Create(ConvertVMToUser(user));
 
-                userTmp.IsActive = true;
-                userMgr.Create(userTmp);
-
-                //We need to get the ID of the user after user is created
                 var tmpuser = userMgr.Users.Single(u => u.UserName == user.UserName);
                 if (!tmpuser.Roles.Any(r => r.RoleId == role))
                 {
                     userMgr.AddToRole(tmpuser.Id, role);
-                    return tmpuser.Id;
+                    return ConvertUserToVM(tmpuser);
                 }
             }
 
-            return "";
+            UserVM tmp = new UserVM();
+            tmp.Result = ReturnSuccess();
+            tmp.Result.Success = false;
+            tmp.Result.ErrorMessage = "Cannot create user";
+            return null;
         }
 
-        public async Task<bool> UpdateUser(UserVM user, string role)
-        {
-            var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-            User userTmp = await userMgr.FindByIdAsync(user.Id);
-            if (userTmp == null)
-            {
-                return false;
-            }
-            userTmp.UserName = user.UserName;
-            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-            userTmp.Email = user.Email;
-            userTmp.Phone = user.Phone;
-            userTmp.Quote = user.Quote;
-            userTmp.ProfilePic = user.ProfilePic;
-            var result = await userMgr.UpdateAsync(userTmp);
-            if (!result.Succeeded)
-            {
-                return false;
-            }
-            return true;
-        }
+        //public string AddUser(UserVM user, string role)
+        //{
+        //    var userMgr = new UserManager<SCMS.Models.User>(new UserStore<SCMS.Models.User>(_ctx));
 
+        //    //if user name or email not existed
+        //    if (!userMgr.Users.Any(u => u.UserName == user.UserName))
+        //    {
+        //        User userTmp = new User();
+        //        userTmp.UserName = user.UserName;
+        //        userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+        //        userTmp.Email = user.Email;
+        //        userTmp.Phone = user.Phone;
+        //        userTmp.Quote = user.Quote;
+        //        userTmp.PasswordHash = userMgr.PasswordHasher.HashPassword(user.Password);
+        //        userTmp.ProfilePic = user.ProfilePic;
 
-        public bool UpdateUser(UserVMEdit user, string role)
+        //        userTmp.IsActive = true;
+        //        userMgr.Create(userTmp);
+
+        //        //We need to get the ID of the user after user is created
+        //        var tmpuser = userMgr.Users.Single(u => u.UserName == user.UserName);
+        //        if (!tmpuser.Roles.Any(r => r.RoleId == role))
+        //        {
+        //            userMgr.AddToRole(tmpuser.Id, role);
+        //            return tmpuser.Id;
+        //        }
+        //    }
+
+        //    return "";
+        //}
+            
+        public UserVM UpdateUser(UserVM user, string role)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
             User userTmp = userMgr.FindById(user.Id);
             if (userTmp == null)
             {
-                return false;
+                user.Result = ReturnSuccess();
+                user.Result.Success = false;
+                user.Result.ErrorMessage = "User not found";
+                return user;
             }
+
             userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-            userTmp.Email = user.Email;
-            userTmp.Phone = user.Phone;
-            userTmp.Quote = user.Quote;
-            userTmp.ProfilePic = user.ProfilePic;
             var result = userMgr.Update(userTmp);
+            user.Result = ReturnSuccess();
+            if (!result.Succeeded)
+            {
+                user.Result.Success = false;
+                user.Result.ErrorMessage = "Cannot update profile";
+            }
             
-            return true;
+            return user;
         }
 
-        public bool ChangePassword(string userId, string currentPassword, string newPassword)
+        //public async Task<bool> UpdateUser(UserVM user, string role)
+        //{
+        //    var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
+        //    User userTmp = await userMgr.FindByIdAsync(user.Id);
+        //    if (userTmp == null)
+        //    {
+        //        return false;
+        //    }
+        //    userTmp.UserName = user.UserName;
+        //    userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+        //    userTmp.Email = user.Email;
+        //    userTmp.Phone = user.Phone;
+        //    userTmp.Quote = user.Quote;
+        //    userTmp.ProfilePic = user.ProfilePic;
+        //    var result = await userMgr.UpdateAsync(userTmp);
+        //    if (!result.Succeeded)
+        //    {
+        //        return false;
+        //    }
+        //    return true;
+        //}
+
+        public bool ChangePassword(string userName, string currentPassword, string newPassword)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-            User user = userMgr.Find(userId, currentPassword);
+            User user = userMgr.Find(userName, currentPassword);
             if (user != null)
             {
                 user.PasswordHash = userMgr.PasswordHasher.HashPassword(newPassword);
@@ -554,6 +592,7 @@ namespace SCMS.Datas
             }
             return false;
         }
+
 
         //public async Task<bool> ChangePassword(string userId, string currentPassword, string newPassword)
         //{
@@ -571,45 +610,45 @@ namespace SCMS.Datas
         //    return await Task.FromResult(false);
         //}
 
-        public async Task<bool> DeactivateUser(string userName)
+        public bool DeactivateUser(string userName)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-            User user = await userMgr.FindByNameAsync(userName);
+            User user = userMgr.FindByName(userName);
             if (user == null)
             {
                 return false;
             }
             user.IsActive = false;
-            var result = await userMgr.UpdateAsync(user);
+            var result = userMgr.Update(user);
             return result.Succeeded;
         }
 
 
-        public async Task<bool> ReactivateUser(string userName)
+        public bool ReactivateUser(string userName)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-            User user = await userMgr.FindByNameAsync(userName);
+            User user = userMgr.FindByName(userName);
             if (user == null)
             {
                 return false;
             }
             user.IsActive = true;
-            var result = await userMgr.UpdateAsync(user);
+            var result = userMgr.Update(user);
             return result.Succeeded;
         }
 
-        public async Task<bool> DeleteUser(string userId)
+        public bool DeleteUser(string userId)
         {
             var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-            User user = await userMgr.FindByIdAsync(userId);
+            User user = userMgr.FindById(userId);
             var logins = user.Logins;
-            var rolesForUser = await userMgr.GetRolesAsync(userId);
+            var rolesForUser = userMgr.GetRoles(userId);
 
             using (var transaction = _ctx.Database.BeginTransaction())
             {
                 foreach (var login in logins.ToList())
                 {
-                    await userMgr.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                    userMgr.RemoveLogin(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
                 }
 
                 if (rolesForUser.Count() > 0)
@@ -617,31 +656,45 @@ namespace SCMS.Datas
                     foreach (var item in rolesForUser.ToList())
                     {
                         // item should be the name of the role
-                        var result = await userMgr.RemoveFromRoleAsync(user.Id, item);
+                        var result = userMgr.RemoveFromRole(user.Id, item);
                     }
                 }
 
-                await userMgr.DeleteAsync(user);
+                userMgr.Delete(user);
                 transaction.Commit();
             }
             return true;
         }
 
-        public async Task<bool> Login(string userId, string password)
+        public bool Login(string userName, string password)
         {
             var userMgr = HttpContext.Current.GetOwinContext().GetUserManager<UserManager<User>>();
-            var user = userMgr.Find(userId, password);
+            var user = userMgr.Find(userName, password);
             if (user != null)
             {
                 var identity = userMgr.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 var authManager = HttpContext.Current.GetOwinContext().Authentication;
                 authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
                 CurrentUser.User = user;
-                return await Task.FromResult(true);
+                return true;
             }
-            return await Task.FromResult(false);
+            return false;
         }
+
+
+        public bool Logout()
+        {
+            var ctx = HttpContext.Current.GetOwinContext();
+            var authMgr = ctx.Authentication;
+            authMgr.SignOut("ApplicationCookie");
+
+            return true;
+        }
+
+
+
         #endregion
+
         #region Blog
         public List<Blog> GetBlogList()
         {

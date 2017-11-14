@@ -19,6 +19,27 @@
 </head>
 
 <body>
+<<<<<<< HEAD
+=======
+	<div class="container-fluid">
+		@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+		{
+			<div class="col-sm-3" id="searchField">
+				<br />
+				<h5>Category</h5>
+				@*@for (int i = 0; i < Model.CategoryItems.Count; i++)*@
+				@foreach(var c in Model.Category)
+				{
+					<p>
+						@*@Html.CheckBoxFor(c => c.CategoryItems[i].Selected)
+						<span>@Model.CategoryItems[i].Text</span>
+						@Html.HiddenFor(c => c.CategoryItems[i].Value)*@
+						<input type="checkbox" name="category" id="category" />
+						<span>@c.Description</span>
+					</p>
+				}
+				<hr />
+>>>>>>> 944f90437e741c367b9408429f73082f40c5c17e
 
 		<div class="container-fluid">
 @using (Html.BeginForm("Index", "Home", FormMethod.Post))
@@ -93,6 +114,7 @@
 				@s.Content
 				<br />
 				<hr />
+<<<<<<< HEAD
 			</div>
 			<p></p>
 		}
@@ -101,6 +123,12 @@
 		</div>
 
 
+=======
+				</div>
+		}
+    </div>
+		
+>>>>>>> 944f90437e741c367b9408429f73082f40c5c17e
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 			crossorigin="anonymous"></script>

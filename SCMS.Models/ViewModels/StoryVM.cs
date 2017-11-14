@@ -20,6 +20,7 @@ namespace SCMS.Models.ViewModels
         public int CategoryId { get; set; }
         public int IntimacyId { get; set; }
         public string Title { get; set; }
+        [AllowHtml]
         public string Content { get; set; }
         public string HashtagWord { get; set; }
         public byte[] Picture { get; set; }

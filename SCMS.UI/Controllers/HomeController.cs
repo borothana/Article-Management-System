@@ -20,31 +20,23 @@ namespace SCMS.UI.Controllers
             viewModel.Intimacy = _repo.GetIntimacyList();
             viewModel.Story = _repo.GetStoryList();
             viewModel.User = _repo.GetUserList();
-            viewModel.CategoryIdSearch = new List<int>();
-            viewModel.IntimacyIdSearch = new List<int>();
+            //viewModel.CategoryIdSearch = new List<int>();
+            //viewModel.IntimacyIdSearch = new List<int>();
 
             return View(viewModel);
         }
+
         [HttpPost]
         public ActionResult Index(HomeVM model)
         {
             HomeVM viewModel = new HomeVM();
-            viewModel.Category = _repo.GetCategoryList().ToList();
+            viewModel.Category = _repo.GetCategoryList();
             viewModel.Intimacy = _repo.GetIntimacyList();
             viewModel.Story = _repo.GetStoryList();
             viewModel.User = _repo.GetUserList();
-            viewModel.CategoryIdSearch = new List<int>();
-            viewModel.IntimacyIdSearch = new List<int>();
 
             return View(viewModel);
         }
-        //public ActionResult CategoryList(int id)
-        //{
-        //    var viewModel = new HomeVM();
-        //    viewModel.Category = _repo.GetCategoryList().Where(c => c.CategoryId == id);
-        //    viewModel.Intimacy = _repo.GetIntimacyList().Where(i => i.IntimacyId == id);
-        //    return View(viewModel);
-        //}
         [HttpGet]
         public ActionResult StoryPage()
         {
