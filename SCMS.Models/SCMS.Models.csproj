@@ -82,6 +82,7 @@
     <Compile Include="Intimacy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Story.cs" />
+    <Compile Include="StorySearchParameters.cs" />
     <Compile Include="User.cs" />
     <Compile Include="ViewModels\BlogVM.cs" />
     <Compile Include="ViewModels\CategoryVM.cs" />

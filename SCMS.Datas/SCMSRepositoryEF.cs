@@ -691,6 +691,11 @@ namespace SCMS.Datas
             return true;
         }
 
+        public List<Story> QuickSearch(StorySearchParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

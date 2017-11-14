@@ -11,5 +11,6 @@ namespace SCMS.Models
     {
         public int IntimacyId { get; set; }
         public string Description { get; set; }
+        public bool isSelected { get; set; }
     }
 }

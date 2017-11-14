@@ -67,6 +67,7 @@ namespace SCMS.Models.Interface
         int AddStory(StoryVM storyVM);
         bool UpdateStory(StoryVM storyVM);
         bool DeleteStory(int StoryId);
+        List<Story> QuickSearch(StorySearchParameters parameters);
         #endregion
 
         #region "User"
