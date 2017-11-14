@@ -13,6 +13,7 @@ namespace SCMS.Models.Interface
         #region "Info"
         Info GetInfoById(int infoId);
         List<Info> GetInfoList();
+        List<Info> GetCurrentInfo();
         List<Info> GetInfoByDate(DateTime FD, DateTime TD);
         int AddInfo(Info info);
         bool UpdateInfo(Info info);
@@ -59,8 +60,8 @@ namespace SCMS.Models.Interface
 
         #region "Story"
         List<Story> GetStoryList();
-        List<Story> GetStoryByStatus(char type);
-        List<Story> GetStoryByUser(string userId);
+        List<StoryVM> GetStoryByStatus(char type);
+        List<Story> GetStoryByUserId(string userId);
         Story GetStoryById(int storyId);
         bool ApproveStory(int storyId, string feedback);
         bool DenyStory(int storyId, string feedback);
@@ -68,12 +69,14 @@ namespace SCMS.Models.Interface
         int AddStory(StoryVM storyVM);
         bool UpdateStory(StoryVM storyVM);
         bool DeleteStory(int StoryId);
+        List<StoryVM> GetStoryVMByUserId(string userId);
+        StoryVM ConvertStoryToVM(Story story);
         #endregion
 
         #region "User"
         List<User> GetUserList();
         User GetUserById(string userId);
-        UserVM GetUserVMEditById(string userId);
+        UserVM GetUserVMByUserName(string userName);
         User GetUserByUserName(string userName);
         List<User> GetUserListByRole(string role);
         UserVM AddUser(UserVM user, string role);
@@ -86,14 +89,6 @@ namespace SCMS.Models.Interface
         bool Logout();
         User ConvertVMToUser(UserVM input);
         UserVM ConvertUserToVM(User input);
-        #endregion
-
-        #region "Blog"
-        List<Blog> GetBlogList();
-        Blog GetBlogById(int id);
-        int AddBlog(Blog blog);
-        bool UpdateBlog(Blog blog);
-        bool DeleteBlog(int id);
-        #endregion
+        #endregion        
     }
 }

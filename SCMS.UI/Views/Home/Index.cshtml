@@ -86,7 +86,7 @@
 						<small>FEATURED STORY</small>
 					</h4>
 				</center>
-
+                <div style="text-align:right">@Html.ActionLink("Add new article", "Add", "Story", null, new { @class = "btn btn-primary" })</div>
 				@foreach (var s in Model.Story)
 				{
 					<div class="row" style="background-color:transparent;">

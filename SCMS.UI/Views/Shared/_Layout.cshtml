@@ -27,7 +27,10 @@
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Profile", "Profile", "Profile")</li>
+                                <li>@Html.ActionLink("Add new article", "Add", "Story")</li>
+                                <li>@Html.ActionLink("My article list", "List", "Story")</li>
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Edit Profile", "Edit", "Profile")</li>
                                 <li>@Html.ActionLink("Change Password", "ResetPassword", "ResetPassword")</li>
                             </ul>
                         </li>

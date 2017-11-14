@@ -43,6 +43,11 @@ namespace SCMS.Datas
             return _ctx.Infos.ToList();
         }
 
+        public List<Info> GetCurrentInfo()
+        {
+            return GetInfoList().Where(i => i.FDate <= DateTime.Now.Date && i.TDate >= DateTime.Now.Date).ToList();
+        }
+
         public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
         {
             return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
@@ -158,12 +163,18 @@ namespace SCMS.Datas
             return _ctx.Stories.ToList();
         }
 
-        public List<Story> GetStoryByStatus(char status)
+        public List<StoryVM> GetStoryByStatus(char status)
         {
-            return GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
         }
 
-        public List<Story> GetStoryByUser(string userId)
+        public List<Story> GetStoryByUserId(string userId)
         {
             return GetStoryList().Where(s => s.UserId == userId).ToList();
         }
@@ -171,6 +182,40 @@ namespace SCMS.Datas
         public Story GetStoryById(int storyId)
         {
             return GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
+        }
+
+        public StoryVM ConvertStoryToVM(Story story)
+        {
+            StoryVM storyVM = new StoryVM
+            {
+
+                StoryId = story.StoryId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
+        }
+        public List<StoryVM> GetStoryVMByUserId(string userId)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.UserId == userId).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
         }
 
         public StoryVM GetStoryVMById(int storyId)
@@ -435,9 +480,9 @@ namespace SCMS.Datas
             return GetUserList().FirstOrDefault(u => u.Id == userId);
         }
 
-        public UserVM GetUserVMEditById(string userId)
+        public UserVM GetUserVMByUserName(string userName)
         {
-            return ConvertUserToVM(GetUserById(userId));
+            return ConvertUserToVM(GetUserById(userName));
         }
 
         public User GetUserByUserName(string userName)
@@ -689,61 +734,8 @@ namespace SCMS.Datas
             authMgr.SignOut("ApplicationCookie");
 
             return true;
-        }
-
-
-
+        }        
         #endregion
-
-        #region Blog
-        public List<Blog> GetBlogList()
-        {
-            return _ctx.Blogs.ToList();
-        }
-
-        public Blog GetBlogById(int id)
-        {
-            return _ctx.Blogs.FirstOrDefault(b => b.BlogId == id);
-        }
-
-        public int AddBlog(Blog blog)
-        {
-            Blog newBlog = new Blog
-            {
-                BlogId = blog.BlogId,
-                Title = blog.Title,
-                Content = blog.Content,
-                UserId = blog.UserId,
-                User = blog.User
-            };
-            _ctx.Blogs.Add(blog);
-            _ctx.SaveChanges();
-            return _ctx.Blogs.Max(b => b.BlogId);
-        }
-
-        public bool UpdateBlog(Blog blog)
-        {
-            Blog updateBlog = GetBlogById(blog.BlogId);
-            updateBlog.Title = blog.Title;
-            updateBlog.Content = blog.Content;
-            updateBlog.UserId = blog.UserId;
-            updateBlog.User = blog.User;
-
-            return true;
-        }
-
-        public bool DeleteBlog(int id)
-        {
-            Blog blog = GetBlogById(id);
-            if(blog != null)
-            {
-                _ctx.Entry(blog).State = System.Data.Entity.EntityState.Deleted;
-                _ctx.SaveChanges();
-                
-            }
-            return true;
-        }
-
-        #endregion
+        
     }
 }

@@ -37,13 +37,15 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            UserVM model = _repo.GetUserVMEditById(CurrentUser.User.Id);
+            UserVM model = _repo.GetUserVMByUserName(CurrentUser.User.UserName);
             return View(model);
         }
 
         [HttpPost]
         public ActionResult Edit(UserVM model)
         {
+            ModelState.Remove("PasswordHash");
+            ModelState.Remove("UserName");
             if (ModelState.IsValid)
             {                
                 if (_repo.UpdateUser(model, Role.member.ToString()).Result.Success)

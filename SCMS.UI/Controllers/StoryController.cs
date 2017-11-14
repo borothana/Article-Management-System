@@ -17,7 +17,7 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<Story> model = _repo.GetStoryByUser(CurrentUser.User.Id);
+            List<StoryVM> model = _repo.GetStoryVMByUserId(CurrentUser.User.Id);
             return View(model);
         }
 
@@ -89,7 +89,7 @@ namespace SCMS.UI.Controllers
         {
             if (_repo.DeleteStory(model.StoryId))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("List", "Story");
             }
             else
             {

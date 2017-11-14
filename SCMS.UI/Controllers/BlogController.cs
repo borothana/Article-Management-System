@@ -1,4 +1,5 @@
 ﻿using SCMS.Datas;
+using SCMS.Models;
 using SCMS.Models.Interface;
 using SCMS.Models.ViewModels;
 using System;
@@ -13,17 +14,11 @@ namespace SCMS.UI.Controllers
     {
         ISCMS _repo = SCMSFactory.Create();
 
-        // GET: Blog
+        [HttpGet]
         public ActionResult Blog()
         {
-            BlogVM blogVM = new BlogVM();
-            blogVM.Blog = _repo.GetBlogList();
-            blogVM.Category = _repo.GetCategoryList();
-            blogVM.Intimacy = _repo.GetIntimacyList();
-            blogVM.Story = _repo.GetStoryList();
-            blogVM.User = _repo.GetUserList();
-
-            return View(blogVM);
+            List<Info> model = _repo.GetCurrentInfo();            
+            return View(model);
         }
     }
 }
