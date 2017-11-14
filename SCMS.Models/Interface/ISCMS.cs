@@ -60,6 +60,7 @@ namespace SCMS.Models.Interface
 
         #region "Story"
         List<Story> GetStoryList();
+        List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag);
         List<StoryVM> GetStoryByStatus(char type);
         List<Story> GetStoryByUserId(string userId);
         Story GetStoryById(int storyId);

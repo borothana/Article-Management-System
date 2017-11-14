@@ -163,6 +163,19 @@ namespace SCMS.Datas
             return _ctx.Stories.ToList();
         }
 
+        public List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag)
+        {
+            string[] hash = hashTag.Split();
+            List<Story> result = (from s in GetStoryList().Where(s => s.ApproveStatue == 'Y')
+                                  where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
+                                    (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
+                                    (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
+                                    (hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
+                                  select s).ToList();
+
+            return result;
+        }
+
         public List<StoryVM> GetStoryByStatus(char status)
         {
             List<StoryVM> result = new List<StoryVM>();
