@@ -7,27 +7,60 @@
 <div class="row">
     <div class="col-xs-12">
         <h3>Add Information</h3>
-        @Html.ActionLink("Return to home page", "Home", "Home")
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        @using (Html.BeginForm("Add", "Info", FormMethod.Post))
-        {
-            @Html.ValidationSummary()
-            <div class="form-group">
-                <label>Title</label>
-                @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
-                <label>Display Start Date</label>
-                @Html.EditorFor(m => m.FDate, new { @class = "form-control", placeholder = "Display Start Date" })
-                <label>Display End Date</label>
-                @Html.EditorFor(m => m.TDate, new { @class = "form-control", placeholder = "Display End Date" })
-                <label>Story</label>
-                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description!" })
-                <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
-            </div>
-        }
     </div>
 </div>
 
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <!-- tinymce script reference -->
+    <script src="~/scripts/tinymce/tinymce.min.js"></script>
+    <!-- script to wire up your tinymce editor -->
+    <script type="text/javascript">
+        // initialize your tinymce editor with your preferred options
+        tinymce.init({
+            height: "450",
+            mode: "textareas",
+            theme: "modern",
+            // theme options
+            theme_advanced_buttons1: "bold,italic,underline, fontselect, fontsizeselect",
+            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|bullist, numlist,|indent,undo, redo,|link, unlink, image, cleanup|insertdate, inserttime, preview,|forecolor, backcolor",
+            theme_advanced_buttons3: "",
+            theme_advanced_buttons4: "insertfile, insertimage",
+            theme_advanced_toolbar_location: "top",
+            theme_advanced_toolbar_align: "left",
+            theme_advanced_statusbar_location: "bottom",
+            theme_advanced_resizing: true,
+        });
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("Add", "Info", FormMethod.Post))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            <label>Title</label>
+            <br/>
+            @Html.TextBoxFor(m => m.Title, htmlAttributes: new { style="width: 40%", placeholder = "Title" })
+            <br/>
+            <br/>
+            <label>Display Start Date</label>
+            <br/>
+            @Html.EditorFor(m => m.FDate, new { @class = "form-control", placeholder = "Display Start Date" })
+            <br/>
+            <br/>
+            <label>Display End Date</label>
+            <br />
+            @Html.EditorFor(m => m.TDate, new { @class = "form-control", placeholder = "Display End Date" })
+            <br/>
+            <br/>
+            <label>Story</label>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description!" })
+            <br/>
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+            @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
+        </div>
+    }
+</body>
+</html>
