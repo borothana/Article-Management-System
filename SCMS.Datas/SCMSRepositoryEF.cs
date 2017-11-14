@@ -170,7 +170,7 @@ namespace SCMS.Datas
                                   where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
                                     (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
                                     (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
-                                    (hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
+                                    (!string.IsNullOrEmpty(hashTag) && hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
                                   select s).ToList();
 
             return result;
