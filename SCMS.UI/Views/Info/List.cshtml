@@ -10,32 +10,37 @@
         @Html.ActionLink("Add Information", "Add", "Info", null, new { @class = "btn btn-primary" })
     </div>
 </div>
+
 <div class="row">
     <div class="col-xs-12">
-        <table class="table table-striped" style="width: auto;">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in Model)
-                {
+        @using (Html.BeginForm())
+        {
+            <table class="table table-striped" style="width: auto;">
+                <thead>
                     <tr>
-                        <td>@i.Title</td>
-                        <td>@i.Description</td>
-                        <td>@i.FDate.ToString("MMMM dd, yyyy")</td>
-                        <td>@i.TDate.ToString("MMMM dd, yyyy")</td>
-                        <td>@Html.ActionLink("Edit", "Edit", "Info", new { infoId = i.InfoId }, null)</td>
-                        <td>@Html.ActionLink("Delete", "Delete", "Info", new { infoId = i.InfoId }, null)</td>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model)
+                {
+
+                        <tr>
+                            <td>@i.Title</td>
+                            <td>@Html.Raw(HttpUtility.HtmlDecode(@i.Description))</td>
+                            <td>@i.FDate.Value.ToString("MMMM dd, yyyy")</td>
+                            <td>@i.TDate.Value.ToString("MMMM dd, yyyy")</td>
+                            <td>@Html.ActionLink("Edit", "Edit", "Info", new { infoId = i.InfoId }, null)</td>
+                            <td>@Html.ActionLink("Delete", "Delete", "Info", new { infoId = i.InfoId }, null)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
     </div>
 </div>
-

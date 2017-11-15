@@ -13,7 +13,7 @@
         {
             <div class="row" style="background-color:transparent;">
                 <b>@b.Title</b><br />
-                <span>@b.Description</span>
+                <span>@Html.Raw(HttpUtility.HtmlDecode(b.Description))</span>
             </div>
             <br />
         }

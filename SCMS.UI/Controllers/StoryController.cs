@@ -10,6 +10,7 @@ using SCMS.Models.ViewModels;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin,member")]
     public class StoryController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();

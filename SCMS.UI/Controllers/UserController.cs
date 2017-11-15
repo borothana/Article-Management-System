@@ -10,6 +10,7 @@ using SCMS.Datas;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UserController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();

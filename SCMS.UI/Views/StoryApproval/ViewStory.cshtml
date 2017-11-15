@@ -7,7 +7,6 @@
 <div class="row">
     <div class="col-xs-12">
         <h3>User Story For Approval</h3>
-        @Html.ActionLink("Return to List", "Index", "StoryApproval")
     </div>
 </div>
 
@@ -17,14 +16,18 @@
         {
             @Html.HiddenFor(c => c.StoryId)
             <br />
-            <label>Story To Approve/Deny: @Html.DisplayNameFor(n=>n.Title)</label>
+            <label>Title: @Html.DisplayFor(m => m.Title)</label>
             <br />
-            @Html.TextAreaFor(s => s.Content, 10, 40, htmlAttributes: new { style = "width: 80%; max-width: 80%" })
-            <br />
-            @Html.TextAreaFor(s => s.Feedback, 5, 20, htmlAttributes: new { style = "width: 25%; max-width: 25%" })
-            <br />
-            <button type="submit" class="btn btn-primary" name="Save" value="Approve">Approve</button>
-            <button type="submit" class="btn btn-primary" name="Denied" value="Denied" >Denied</button>
+            <span>@Html.Raw(HttpUtility.HtmlDecode(Model.Content))</span>
+            <br /><br />
+            <label>Feedback</label>@Html.ValidationMessageFor(m=>m.Feedback)
+            @Html.TextAreaFor(s => s.Feedback, new { @class = "form-control" })
+            <hr />
+            <div class="divSave">
+                <button type="submit" class="btn btn-primary" name="Save" value="Approve" style="width:80px" >Approve</button>
+                <button type="submit" class="btn btn-primary" name="Denied" value="Denied">Denied</button>
+                @Html.ActionLink("Cancel", "Index", "StoryApproval", null, new { @class = "btn btn-info" })
+            </div>
         }
     </div>
 </div>

@@ -39,29 +39,22 @@
         <div class="col-xs-12">
             @using (Html.BeginForm("Edit", "Info", FormMethod.Post))
             {
-                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.InfoId)
                 @Html.ValidationSummary()
                 <div class="form-group">
-                    @Html.HiddenFor(m => m.InfoId)
-                     <label>Title</label>
-                    <br/>
-                     @Html.TextBoxFor(m => m.Title, htmlAttributes: new { style = "width: 40%", placeholder = "Title" })                        
-                    <br />
-                    <label>Display Start Date</label>
-                    <br />
-                    @Html.EditorFor(m => m.FDate, new { @class = "form-control", placeholder = "Display Start Date" })
-                    <br />
-                    <br />
-                    <label>Display End Date</label>
-                    <br />
-                    @Html.EditorFor(m => m.TDate, new { @class = "form-control", placeholder = "Display End Date" })
-                    <br />
-                    <br />
-                    <label>Story</label>
-                    @Html.TextAreaFor(m => m.Description, htmlAttributes: new { style = "length: 50%", placeholder = "Description!" })
-                    <br />
-                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                    @Html.ActionLink("Cancel", "List", "Info", null, new { @class = "btn btn-info" })
+                    <label>Title</label>
+                    @Html.TextBoxFor(m => m.Title, null, new { @class = "form-control", placeholder = "Title" })
+                    <label>Display Start Date</label><br />
+                    @Html.EditorFor(m => m.FDate, null, new { @class = "form-control" })<br />
+                    <label>Display End Date</label><br />
+                    @Html.EditorFor(m => m.TDate, null, new { @class = "form-control" })<br />
+                    <label>Description</label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    <hr />
+                    <div class="divSave">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-info" })
+                    </div>
                 </div>
             }
         </div>

@@ -10,6 +10,7 @@ using SCMS.Datas;
 
 namespace SCMS.UI.Controllers
 {
+
     public class ProfileController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();
@@ -35,6 +36,7 @@ namespace SCMS.UI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "member")]
         public ActionResult Edit()
         {
             UserVM model = _repo.GetUserVMByUserName(CurrentUser.User.UserName);
@@ -42,6 +44,7 @@ namespace SCMS.UI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "member")]
         public ActionResult Edit(UserVM model)
         {
             ModelState.Remove("PasswordHash");

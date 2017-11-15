@@ -20,7 +20,7 @@
     <script type="text/javascript">
         // initialize your tinymce editor with your preferred options
         tinymce.init({
-            height: "450",
+            height: "400",
             mode: "textareas",
             theme: "modern",
             // theme options
@@ -36,31 +36,30 @@
     </script>
 </head>
 <body>
-    @using (Html.BeginForm("Add", "Info", FormMethod.Post))
-    {
-        @Html.ValidationSummary()
-        <div class="form-group">
-            <label>Title</label>
-            <br/>
-            @Html.TextBoxFor(m => m.Title, htmlAttributes: new { style="width: 40%", placeholder = "Title" })
-            <br/>
-            <br/>
-            <label>Display Start Date</label>
-            <br/>
-            @Html.EditorFor(m => m.FDate, new { @class = "form-control", placeholder = "Display Start Date" })
-            <br/>
-            <br/>
-            <label>Display End Date</label>
-            <br />
-            @Html.EditorFor(m => m.TDate, new { @class = "form-control", placeholder = "Display End Date" })
-            <br/>
-            <br/>
-            <label>Story</label>
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description!" })
-            <br/>
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-            @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                @using (Html.BeginForm("Add", "Info", FormMethod.Post))
+            {
+                    @Html.ValidationSummary()
+                    <div class="form-group">
+                        <label>Title</label>
+                        @Html.TextBoxFor(m => m.Title, null, new { @class = "form-control", placeholder = "Title" })
+                        <label>Display Start Date</label><br />
+                        @Html.EditorFor(m => m.FDate, null, new { @class = "form-control" })<br />
+                        <label>Display End Date</label><br />
+                        @Html.EditorFor(m => m.TDate, null, new { @class = "form-control" })<br />
+                        <label>Description</label>
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        <hr />
+                        <div class="divSave">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-info" })
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-    }
+    </div>
 </body>
 </html>

@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-4">
         @using (Html.BeginForm("SignUp", "Profile", FormMethod.Post))
         {
             <div class="form-group">
@@ -33,8 +33,8 @@
                 @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })
                 
                 <label>Password</label>
-                @Html.ValidationMessageFor(m => m.Password)
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                @Html.ValidationMessageFor(m => m.PasswordHash)
+                @Html.TextBoxFor(m => m.PasswordHash, new { @class = "form-control", placeholder = "Password" })
                 
                 <label>Confirm Password</label>
                 @Html.ValidationMessageFor(m => m.ConfirmPassword)
@@ -43,9 +43,11 @@
                 <label>Quote</label>
                 @Html.TextAreaFor(m => m.Quote, new { @class = "form-control", placeholder = "Quote" })
 
-
-                <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
+                <hr />
+                <div class="divSave">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-info" })
+                </div>
             </div>
         }
     </div>

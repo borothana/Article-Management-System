@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class IntimacyController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();

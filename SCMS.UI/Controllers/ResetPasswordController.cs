@@ -9,6 +9,7 @@ using SCMS.Datas;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin,member")]
     public class ResetPasswordController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();

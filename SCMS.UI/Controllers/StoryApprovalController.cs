@@ -12,6 +12,7 @@ using System.Xml.Linq;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class StoryApprovalController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();
@@ -31,15 +32,23 @@ namespace SCMS.UI.Controllers
             return View(model);
         }
         
-        public ActionResult Approve(StoryVM story, string Save, string Denied)
+        public ActionResult Approve(StoryVM model, string Save, string Denied)
         {
             if(!string.IsNullOrEmpty(Save))
             {
-                _repo.ApproveStory(story.StoryId, story.Feedback);
+                _repo.ApproveStory(model.StoryId, model.Feedback);
             }
             else
             {
-                _repo.DenyStory(story.StoryId, story.Feedback);
+                if (!string.IsNullOrEmpty(model.Feedback)){
+                    _repo.DenyStory(model.StoryId, model.Feedback);
+                }
+                else
+                {
+                    ModelState.AddModelError("Feedback", "Feedback is require");
+                    return RedirectToAction("ViewStory", new { id = model.StoryId }); 
+                }
+                
             }
             
             return RedirectToAction("Index");

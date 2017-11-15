@@ -21,7 +21,7 @@
     <script type="text/javascript">
         // initialize your tinymce editor with your preferred options
         tinymce.init({
-            height: "450",
+            height: "400",
             mode: "textareas",
             theme: "modern",
             // theme options
@@ -54,9 +54,11 @@
                 @Html.TextBoxFor(m => m.HashtagWord, new { @class = "form-control", placeholder = "Hashtag" })
                 <label>Story</label>
                 @Html.TextAreaFor(model => model.Content)
-                <br/>
-                <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-sm btn-info" })
+                <hr />
+                <div class="divSave">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @Html.ActionLink("Cancel", "List", "Story", null, new { @class = "btn btn-info" })
+                </div>
             </div>
         </div>
     }

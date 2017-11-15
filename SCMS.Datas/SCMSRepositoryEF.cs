@@ -21,6 +21,7 @@ namespace SCMS.Datas
     {
         SCMSDBContext _ctx = new SCMSDBContext();
 
+
         #region "Other"
         public Response ReturnSuccess()
         {
@@ -34,28 +35,37 @@ namespace SCMS.Datas
             imageByte = rdr.ReadBytes((int)file.ContentLength);
             return imageByte;
         }
+
+        public bool Login(string userName, string password)
+        {
+            var userMgr = HttpContext.Current.GetOwinContext().GetUserManager<UserManager<User>>();
+            var user = userMgr.Find(userName, password);
+            if (user != null)
+            {
+                var identity = userMgr.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                var authManager = HttpContext.Current.GetOwinContext().Authentication;
+                authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
+                CurrentUser.User = user;
+                return true;
+            }
+            return false;
+        }
+
+        public bool Logout()
+        {
+            var ctx = HttpContext.Current.GetOwinContext();
+            var authMgr = ctx.Authentication;
+            authMgr.SignOut("ApplicationCookie");
+
+            return true;
+        }
+
         #endregion
 
-
-        #region "News"
+        #region "Info"
         public List<Info> GetInfoList()
         {
             return _ctx.Infos.ToList();
-        }
-
-        public List<Info> GetCurrentInfo()
-        {
-            return GetInfoList().Where(i => i.FDate <= DateTime.Now.Date && i.TDate >= DateTime.Now.Date).ToList();
-        }
-
-        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
-        {
-            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
-        }
-
-        public Info GetInfoById(int InfoId)
-        {
-            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
         }
 
         public int AddInfo(Info info)
@@ -82,17 +92,27 @@ namespace SCMS.Datas
             }
             return true;
         }
+
+        public List<Info> GetCurrentInfo()
+        {
+            return GetInfoList().Where(i => i.FDate <= DateTime.Now.Date && i.TDate >= DateTime.Now.Date).ToList();
+        }
+
+        public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
+        {
+            return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
+        }
+
+        public Info GetInfoById(int InfoId)
+        {
+            return GetInfoList().FirstOrDefault(n => n.InfoId == InfoId);
+        }
         #endregion
-        
+
         #region "Category"
         public List<Category> GetCategoryList()
         {
             return _ctx.Categories.ToList();
-        }
-
-        public Category GetCategoryById(int categoryId)
-        {
-            return GetCategoryList().FirstOrDefault(c => c.CategoryId == categoryId);
         }
 
         public int AddCategory(Category category)
@@ -119,6 +139,11 @@ namespace SCMS.Datas
             }
             return true;
         }
+
+        public Category GetCategoryById(int categoryId)
+        {
+            return GetCategoryList().FirstOrDefault(c => c.CategoryId == categoryId);
+        }
         #endregion
 
         #region "Intimacy"
@@ -127,10 +152,6 @@ namespace SCMS.Datas
             return _ctx.Intimacies.ToList();
         }
 
-        public Intimacy GetIntimacyById(int intimacyId)
-        {
-            return GetIntimacyList().FirstOrDefault(i => i.IntimacyId == intimacyId);
-        }
         public int AddIntimacy(Intimacy intimacy)
         {
             _ctx.Intimacies.Add(intimacy);
@@ -155,105 +176,16 @@ namespace SCMS.Datas
             return true;
         }
 
+        public Intimacy GetIntimacyById(int intimacyId)
+        {
+            return GetIntimacyList().FirstOrDefault(i => i.IntimacyId == intimacyId);
+        }
         #endregion
 
         #region "Story"
         public List<Story> GetStoryList()
         {
             return _ctx.Stories.ToList();
-        }
-
-        public List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag)
-        {
-            string[] hash = hashTag.Split();
-            List<Story> result = (from s in GetStoryList().Where(s => s.ApproveStatue == 'Y')
-                                  where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
-                                    (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
-                                    (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
-                                    (!string.IsNullOrEmpty(hashTag) && hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
-                                  select s).ToList();
-
-            return result;
-        }
-
-        public List<StoryVM> GetStoryByStatus(char status)
-        {
-            List<StoryVM> result = new List<StoryVM>();
-            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
-            foreach (Story s in story)
-            {
-                result.Add(ConvertStoryToVM(s));
-            }
-            return result;
-        }
-
-        public List<Story> GetStoryByUserId(string userId)
-        {
-            return GetStoryList().Where(s => s.UserId == userId).ToList();
-        }
-
-        public Story GetStoryById(int storyId)
-        {
-            return GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
-        }
-
-        public StoryVM ConvertStoryToVM(Story story)
-        {
-            StoryVM storyVM = new StoryVM
-            {
-
-                StoryId = story.StoryId,
-                CategoryId = story.CategoryId,
-                IntimacyId = story.IntimacyId,
-                Title = story.Title,
-                Content = story.Content,
-                HashtagWord = story.HashtagWord,
-                Picture = story.Picture,
-                NoView = story.NoView,
-                ApproveStatue = story.ApproveStatue,
-                UserId = story.UserId,
-
-                Category = story.Category,
-                Intimacy = story.Intimacy,
-
-                Hashtags = story.Hashtags
-            };
-            return storyVM;
-        }
-        public List<StoryVM> GetStoryVMByUserId(string userId)
-        {
-            List<StoryVM> result = new List<StoryVM>();
-            List<Story> story = GetStoryList().Where(s => s.UserId == userId).ToList();
-            foreach (Story s in story)
-            {
-                result.Add(ConvertStoryToVM(s));
-            }
-            return result;
-        }
-
-        public StoryVM GetStoryVMById(int storyId)
-        {
-            Story story = GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
-            StoryVM storyVM = new StoryVM
-            {
-
-                StoryId = story.StoryId,
-                CategoryId = story.CategoryId,
-                IntimacyId = story.IntimacyId,
-                Title = story.Title,
-                Content = story.Content,
-                HashtagWord = story.HashtagWord,
-                Picture = story.Picture,
-                NoView = story.NoView,
-                ApproveStatue = story.ApproveStatue,
-                UserId = story.UserId,
-
-                Category = story.Category,
-                Intimacy = story.Intimacy,
-
-                Hashtags = story.Hashtags
-            };
-            return storyVM;
         }
 
         public int AddStory(StoryVM storyVM)
@@ -268,12 +200,12 @@ namespace SCMS.Datas
                 Content = storyVM.Content,
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
-                NoView = 0,
-                ApproveStatue = 'N',
+                NoView = storyVM.NoView,
+                ApproveStatue = 'P',
                 UserId = storyVM.UserId,
 
-                Category = storyVM.Category,
-                Intimacy = storyVM.Intimacy,
+                Category = GetCategoryById(storyVM.CategoryId),
+                Intimacy = GetIntimacyById(storyVM.IntimacyId),
 
                 Hashtags = storyVM.Hashtags
             };
@@ -287,19 +219,25 @@ namespace SCMS.Datas
 
         public bool UpdateStory(StoryVM storyVM)
         {
-            Story story = GetStoryById(storyVM.StoryId);
-            story.StoryId = storyVM.StoryId;
-            story.CategoryId = storyVM.CategoryId;
-            story.IntimacyId = storyVM.IntimacyId;
-            story.Title = storyVM.Title;
-            story.Content = storyVM.Content;
-            story.HashtagWord = storyVM.HashtagWord;
-            story.Picture = storyVM.Picture;
-            story.ApproveStatue = 'N';
-            story.UserId = storyVM.UserId;
+            Story story = new Story
+            {
 
-            story.Category = storyVM.Category;
-            story.Intimacy = storyVM.Intimacy;
+                StoryId = storyVM.StoryId,
+                CategoryId = storyVM.CategoryId,
+                IntimacyId = storyVM.IntimacyId,
+                Title = storyVM.Title,
+                Content = storyVM.Content,
+                HashtagWord = storyVM.HashtagWord,
+                Picture = storyVM.Picture,
+                NoView = storyVM.NoView,
+                ApproveStatue = 'P',
+                UserId = storyVM.UserId,
+
+                Category = GetCategoryById(storyVM.CategoryId),
+                Intimacy = GetIntimacyById(storyVM.IntimacyId),
+
+                Hashtags = storyVM.Hashtags
+            };
 
             _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;
             story.Hashtags.Clear() ;
@@ -339,7 +277,98 @@ namespace SCMS.Datas
             return true;
         }
 
+        public List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag)
+        {
+            string[] hash = hashTag.Split();
+            List<Story> result = (from s in GetStoryList().Where(s => s.ApproveStatue == 'Y')
+                                  where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
+                                    (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
+                                    (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
+                                    (!string.IsNullOrEmpty(hashTag) && hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
+                                  select s).ToList();
 
+            return result;
+        }
+
+        public List<StoryVM> GetStoryByStatus(char status)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
+        }
+
+        public List<Story> GetStoryByUserId(string userId)
+        {
+            return GetStoryList().Where(s => s.UserId == userId).ToList();
+        }
+
+        public Story GetStoryById(int storyId)
+        {
+            return GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
+        }
+
+        public StoryVM GetStoryVMById(int storyId)
+        {
+            Story story = GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
+            StoryVM storyVM = new StoryVM
+            {
+
+                StoryId = story.StoryId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = GetCategoryById(story.CategoryId),
+                Intimacy = GetIntimacyById(story.IntimacyId),
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
+        }
+
+        public StoryVM ConvertStoryToVM(Story story)
+        {
+            StoryVM storyVM = new StoryVM
+            {
+
+                StoryId = story.StoryId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
+        }
+        public List<StoryVM> GetStoryVMByUserId(string userId)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.UserId == userId).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
+        }
         #endregion
 
         #region "Comment"
@@ -398,21 +427,6 @@ namespace SCMS.Datas
         public List<Hashtag> GetHashtagList()
         {
             return _ctx.Hashtags.ToList();
-        }
-
-        public Hashtag GetHashtagById(int hastagId)
-        {
-            return GetHashtagList().FirstOrDefault(h => h.HashtagId == hastagId);
-        }
-
-        public Hashtag GetHashtagByDesc(string description)
-        {
-            return GetHashtagList().FirstOrDefault(h => h.Description == description);
-        }
-
-        public List<Hashtag> GetHashtagByStory(int storyId)
-        {
-            return GetHashtagList().Where(h => h.Stories.Any(s => s.StoryId == storyId)).ToList();
         }
 
         public int AddHashtag(Hashtag hashtag)
@@ -475,63 +489,26 @@ namespace SCMS.Datas
             return true;
         }
 
+        public Hashtag GetHashtagById(int hastagId)
+        {
+            return GetHashtagList().FirstOrDefault(h => h.HashtagId == hastagId);
+        }
+
+        public Hashtag GetHashtagByDesc(string description)
+        {
+            return GetHashtagList().FirstOrDefault(h => h.Description == description);
+        }
+
+        public List<Hashtag> GetHashtagByStory(int storyId)
+        {
+            return GetHashtagList().Where(h => h.Stories.Any(s => s.StoryId == storyId)).ToList();
+        }
         #endregion
 
         #region "User"
         public List<User> GetUserList()
         {
             return _ctx.Users.ToList();
-        }
-
-        public List<User> GetUserListByRole(string role)
-        {
-            return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == role)).ToList();
-        }
-
-        public User GetUserById(string userId)
-        {
-            return GetUserList().FirstOrDefault(u => u.Id == userId);
-        }
-
-        public UserVM GetUserVMByUserName(string userName)
-        {
-            return ConvertUserToVM(GetUserById(userName));
-        }
-
-        public User GetUserByUserName(string userName)
-        {
-            return GetUserList().FirstOrDefault(u => u.UserName == userName);
-        }
-
-        public User ConvertVMToUser(UserVM input)
-        {
-            User result = new User()
-            {
-                Id = input.Id,
-                PasswordHash = input.PasswordHash,
-                UserName = input.UserName,
-                Nickname = input.Nickname,
-                Phone = input.Phone,
-                ProfilePic = input.ProfilePic,
-                Quote = input.Quote
-            };
-            return result;
-        }
-
-        public UserVM ConvertUserToVM(User input)
-        {
-            UserVM result = new UserVM()
-            {
-                Id = input.Id,
-                PasswordHash = input.PasswordHash,
-                UserName = input.UserName,
-                Nickname = input.Nickname,
-                Phone = input.Phone,
-                ProfilePic = input.ProfilePic,
-                Quote = input.Quote,
-                Result = ReturnSuccess()
-            };
-            return result;
         }
 
         public UserVM AddUser(UserVM user, string role)
@@ -558,39 +535,8 @@ namespace SCMS.Datas
             tmp.Result = ReturnSuccess();
             tmp.Result.Success = false;
             tmp.Result.ErrorMessage = "Cannot create user";
-            return null;
+            return tmp;
         }
-
-        //public string AddUser(UserVM user, string role)
-        //{
-        //    var userMgr = new UserManager<SCMS.Models.User>(new UserStore<SCMS.Models.User>(_ctx));
-
-        //    //if user name or email not existed
-        //    if (!userMgr.Users.Any(u => u.UserName == user.UserName))
-        //    {
-        //        User userTmp = new User();
-        //        userTmp.UserName = user.UserName;
-        //        userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-        //        userTmp.Email = user.Email;
-        //        userTmp.Phone = user.Phone;
-        //        userTmp.Quote = user.Quote;
-        //        userTmp.PasswordHash = userMgr.PasswordHasher.HashPassword(user.Password);
-        //        userTmp.ProfilePic = user.ProfilePic;
-
-        //        userTmp.IsActive = true;
-        //        userMgr.Create(userTmp);
-
-        //        //We need to get the ID of the user after user is created
-        //        var tmpuser = userMgr.Users.Single(u => u.UserName == user.UserName);
-        //        if (!tmpuser.Roles.Any(r => r.RoleId == role))
-        //        {
-        //            userMgr.AddToRole(tmpuser.Id, role);
-        //            return tmpuser.Id;
-        //        }
-        //    }
-
-        //    return "";
-        //}
             
         public UserVM UpdateUser(UserVM user, string role)
         {
@@ -604,6 +550,9 @@ namespace SCMS.Datas
                 return user;
             }
 
+            userTmp.Email = user.Email;
+            userTmp.Phone = user.Phone;
+            userTmp.Quote = user.Quote;
             userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
             var result = userMgr.Update(userTmp);
             user.Result = ReturnSuccess();
@@ -615,28 +564,6 @@ namespace SCMS.Datas
             
             return user;
         }
-
-        //public async Task<bool> UpdateUser(UserVM user, string role)
-        //{
-        //    var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-        //    User userTmp = await userMgr.FindByIdAsync(user.Id);
-        //    if (userTmp == null)
-        //    {
-        //        return false;
-        //    }
-        //    userTmp.UserName = user.UserName;
-        //    userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-        //    userTmp.Email = user.Email;
-        //    userTmp.Phone = user.Phone;
-        //    userTmp.Quote = user.Quote;
-        //    userTmp.ProfilePic = user.ProfilePic;
-        //    var result = await userMgr.UpdateAsync(userTmp);
-        //    if (!result.Succeeded)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
 
         public bool ChangePassword(string userName, string currentPassword, string newPassword)
         {
@@ -650,23 +577,6 @@ namespace SCMS.Datas
             }
             return false;
         }
-
-
-        //public async Task<bool> ChangePassword(string userId, string currentPassword, string newPassword)
-        //{
-        //    var userMgr = new UserManager<User>(new UserStore<User>(_ctx));
-        //    User user = await userMgr.FindAsync(userId, currentPassword);
-        //    if (user != null)
-        //    {
-        //        user.PasswordHash = userMgr.PasswordHasher.HashPassword(newPassword);
-        //        var result = await userMgr.UpdateAsync(user);
-        //        if (result.Succeeded)
-        //        {
-        //            return await Task.FromResult(true);
-        //        }
-        //    }
-        //    return await Task.FromResult(false);
-        //}
 
         public bool DeactivateUser(string userName)
         {
@@ -724,31 +634,62 @@ namespace SCMS.Datas
             return true;
         }
 
-        public bool Login(string userName, string password)
+        public List<User> GetUserListByRole(string role)
         {
-            var userMgr = HttpContext.Current.GetOwinContext().GetUserManager<UserManager<User>>();
-            var user = userMgr.Find(userName, password);
-            if (user != null)
-            {
-                var identity = userMgr.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-                var authManager = HttpContext.Current.GetOwinContext().Authentication;
-                authManager.SignIn(new AuthenticationProperties { IsPersistent = false }, identity);
-                CurrentUser.User = user;
-                return true;
-            }
-            return false;
+            return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == role)).ToList();
+            //return GetUserList().ToList();
         }
 
-
-        public bool Logout()
+        public User GetUserById(string userId)
         {
-            var ctx = HttpContext.Current.GetOwinContext();
-            var authMgr = ctx.Authentication;
-            authMgr.SignOut("ApplicationCookie");
+            return GetUserList().FirstOrDefault(u => u.Id == userId);
+        }
 
-            return true;
-        }        
+        public UserVM GetUserVMByUserName(string userName)
+        {
+            return ConvertUserToVM(GetUserByUserName(userName));
+        }
+
+        public User GetUserByUserName(string userName)
+        {
+            return GetUserList().FirstOrDefault(u => u.UserName == userName);
+        }
+
+        public User ConvertVMToUser(UserVM input)
+        {
+            User result = new User()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Email = input.Email,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote
+            };
+            return result;
+        }
+
+        public UserVM ConvertUserToVM(User input)
+        {
+            UserVM result = new UserVM()
+            {
+                Id = input.Id,
+                PasswordHash = input.PasswordHash,
+                UserName = input.UserName,
+                Nickname = input.Nickname,
+                Email = input.Email,
+                Phone = input.Phone,
+                ProfilePic = input.ProfilePic,
+                Quote = input.Quote,
+                Result = ReturnSuccess()
+            };
+
+            return result;
+        }
+
         #endregion
-        
+
     }
 }

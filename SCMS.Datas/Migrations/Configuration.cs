@@ -26,24 +26,12 @@ namespace SCMS.Datas.Migrations
 
 
             // Create member role
-            if (!roleMgr.RoleExists("member"))
-            {
-                roleMgr.Create(new IdentityRole { Name = "member" });
-            }
+            string curRoleID = "member", curUserName = "member", password = "12345678";
 
-            // Create anonymous role
-            if (!roleMgr.RoleExists("anonymous"))
-            {
-                roleMgr.Create(new IdentityRole { Name = "anonymous" });
-            }
-
-            // Create admin role
-            string curRoleID = "admin", curUserName = "scms", password = "123456";
             if (!roleMgr.RoleExists(curRoleID))
             {
                 roleMgr.Create(new IdentityRole { Name = curRoleID });
             }
-
             var user = new SCMS.Models.User
             {
                 UserName = curUserName
@@ -56,6 +44,31 @@ namespace SCMS.Datas.Migrations
             }
 
             var tmpuser = userMgr.Users.Single(u => u.UserName == curUserName);
+            if (!tmpuser.Roles.Any(r => r.RoleId == curRoleID))
+            {
+                userMgr.AddToRole(tmpuser.Id, curRoleID);
+            }
+
+
+            // Create admin role
+            curRoleID = "admin"; curUserName = "scms"; password = "12345678";
+            if (!roleMgr.RoleExists(curRoleID))
+            {
+                roleMgr.Create(new IdentityRole { Name = curRoleID });
+            }
+
+            user = new SCMS.Models.User
+            {
+                UserName = curUserName
+            };
+
+            // if user existed
+            if (!userMgr.Users.Any(u => u.UserName == curUserName))
+            {
+                userMgr.Create(user, password);
+            }
+
+            tmpuser = userMgr.Users.Single(u => u.UserName == curUserName);
             if (!tmpuser.Roles.Any(r => r.RoleId == curRoleID))
             {
                 userMgr.AddToRole(tmpuser.Id, curRoleID);

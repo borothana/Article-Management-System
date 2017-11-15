@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SCMS.UI.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class InfoController : Controller
     {
         ISCMS _repo = SCMSFactory.Create();
@@ -23,7 +24,10 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult Add()
         {
-            return View(new Info());
+            Info model = new Info();
+            model.TDate = null;
+            model.FDate = null;
+            return View(model);
         }
 
         [HttpPost]
