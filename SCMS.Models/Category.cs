@@ -10,5 +10,6 @@ namespace SCMS.Models
     {
         public int CategoryId { get; set; }
         public string Description { get; set; }
+        public bool isSelected { get; set; }
     }
 }

@@ -689,7 +689,6 @@ namespace SCMS.Datas
             return result;
         }
 
-        #endregion
-
+        #endregion        
     }
 }

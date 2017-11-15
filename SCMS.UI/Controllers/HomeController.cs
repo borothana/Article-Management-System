@@ -39,14 +39,6 @@ namespace SCMS.UI.Controllers
 
             return View(model);
         }
-
-        public ActionResult CategoryList(int id)
-        {
-            var viewModel = new HomeVM();
-            viewModel.Category = _repo.GetCategoryList().Where(c => c.CategoryId == id);
-            viewModel.Intimacy = _repo.GetIntimacyList().Where(i => i.IntimacyId == id);
-            return View(viewModel);
-        }
         [HttpGet]
         public ActionResult StoryPage()
         {
