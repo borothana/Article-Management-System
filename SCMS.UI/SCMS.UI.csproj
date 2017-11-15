@@ -373,10 +373,8 @@
     <Content Include="Views\Info\Add.cshtml" />
     <Content Include="Views\Info\Delete.cshtml" />
     <Content Include="Views\Info\Edit.cshtml" />
-    <Content Include="Views\Home\StoryPage.cshtml" />
     <Content Include="Views\StoryApproval\Approve.cshtml" />
     <Content Include="Views\StoryApproval\Denied.cshtml" />
-    <Content Include="Views\Home\Story.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Blog\Blog.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />

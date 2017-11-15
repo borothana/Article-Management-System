@@ -11,9 +11,9 @@ namespace SCMS.Models.ViewModels
     {
         public List<Category> Category { get; set; }
         public List<Intimacy> Intimacy { get; set; }
-        public List<Story> Story { get; set; }
+        public List<Story> StoryVM { get; set; }
         public List<User> User { get; set; }
-        public bool isSelected { get; set; }
+        public bool IsSelected { get; set; }
         public Hashtag Hashtag { get; set; }
         public List<int> CategoryIdSearch { get; set; }
         public List<int> IntimacyIdSearch { get; set; }
@@ -27,14 +27,7 @@ namespace SCMS.Models.ViewModels
         public List<SelectListItem> IntimacyItems { get; set; }
         public List<SelectListItem> StoryItems { get; set; }
         public List<SelectListItem> UserItems { get; set; }
-
-
-        //public List<int> CategoryIdSearch { get; set; }
-        //public List<int> IntimacyIdSearch { get; set; }
-        //public string UserNameSearch { get; set; }
-        //public string HashtagSearch { get; set; }
-        //public string TitleSearch { get; set; }
-
+       
         public HomeVM()
         {
             CategoryItems = new List<SelectListItem>();

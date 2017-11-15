@@ -1,4 +1,5 @@
 ﻿using SCMS.Datas;
+using SCMS.Models;
 using SCMS.Models.Interface;
 using SCMS.Models.ViewModels;
 using System;
@@ -18,12 +19,11 @@ namespace SCMS.UI.Controllers
             HomeVM model = new HomeVM();
             model.Category = _repo.GetCategoryList();
             model.Intimacy = _repo.GetIntimacyList();
-            model.Story = _repo.GetStoryList();
             model.User = _repo.GetUserList();
 
             //Example
             //model.Story = _repo.GetStoryForHome(new List<int>() { 1, 2, 3, 4, 5 }, new List<int>() { 1, 2, 3, 4, 5 }, "", "#love #newlife");
-            model.Story = _repo.GetStoryForHome(new List<int>(), new List<int>(), "", "");
+            model.StoryVM = _repo.GetStoryForHome(new List<int>(), new List<int>(), "", "", "");
 
             return View(model);
         }
@@ -31,11 +31,28 @@ namespace SCMS.UI.Controllers
         [HttpPost]
         public ActionResult Index(HomeVM model)
         {
+            model.CategoryIdSearch = new List<int>();
+            foreach(var c in model.Category)
+            {
+                if (c.isSelected)
+                {
+                    model.CategoryIdSearch.Add(c.CategoryId);
+                }
+            }
+
+            model.IntimacyIdSearch = new List<int>();
+            foreach (var c in model.Intimacy)
+            {
+                if (c.isSelected)
+                {
+                    model.IntimacyIdSearch.Add(c.IntimacyId);
+                }
+            }
+
             model.Category = _repo.GetCategoryList();
             model.Intimacy = _repo.GetIntimacyList();
-            model.Story = _repo.GetStoryList();
             model.User = _repo.GetUserList();
-            model.Story = _repo.GetStoryForHome(model.CategoryIdSearch, model.IntimacyIdSearch, model.TitleSearch, model.HashtagSearch);
+            model.StoryVM = _repo.GetStoryForHome(model.CategoryIdSearch, model.IntimacyIdSearch, model.UserNameSearch + "", model.TitleSearch + "", model.HashtagSearch + "");
 
             return View(model);
         }

@@ -1,101 +1,81 @@
 ﻿@model SCMS.Models.ViewModels.HomeVM
-@{
-	ViewBag.Title = "Index";
+@{    
+    ViewBag.Title = "Index";
 }
 
-<html lang="en">
+<div class="container-fluid"  style="margin-top:25px">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        <div class="col-sm-3" id="searchField">
+            <div class="panel-group  panel-primary" style="border-style:solid">
+                <div class="panel-heading">
+                    Category
+                </div>
+                <div class="panel-body">
+                    @for (int i = 0; i < Model.Category.Count; i++)
+                    {
+                        <p>
+                            @Html.CheckBoxFor(c => c.Category[i].isSelected)
+                            <span>@Model.Category[i].Description</span>
+                            @Html.HiddenFor(c => c.Category[i].CategoryId)
+                        </p>
+                    }
+                </div>
+            </div>
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>SCMS</title>
+            <div class="panel-group  panel-primary" style="border-style:solid">
+                <div class="panel-heading">
+                    Intimacy Level
+                </div>
+                <div class="panel-body">
+                    @for (int i = 0; i < Model.Intimacy.Count; i++)
+                    {
+                        <p>
+                            @Html.CheckBoxFor(z => z.Intimacy[i].isSelected)
+                            <span>@Model.Intimacy[i].Description</span>
+                            @Html.HiddenFor(z => z.Intimacy[i].IntimacyId)
+                        </p>
+                    }
 
+                </div>
+            </div>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-		  crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-		  crossorigin="anonymous">
-</head>
+            <div class="panel-group  panel-primary" style="border-style:solid">
+                <div class="panel-heading">
+                    Other Filter
+                </div>
+                <div class="panel-body">
+                    <label>Nick Name</label>
+                    @Html.TextBoxFor(m => m.UserNameSearch, new { @class = "form-control", placeholder = "Search by nick name" })
+                    <label>Title</label>
+                    @Html.TextBoxFor(m => m.TitleSearch, new { @class = "form-control", placeholder = "Search by title" })
+                    <label>Hashtag</label>
+                    @Html.TextBoxFor(m => m.HashtagSearch, new { @class = "form-control", placeholder = "Search by hashtag" })
+                </div>
+            </div>
+            <hr />
+            <div class="divSave">
+                <button type="submit" id="submit button" class="btn btn-primary" onclick="searchClick">Search</button>
+            </div>
 
-<body>
-	<div class="container-fluid">
-		@using (Html.BeginForm("Index", "Home", FormMethod.Post))
-		{
-			<div class="col-sm-3" id="searchField">
-				<br />
-				<h5>Category</h5>
-				@for (int i = 0; i < Model.Category.Count; i++)
-				{
+        </div>
 
-					<p>
-						@Html.CheckBoxFor(c => c.Category[i].isSelected)
-						<span>@Model.Category[i].Description</span>
-						@Html.HiddenFor(c => c.Category[i].CategoryId)
-					</p>
-				}
-				<hr />
-				<h5>Intimacy Level</h5>
+        <div class="col-sm-9">
+            @foreach (var s in Model.StoryVM)
+                {
+                <div class="row" style="background-color:transparent;">
+                    <h3> @s.Title</h3>
+                    <span class="label label-danger">@s.Category.Description</span>
+                    <span class="label label-primary">@s.HashtagWord</span>
+                    <span class="label label-danger">@s.Intimacy.Description</span><br />
+                    <span><b>Posted by: @Model.User.FirstOrDefault(u => u.Id == s.UserId).Nickname </b></span>
+                    <br /><br />
+                    @Html.Raw(HttpUtility.HtmlDecode(@s.Content))
+                    <br />
+                    <hr />
 
-				@for (int i = 0; i < Model.Intimacy.Count; i++)
-				{
-					<p>
-						@Html.CheckBoxFor(z => z.Intimacy[i].isSelected)
-						<span>@Model.Intimacy[i].Description</span>
-						@Html.HiddenFor(z => z.Intimacy[i].IntimacyId)
-					</p>
-				}
-
-				<hr />
-				<div class="form-group">
-					<h5>Search User</h5>
-					<p>
-						<label></label>
-						<input type="text" name="User" />
-					</p>
-					<h5>Search Title</h5>
-					<p>
-						<label></label>
-						<input type="text" name="Title" />
-					</p>
-					<h5>Search Hash Tags</h5>
-					<p>
-						<label></label>
-						<input type="text" name="Hashgtag" />
-					</p>
-				</div>
-				<button type="submit" id="submit button" class="btn btn-primary" onclick="searchClick">Search</button>
-			</div>
-
-			<div class="col-sm-9">
-				<center>
-					<h4>
-						<small>FEATURED STORY</small>
-					</h4>
-				</center>
-
-				@foreach (var s in Model.Story)
-				{
-					<div class="row" style="background-color:transparent;">
-						<a href="@Url.Action("StoryView", "StoryView")" id="title">@s.Title</a><br />
-						<span class="label label-danger">@s.Category.Description</span>
-						<span class="label label-primary">@s.HashtagWord</span><br />
-						<span>Post by: @Model.User.FirstOrDefault(u => u.Id == s.UserId).Nickname </span>
-						<br />
-						@s.Content
-
-						<br />
-						<hr />
-
-					</div>
-				}
-			</div>
-		}
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-			crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/vue@2.3.4"></script>
-
-</body>
-</html>
+                </div>
+            }
+        </div>
+    }
+</div>
