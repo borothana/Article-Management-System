@@ -15,27 +15,29 @@ namespace SCMS.UI.Controllers
         // GET: Homepage
         public ActionResult Index()
         {
-            HomeVM viewModel = new HomeVM();
-            viewModel.Category = _repo.GetCategoryList().ToList();
-            viewModel.Intimacy = _repo.GetIntimacyList();
-            viewModel.Story = _repo.GetStoryList();
-            viewModel.User = _repo.GetUserList();
-            //viewModel.CategoryIdSearch = new List<int>();
-            //viewModel.IntimacyIdSearch = new List<int>();
+            HomeVM model = new HomeVM();
+            model.Category = _repo.GetCategoryList();
+            model.Intimacy = _repo.GetIntimacyList();
+            model.Story = _repo.GetStoryList();
+            model.User = _repo.GetUserList();
 
-            return View(viewModel);
+            //Example
+            //model.Story = _repo.GetStoryForHome(new List<int>() { 1, 2, 3, 4, 5 }, new List<int>() { 1, 2, 3, 4, 5 }, "", "#love #newlife");
+            model.Story = _repo.GetStoryForHome(new List<int>(), new List<int>(), "", "");
+
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult Index(HomeVM model)
         {
-            HomeVM viewModel = new HomeVM();
-            viewModel.Category = _repo.GetCategoryList();
-            viewModel.Intimacy = _repo.GetIntimacyList();
-            viewModel.Story = _repo.GetStoryList();
-            viewModel.User = _repo.GetUserList();
+            model.Category = _repo.GetCategoryList();
+            model.Intimacy = _repo.GetIntimacyList();
+            model.Story = _repo.GetStoryList();
+            model.User = _repo.GetUserList();
+            model.Story = _repo.GetStoryForHome(model.CategoryIdSearch, model.IntimacyIdSearch, model.TitleSearch, model.HashtagSearch);
 
-            return View(viewModel);
+            return View(model);
         }
         [HttpGet]
         public ActionResult StoryPage()

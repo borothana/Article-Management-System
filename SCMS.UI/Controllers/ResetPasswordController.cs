@@ -24,12 +24,19 @@ namespace SCMS.UI.Controllers
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordVM model)
         {
-            if (!ModelState.IsValid || model.NewPassword != model.NewPasswordRetype)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                if (_repo.ChangePassword(model.UserName, model.PasswordHash, model.NewPassword))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("PasswordHash", "Incorrect password");
+                }
             }
-            _repo.ChangePassword(model.UserName, model.Password, model.NewPassword);
-            return RedirectToAction("Index","Home");
+
+            return View(model);
         }
     }
 }

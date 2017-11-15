@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SCMS.Models.Story>
+﻿@model IEnumerable<SCMS.Models.ViewModels.StoryVM>
 
 @{
     ViewBag.Title = "List";
@@ -18,7 +18,9 @@
                     <th>Title</th>
                     <th>Category</th>
                     <th>Intimacy</th>
-                    <th>Hashtag</th>                    
+                    <th>Hashtag</th>     
+                    <th>Status</th>
+                    <th>Feedback</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +30,9 @@
                         <td>@s.Title </td>
                         <td>@s.Category.Description </td>
                         <td>@s.Intimacy.Description </td>
-                        <td>@s.HashtagWord </td>
+                        <td>@s.HashtagWord</td>
+                        <td>@s.ApproveStatue</td>
+                        <td>@s.Feedback</td>
                         <td>@Html.ActionLink("Edit", "Edit", "Story", new { storyId = s.StoryId }, null)</td>
                         <td>@Html.ActionLink("Delete", "Delete", "Story", new { storyId = s.StoryId }, null)</td>
                     </tr>

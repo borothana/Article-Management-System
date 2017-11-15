@@ -1,26 +1,22 @@
-﻿@model SCMS.Models.ViewModels.BlogVM
+﻿@model List<SCMS.Models.Info>
 @{
     ViewBag.Title = "Index";
 }
 
 <div class="container">
-        <div class="col-sm-12">
-            <center>
-                <h3>BLOG POSTS</h3>
-            </center>
+    <div class="col-xs-12">
+        <center>
+            <h3>BLOG POSTS</h3>
+        </center>
 
-            @foreach (var b in Model.Blog)
-                {
-                <div class="row" style="background-color:transparent;">
-                    <a href="@Url.Action("Blog", "Blog")" id="title">@b.Title</a><br />
-                    <span>Post by: @Model.User.FirstOrDefault(u => u.Id == b.UserId).Nickname </span>
-                    <br />
-                    @b.Content
-                    <br />
-                    <hr />
-                </div>
-            }
-            
-        </div>
-    
+        @foreach (var b in @Model)
+        {
+            <div class="row" style="background-color:transparent;">
+                <b>@b.Title</b><br />
+                <span>@b.Description</span>
+            </div>
+            <br />
+        }
+
+    </div>
 </div>

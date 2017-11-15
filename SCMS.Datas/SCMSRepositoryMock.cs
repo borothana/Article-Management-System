@@ -21,7 +21,7 @@ namespace SCMS.Datas
 
         static List<User> _users = new List<User>
         {
-            new User { Id = "admin", UserName = "scms", Nickname = "scms", Email = "scms@gmail.com", PasswordHash = "123456", IsActive = true },
+            new User { Id = "dee799ce-926f-4204-bcae-964219474ad2", UserName = "scms", Nickname = "scms", Email = "scms@gmail.com", PasswordHash = "123456", IsActive = true },
             new User { Id = "Na", UserName = "Na", Nickname = "Na", Email = "na@gmail.com", PasswordHash = "123456", IsActive = true },
             new User { Id = "Nik", UserName = "Nik", Nickname = "Nik", Email = "nik@gmail.com", PasswordHash = "123456", IsActive = false },
             new User { Id = "Javier", UserName = "Javier", Nickname = "Javier", Email = "javier@gmail.com", PasswordHash = "123456" , IsActive = true}
@@ -31,9 +31,9 @@ namespace SCMS.Datas
         {
             new Info{ InfoId = 1, Title = "11111", FDate = DateTime.Parse("11/01/2017"), TDate = DateTime.Parse("11/10/2017"), Description = "Description for 11111" },
             new Info{ InfoId = 2, Title = "22222", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("12/11/2017"), Description = "Description for 22222" },
-            new Info{ InfoId = 3, Title = "11111", FDate = DateTime.Parse("10/01/2017"), TDate = DateTime.Parse("12/01/2017"), Description = "Description for 33333" },
-            new Info{ InfoId = 4, Title = "11111", FDate = DateTime.Parse("12/25/2017"), TDate = DateTime.Parse("01/31/2018"), Description = "Description for 44444" },
-            new Info{ InfoId = 5, Title = "11111", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("11/30/2018"), Description = "Description for 55555" }
+            new Info{ InfoId = 3, Title = "33333", FDate = DateTime.Parse("10/01/2017"), TDate = DateTime.Parse("12/01/2017"), Description = "Description for 33333" },
+            new Info{ InfoId = 4, Title = "44444", FDate = DateTime.Parse("12/25/2017"), TDate = DateTime.Parse("01/31/2018"), Description = "Description for 44444" },
+            new Info{ InfoId = 5, Title = "55555", FDate = DateTime.Parse("11/15/2017"), TDate = DateTime.Parse("11/30/2018"), Description = "Description for 55555" }
         };
 
 
@@ -56,19 +56,24 @@ namespace SCMS.Datas
         static List<Story> _stories = new List<Story> {
             new Story{StoryId = 1, CategoryId = _categories[0].CategoryId, Category = _categories[0],  Title = "How to make a creemy cubcake",
                         Content = "Creemy cubcake blah blah blah....", IntimacyId = _intimacies[0].IntimacyId, Intimacy = _intimacies[0], Picture = null,
-                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'Y', NoView = 1000, UserId = _users[0].Id, HashtagWord = "#cubcake #yummy",
+                        Hashtags = new List<Hashtag>(){ new Hashtag() { HashtagId = 1, Description = "#cubcake" },  new Hashtag() { HashtagId = 2, Description = "#yummy" }}},
             new Story{StoryId = 2, CategoryId = _categories[1].CategoryId, Category = _categories[1],  Title = "My love story",
                         Content = "When I first meet her....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
-                        ApproveStatue = 'P', NoView = 5000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'Y', NoView = 5000, UserId = _users[0].Id, HashtagWord = "#love #sweetevening",
+                        Hashtags = new List<Hashtag>(){ new Hashtag() { HashtagId = 3, Description = "#love" },  new Hashtag() { HashtagId = 4, Description = "#sweetevening" }}},
             new Story{StoryId = 3, CategoryId = _categories[2].CategoryId, Category = _categories[2],  Title = "Angkor Wat",
                         Content = "In 11th century....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
-                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'Y', NoView = 1000, UserId = _users[0].Id, HashtagWord = "#temple #ancient",
+                        Hashtags = new List<Hashtag>(){ new Hashtag() { HashtagId = 5, Description = "#temple" },  new Hashtag() { HashtagId = 6, Description = "#ancient" }}},
             new Story{StoryId = 4, CategoryId = _categories[3].CategoryId, Category = _categories[3],  Title = "Discover Mars",
                         Content = "A group of scientist from USA, Russia and China....", IntimacyId = _intimacies[2].IntimacyId, Intimacy = _intimacies[2], Picture = null,
-                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'Y', NoView = 1000, UserId = _users[0].Id, HashtagWord = "#colony #newlife",
+                        Hashtags = new List<Hashtag>(){ new Hashtag() { HashtagId = 7, Description = "#colony" },  new Hashtag() { HashtagId = 7, Description = "#newlife" }}},
             new Story{StoryId = 5, CategoryId = _categories[4].CategoryId, Category = _categories[4],  Title = "Mr and Mrs Poor",
                         Content = "Once upon time....", IntimacyId = _intimacies[1].IntimacyId, Intimacy = _intimacies[1], Picture = null,
-                        ApproveStatue = 'P', NoView = 1000, Hashtags = _hashtags, UserId = _users[0].Id},
+                        ApproveStatue = 'Y', NoView = 1000, UserId = _users[0].Id, HashtagWord = "#bedtime #cartoon",
+                        Hashtags = new List<Hashtag>(){ new Hashtag() { HashtagId = 9, Description = "#bedtime" },  new Hashtag() { HashtagId = 10, Description = "#cartoon" }}},
 
         };
         static List<Hashtag> _hashtags = new List<Hashtag> {
@@ -113,6 +118,10 @@ namespace SCMS.Datas
         public List<Info> GetInfoList()
         {
             return _infos;
+        }
+
+        public List<Info> GetCurrentInfo() {
+            return GetInfoList().Where(i => i.FDate <= DateTime.Now.Date && i.TDate >= DateTime.Now.Date).ToList();
         }
 
         public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
@@ -236,12 +245,31 @@ namespace SCMS.Datas
             return _stories;
         }
 
-        public List<Story> GetStoryByStatus(char status)
+        public List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag)
         {
-            return GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            string[] hash = hashTag.Split();
+            List<Story> result = (from s in GetStoryList().Where(s => s.ApproveStatue == 'Y')
+                                  where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
+                                    (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
+                                    (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
+                                    (!string.IsNullOrEmpty(hashTag) && hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description))   : true)
+                                   select s).ToList();
+           
+            return result;
         }
 
-        public List<Story> GetStoryByUser(string userId)
+        public List<StoryVM> GetStoryByStatus(char status)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
+        }
+
+        public List<Story> GetStoryByUserId(string userId)
         {
             return GetStoryList().Where(s => s.UserId == userId).ToList();
         }
@@ -274,6 +302,40 @@ namespace SCMS.Datas
                 Hashtags = story.Hashtags
             };
             return storyVM;
+        }
+
+        public StoryVM ConvertStoryToVM(Story story)
+        {
+            StoryVM storyVM = new StoryVM
+            {
+
+                StoryId = story.StoryId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
+        }
+        public List<StoryVM> GetStoryVMByUserId(string userId)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.UserId == userId).ToList();
+            foreach(Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
         }
 
         public int AddStory(StoryVM storyVM)
@@ -504,6 +566,7 @@ namespace SCMS.Datas
                 PasswordHash = input.PasswordHash,
                 UserName = input.UserName,
                 Nickname = input.Nickname,
+                Email = input.Email,
                 Phone = input.Phone,
                 ProfilePic = input.ProfilePic,
                 Quote = input.Quote
@@ -519,11 +582,13 @@ namespace SCMS.Datas
                 PasswordHash = input.PasswordHash,
                 UserName = input.UserName,
                 Nickname = input.Nickname,
+                Email = input.Email,
                 Phone = input.Phone,
                 ProfilePic = input.ProfilePic,
                 Quote = input.Quote,
-                Result = ReturnSuccess()
-            };
+                Result = ReturnSuccess()                
+        };
+
             return result;
         }
 
@@ -543,9 +608,9 @@ namespace SCMS.Datas
             return _users.FirstOrDefault(u => u.Id == userId);
         }
 
-        public UserVM GetUserVMEditById(string userId)
+        public UserVM GetUserVMByUserName(string userName)
         {
-            return ConvertUserToVM(GetUserById(userId));
+            return ConvertUserToVM(GetUserByUserName(userName));
         }
 
         public User GetUserByUserName(string userName)
@@ -564,13 +629,9 @@ namespace SCMS.Datas
         public UserVM AddUser(UserVM user, string role)
         {
             User userTmp = new User();
-            userTmp.UserName = user.UserName;
             userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
-            userTmp.Email = user.Email;
-            userTmp.Phone = user.Phone;
-            userTmp.Quote = user.Quote;
-            userTmp.ProfilePic = user.ProfilePic;
-            userTmp.PasswordHash = user.PasswordHash;
+
+            userTmp = ConvertVMToUser(user);
             userTmp.IsActive = true;
             userTmp.Id = _users.Max(c => c.Id) + 1;
 
@@ -625,17 +686,12 @@ namespace SCMS.Datas
 
         public UserVM UpdateUser(UserVM user, string role)
         {
-            _users.RemoveAll(u => u.Id == user.Id);
-
-            User userTmp = new User();
-            userTmp.UserName = user.UserName;
-            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            User userTmp = _users.FirstOrDefault(u=>u.Id == user.Id);
             userTmp.Email = user.Email;
             userTmp.Phone = user.Phone;
             userTmp.Quote = user.Quote;
-            userTmp.ProfilePic = user.ProfilePic;
-
-            _users.Add(userTmp);
+            userTmp.Nickname = role == Role.admin.ToString() ? user.UserName : user.Nickname;
+            
             user.Result = ReturnSuccess();
             return user;
         }
@@ -728,11 +784,6 @@ namespace SCMS.Datas
         {
             _blogs.RemoveAll(b => b.BlogId == id);
             return true;
-        }
-
-        public List<Story> QuickSearch(StorySearchParameters parameters)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

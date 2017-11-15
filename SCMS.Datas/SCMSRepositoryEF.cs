@@ -43,6 +43,11 @@ namespace SCMS.Datas
             return _ctx.Infos.ToList();
         }
 
+        public List<Info> GetCurrentInfo()
+        {
+            return GetInfoList().Where(i => i.FDate <= DateTime.Now.Date && i.TDate >= DateTime.Now.Date).ToList();
+        }
+
         public List<Info> GetInfoByDate(DateTime FD, DateTime TD)
         {
             return GetInfoList().Where(n => n.FDate >= FD && n.TDate <= TD).ToList();
@@ -158,12 +163,31 @@ namespace SCMS.Datas
             return _ctx.Stories.ToList();
         }
 
-        public List<Story> GetStoryByStatus(char status)
+        public List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string title, string hashTag)
         {
-            return GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            string[] hash = hashTag.Split();
+            List<Story> result = (from s in GetStoryList().Where(s => s.ApproveStatue == 'Y')
+                                  where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
+                                    (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
+                                    (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
+                                    (!string.IsNullOrEmpty(hashTag) && hash.Length > 0 ? s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
+                                  select s).ToList();
+
+            return result;
         }
 
-        public List<Story> GetStoryByUser(string userId)
+        public List<StoryVM> GetStoryByStatus(char status)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
+        }
+
+        public List<Story> GetStoryByUserId(string userId)
         {
             return GetStoryList().Where(s => s.UserId == userId).ToList();
         }
@@ -171,6 +195,40 @@ namespace SCMS.Datas
         public Story GetStoryById(int storyId)
         {
             return GetStoryList().FirstOrDefault(s => s.StoryId == storyId);
+        }
+
+        public StoryVM ConvertStoryToVM(Story story)
+        {
+            StoryVM storyVM = new StoryVM
+            {
+
+                StoryId = story.StoryId,
+                CategoryId = story.CategoryId,
+                IntimacyId = story.IntimacyId,
+                Title = story.Title,
+                Content = story.Content,
+                HashtagWord = story.HashtagWord,
+                Picture = story.Picture,
+                NoView = story.NoView,
+                ApproveStatue = story.ApproveStatue,
+                UserId = story.UserId,
+
+                Category = story.Category,
+                Intimacy = story.Intimacy,
+
+                Hashtags = story.Hashtags
+            };
+            return storyVM;
+        }
+        public List<StoryVM> GetStoryVMByUserId(string userId)
+        {
+            List<StoryVM> result = new List<StoryVM>();
+            List<Story> story = GetStoryList().Where(s => s.UserId == userId).ToList();
+            foreach (Story s in story)
+            {
+                result.Add(ConvertStoryToVM(s));
+            }
+            return result;
         }
 
         public StoryVM GetStoryVMById(int storyId)
@@ -435,9 +493,9 @@ namespace SCMS.Datas
             return GetUserList().FirstOrDefault(u => u.Id == userId);
         }
 
-        public UserVM GetUserVMEditById(string userId)
+        public UserVM GetUserVMByUserName(string userName)
         {
-            return ConvertUserToVM(GetUserById(userId));
+            return ConvertUserToVM(GetUserById(userName));
         }
 
         public User GetUserByUserName(string userName)
@@ -691,8 +749,6 @@ namespace SCMS.Datas
             return true;
         }
 
-
-
         #endregion
 
         #region Blog
@@ -743,12 +799,7 @@ namespace SCMS.Datas
             }
             return true;
         }
-
-        public List<Story> QuickSearch(StorySearchParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
+        
     }
 }
