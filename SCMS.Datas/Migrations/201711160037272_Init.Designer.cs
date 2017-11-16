@@ -13,7 +13,7 @@ namespace SCMS.Datas.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201711150009581_Init"; }
+            get { return "201711160037272_Init"; }
         }
         
         string IMigrationMetadata.Source

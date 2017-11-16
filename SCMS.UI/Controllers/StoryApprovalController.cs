@@ -20,7 +20,7 @@ namespace SCMS.UI.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var model = _repo.GetStoryByStatus('P');
+            var model = _repo.GetStoryByStatus("P");
             return View(model);
         }
 

@@ -23,6 +23,7 @@ namespace SCMS.Models.Interface
         #region "Category"
         Category GetCategoryById(int categoryId);
         List<Category> GetCategoryList();
+        List<CategoryVM> GetCategoryVMList();
         int AddCategory(Category category);
         bool UpdateCategory(Category category);
         bool DeleteCategory(int categoryId);
@@ -31,6 +32,7 @@ namespace SCMS.Models.Interface
         #region "Intimacy"
         Intimacy GetIntimacyById(int itimacyId);
         List<Intimacy> GetIntimacyList();
+        List<IntimacyVM> GetIntimacyVMList();
         int AddIntimacy(Intimacy intimacy);
         bool UpdateIntimacy(Intimacy intimacy);
         bool DeleteIntimacy(int intimacyId);
@@ -61,7 +63,7 @@ namespace SCMS.Models.Interface
         #region "Story"
         List<Story> GetStoryList();
         List<Story> GetStoryForHome(List<int> categorySelected, List<int> intimacySelected, string userName, string title, string hashTag);
-        List<StoryVM> GetStoryByStatus(char type);
+        List<StoryVM> GetStoryByStatus(string type);
         List<Story> GetStoryByUserId(string userId);
         Story GetStoryById(int storyId);
         bool ApproveStory(int storyId, string feedback);

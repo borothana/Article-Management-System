@@ -40,7 +40,7 @@ namespace SCMS.Datas
         {
             var userMgr = HttpContext.Current.GetOwinContext().GetUserManager<UserManager<User>>();
             var user = userMgr.Find(userName, password);
-            if (user != null)
+            if (user != null && user.IsActive == true)
             {
                 var identity = userMgr.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                 var authManager = HttpContext.Current.GetOwinContext().Authentication;
@@ -144,6 +144,21 @@ namespace SCMS.Datas
         {
             return GetCategoryList().FirstOrDefault(c => c.CategoryId == categoryId);
         }
+
+        public List<CategoryVM> GetCategoryVMList()
+        {
+            List<CategoryVM> result = new List<CategoryVM>();
+            List<Category> categories = GetCategoryList();
+            foreach (Category c in categories)
+            {
+                result.Add(new CategoryVM()
+                {
+                    Category = new Category() { CategoryId = c.CategoryId, Description = c.Description },
+                    IsSelected = false
+                });
+            }
+            return result;
+        }
         #endregion
 
         #region "Intimacy"
@@ -180,6 +195,21 @@ namespace SCMS.Datas
         {
             return GetIntimacyList().FirstOrDefault(i => i.IntimacyId == intimacyId);
         }
+
+        public List<IntimacyVM> GetIntimacyVMList()
+        {
+            List<IntimacyVM> result = new List<IntimacyVM>();
+            List<Intimacy> intimacies = GetIntimacyList();
+            foreach (Intimacy i in intimacies)
+            {
+                result.Add(new IntimacyVM()
+                {
+                    Intimacy = new Intimacy() { IntimacyId = i.IntimacyId, Description = i.Description },
+                    IsSelected = false
+                });
+            }
+            return result;
+        }
         #endregion
 
         #region "Story"
@@ -201,7 +231,7 @@ namespace SCMS.Datas
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
                 NoView = storyVM.NoView,
-                ApproveStatue = 'P',
+                ApproveStatus = "P",
                 UserId = storyVM.UserId,
 
                 Category = GetCategoryById(storyVM.CategoryId),
@@ -230,7 +260,7 @@ namespace SCMS.Datas
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
                 NoView = storyVM.NoView,
-                ApproveStatue = 'P',
+                ApproveStatus = "P",
                 UserId = storyVM.UserId,
 
                 Category = GetCategoryById(storyVM.CategoryId),
@@ -249,7 +279,7 @@ namespace SCMS.Datas
         public bool ApproveStory(int storyId, string feedback)
         {
             Story story = GetStoryById(storyId);
-            story.ApproveStatue = 'Y';
+            story.ApproveStatus = "Y";
             story.Feedback = feedback;
             _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;            
             _ctx.SaveChanges();
@@ -260,7 +290,7 @@ namespace SCMS.Datas
         {
             Story story = GetStoryById(storyId);
             story.Feedback = feedback;
-            story.ApproveStatue = 'N';
+            story.ApproveStatus = "N";
             _ctx.Entry(story).State = System.Data.Entity.EntityState.Modified;
             _ctx.SaveChanges();
             return true;
@@ -281,7 +311,7 @@ namespace SCMS.Datas
         {
             string[] hash = hashTag.Split();
             
-            List<StoryVM> tmp = (from s in GetStoryVMList() .Where(s => s.ApproveStatue == 'Y')
+            List<StoryVM> tmp = (from s in GetStoryVMList() .Where(s => s.ApproveStatus == "Y")
                                   where (categorySelected.Count > 0 ? categorySelected.Contains(s.CategoryId) : true) &&
                                     (intimacySelected.Count > 0 ? intimacySelected.Contains(s.IntimacyId) : true) &&
                                     (!string.IsNullOrEmpty(title) ? s.Title.Contains(title) : true) &&
@@ -297,10 +327,12 @@ namespace SCMS.Datas
             return result;
         }
 
-        public List<StoryVM> GetStoryByStatus(char status)
+        public List<StoryVM> GetStoryByStatus(string status)
         {
+            List<Story> list = GetStoryList();
+
             List<StoryVM> result = new List<StoryVM>();
-            List<Story> story = GetStoryList().Where(s => s.ApproveStatue == status).ToList();
+            List<Story> story = GetStoryList().Where(s => s.ApproveStatus == status).ToList();
             foreach (Story s in story)
             {
                 result.Add(ConvertStoryToVM(s));
@@ -348,7 +380,7 @@ namespace SCMS.Datas
                 HashtagWord = story.HashtagWord,
                 Picture = story.Picture,
                 NoView = story.NoView,
-                ApproveStatue = story.ApproveStatue,
+                ApproveStatus = story.ApproveStatus,
                 UserId = story.UserId,
 
                 Category = GetCategoryById(story.CategoryId),
@@ -373,7 +405,7 @@ namespace SCMS.Datas
                 HashtagWord = storyVM.HashtagWord,
                 Picture = storyVM.Picture,
                 NoView = storyVM.NoView,
-                ApproveStatue = storyVM.ApproveStatue,
+                ApproveStatus = storyVM.ApproveStatus,
                 UserId = storyVM.UserId,
 
                 Category = GetCategoryById(storyVM.CategoryId),
@@ -661,8 +693,10 @@ namespace SCMS.Datas
 
         public List<User> GetUserListByRole(string role)
         {
-            return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == role)).ToList();
-            //return GetUserList().ToList();
+            string roldId = _ctx.Roles.FirstOrDefault(r => r.Name == role).Id;
+            return GetUserList().Where(u => u.Roles.Any(r => r.RoleId == roldId)).ToList();
+            //return GetUserList().Where(u => u.Roles.Any( r => _ctx.Roles.Any(ro => ro.Name == role))).ToList();
+            //s.Hashtags.Any(h => hash.Contains(h.Description)) : true)
         }
 
         public User GetUserById(string userId)
@@ -688,6 +722,7 @@ namespace SCMS.Datas
                 PasswordHash = input.PasswordHash,
                 UserName = input.UserName,
                 Nickname = input.Nickname,
+                IsActive = input.IsActive,
                 Email = input.Email,
                 Phone = input.Phone,
                 ProfilePic = input.ProfilePic,
@@ -704,6 +739,7 @@ namespace SCMS.Datas
                 PasswordHash = input.PasswordHash,
                 UserName = input.UserName,
                 Nickname = input.Nickname,
+                IsActive = input.IsActive,
                 Email = input.Email,
                 Phone = input.Phone,
                 ProfilePic = input.ProfilePic,

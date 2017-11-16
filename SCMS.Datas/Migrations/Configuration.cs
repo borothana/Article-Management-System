@@ -34,7 +34,9 @@ namespace SCMS.Datas.Migrations
             }
             var user = new SCMS.Models.User
             {
-                UserName = curUserName
+                UserName = curUserName,
+                Nickname = "member",
+                IsActive = true
             };
 
             // if user existed
@@ -59,7 +61,9 @@ namespace SCMS.Datas.Migrations
 
             user = new SCMS.Models.User
             {
-                UserName = curUserName
+                UserName = curUserName,
+                Nickname = "scms",
+                IsActive = true
             };
 
             // if user existed

@@ -25,7 +25,7 @@ namespace SCMS.Models.ViewModels
         public string HashtagWord { get; set; }
         public byte[] Picture { get; set; }
         public int NoView { get; set; }
-        public char ApproveStatue { get; set; }
+        public string ApproveStatus { get; set; }
         public string Feedback { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }

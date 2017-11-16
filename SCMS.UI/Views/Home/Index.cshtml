@@ -12,12 +12,12 @@
                     Category
                 </div>
                 <div class="panel-body">
-                    @for (int i = 0; i < Model.Category.Count; i++)
+                    @for (int i = 0; i < Model.CategoryVM.Count; i++)
                     {
                         <p>
-                            @Html.CheckBoxFor(c => c.Category[i].isSelected)
-                            <span>@Model.Category[i].Description</span>
-                            @Html.HiddenFor(c => c.Category[i].CategoryId)
+                            @Html.CheckBoxFor(c => c.CategoryVM[i].IsSelected)
+                            <span>@Model.CategoryVM[i].Category.Description</span>
+                            @Html.HiddenFor(c => c.CategoryVM[i].Category.CategoryId)
                         </p>
                     }
                 </div>
@@ -28,12 +28,12 @@
                     Intimacy Level
                 </div>
                 <div class="panel-body">
-                    @for (int i = 0; i < Model.Intimacy.Count; i++)
+                    @for (int i = 0; i < Model.IntimacyVM.Count; i++)
                     {
                         <p>
-                            @Html.CheckBoxFor(z => z.Intimacy[i].isSelected)
-                            <span>@Model.Intimacy[i].Description</span>
-                            @Html.HiddenFor(z => z.Intimacy[i].IntimacyId)
+                            @Html.CheckBoxFor(z => z.IntimacyVM[i].IsSelected)
+                            <span>@Model.IntimacyVM[i].Intimacy.Description</span>
+                            @Html.HiddenFor(z => z.IntimacyVM[i].Intimacy.IntimacyId)
                         </p>
                     }
 

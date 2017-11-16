@@ -9,7 +9,7 @@ namespace SCMS.Models.ViewModels
     public class CategoryVM
     {
         public Category Category { get; set; }
-        public bool isSelected { get; set; }
+        public bool IsSelected { get; set; }
     }
 }
 

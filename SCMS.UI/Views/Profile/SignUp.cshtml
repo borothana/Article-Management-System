@@ -33,11 +33,11 @@
                 
                 <label>Password</label>
                 @Html.ValidationMessageFor(m => m.PasswordHash)
-                @Html.TextBoxFor(m => m.PasswordHash, new { @class = "form-control", placeholder = "Password" })
+                @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", placeholder = "Password" })
                 
                 <label>Confirm Password</label>
                 @Html.ValidationMessageFor(m => m.ConfirmPassword)
-                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
 
                 <label>Quote</label>
                 @Html.TextAreaFor(m => m.Quote, new { @class = "form-control", placeholder = "Quote" })

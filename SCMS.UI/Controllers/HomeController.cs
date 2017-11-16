@@ -17,8 +17,11 @@ namespace SCMS.UI.Controllers
         public ActionResult Index()
         {
             HomeVM model = new HomeVM();
-            model.Category = _repo.GetCategoryList();
-            model.Intimacy = _repo.GetIntimacyList();
+
+            model.CategoryVM = _repo.GetCategoryVMList();
+            model.IntimacyVM = _repo.GetIntimacyVMList();
+            model.SetCategoryItems(_repo.GetCategoryList());
+            model.SetIntimacyItems(_repo.GetIntimacyList());
             model.User = _repo.GetUserList();
 
             //Example
@@ -32,25 +35,27 @@ namespace SCMS.UI.Controllers
         public ActionResult Index(HomeVM model)
         {
             model.CategoryIdSearch = new List<int>();
-            foreach(var c in model.Category)
+            foreach(var c in model.CategoryVM)
             {
-                if (c.isSelected)
+                if (c.IsSelected)
                 {
-                    model.CategoryIdSearch.Add(c.CategoryId);
+                    model.CategoryIdSearch.Add(c.Category.CategoryId);
                 }
             }
 
             model.IntimacyIdSearch = new List<int>();
-            foreach (var c in model.Intimacy)
+            foreach (var c in model.IntimacyVM)
             {
-                if (c.isSelected)
+                if (c.IsSelected)
                 {
-                    model.IntimacyIdSearch.Add(c.IntimacyId);
+                    model.IntimacyIdSearch.Add(c.Intimacy.IntimacyId);
                 }
             }
 
-            model.Category = _repo.GetCategoryList();
-            model.Intimacy = _repo.GetIntimacyList();
+            model.CategoryVM = _repo.GetCategoryVMList();
+            model.IntimacyVM = _repo.GetIntimacyVMList();
+            model.SetCategoryItems(_repo.GetCategoryList());
+            model.SetIntimacyItems(_repo.GetIntimacyList());
             model.User = _repo.GetUserList();
             model.StoryVM = _repo.GetStoryForHome(model.CategoryIdSearch, model.IntimacyIdSearch, model.UserNameSearch + "", model.TitleSearch + "", model.HashtagSearch + "");
 

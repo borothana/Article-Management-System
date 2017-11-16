@@ -9,8 +9,8 @@ namespace SCMS.Models.ViewModels
 {
     public class HomeVM
     {
-        public List<Category> Category { get; set; }
-        public List<Intimacy> Intimacy { get; set; }
+        public List<CategoryVM> CategoryVM { get; set; }
+        public List<IntimacyVM> IntimacyVM { get; set; }
         public List<Story> StoryVM { get; set; }
         public List<User> User { get; set; }
         public bool IsSelected { get; set; }

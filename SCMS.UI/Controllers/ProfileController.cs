@@ -28,7 +28,7 @@ namespace SCMS.UI.Controllers
             {               
                 if (_repo.AddUser(model, Role.member.ToString()).Result.Success)
                 {
-                    _repo.Login(model.UserName, model.PasswordHash);
+                    _repo.Login(model.UserName, model.ConfirmPassword);
                     return RedirectToAction("Index", "Home");
                 }                
             }

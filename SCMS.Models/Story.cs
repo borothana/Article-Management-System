@@ -1,6 +1,7 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace SCMS.Models
         public string HashtagWord { get; set; }
         public byte[] Picture { get; set; }
         public int NoView { get; set; }
-        public char ApproveStatue { get; set; }
+        public string ApproveStatus { get; set; }
         public string Feedback { get; set; }
         public string UserId { get; set; }
 
